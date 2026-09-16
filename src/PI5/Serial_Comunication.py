@@ -3,8 +3,8 @@ import time
 import sys
 
 # Configure the serial port used for Pi UART (use /dev/serial0 for canonical mapping)
-PORT = '/dev/serial0'  # change to '/dev/ttyAMA0' if your setup requires it
-BAUD = 9600
+PORT = '/dev/ttyAMA0'  # change to '/dev/ttyAMA0' if your setup requires it
+BAUD = 115600
 
 def send_command(cmd: str):
     ser = serial.Serial(PORT, BAUD, timeout=1)
