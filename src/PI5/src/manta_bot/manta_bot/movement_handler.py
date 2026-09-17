@@ -1,10 +1,7 @@
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Twist
-import sys
-import os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', '..'))
-from Serial_Comunication import send_command
+from .serial_com import send_command
 
 class MovementHandler(Node):
     
@@ -80,5 +77,15 @@ class MovementHandler(Node):
     def emergency_stop(self):
         self.get_logger().info('EMERGENCY STOP - All motors stopped')
         send_command('ESTOP')
-        
-    
+
+
+def main(args=None):
+    rclpy.init(args=args)
+    movement_handler = MovementHandler()
+    rclpy.spin(movement_handler)
+    movement_handler.destroy_node()
+    rclpy.shutdown()
+
+
+if __name__ == '__main__':
+    main()

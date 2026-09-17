@@ -4,11 +4,11 @@ import serial
 import time
 import sys
 
+PORT = '/dev/ttyUSB0'  # Update this to your serial port
+BAUD = 9600  # Update this to your baud rate
 
-class SerialCommunicationNode(Node):
-    
-    
-    def send_command(cmd: str):
+
+def send_command(cmd: str):
     ser = serial.Serial(PORT, BAUD, timeout=1)
     
     time.sleep(0.1)
@@ -21,6 +21,9 @@ class SerialCommunicationNode(Node):
     if ser.in_waiting > 0:
         print(ser.readline().decode('utf-8', errors='replace').rstrip())
     ser.close()
+
+
+class SerialCommunicationNode(Node):
 
     
     

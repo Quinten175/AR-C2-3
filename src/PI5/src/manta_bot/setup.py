@@ -24,6 +24,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
+            'movement_handler = manta_bot.movement_handler:main',
         ],
     },
 )
