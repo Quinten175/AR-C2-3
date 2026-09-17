@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'my_py_package'
+package_name = 'Manta-Bot'
 
 setup(
     name=package_name,
@@ -24,6 +24,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
+            'my_node = Manta-Bot.my_node:main'
         ],
     },
 )
