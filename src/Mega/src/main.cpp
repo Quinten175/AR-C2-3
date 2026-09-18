@@ -1,32 +1,43 @@
 #include <Arduino.h>
+#include "motor_control.h"
 
 void setup() {
-  // Start Serial1 for RX/TX on pins 19 (RX1) / 18 (TX1)
+  // Start Serial for communication with Raspberry Pi / host
   Serial.begin(115600);
 
-  // Use A0 as a digital output and ensure it's off initially
-  pinMode(A0, OUTPUT);
-  digitalWrite(A0, LOW);
+  // Initialize motor pins and enable pin
+  motor_control_init();
 }
 
 void loop() {
-  // Read a command line from Serial1 (terminated by '\n')
-  Serial.println("Test");
-  if (Serial.available())
-   {
+  if (Serial.available()) {
     String cmd = Serial.readStringUntil('\n');
     cmd.trim();
+    cmd.toUpperCase();
 
-    if (cmd.equalsIgnoreCase("ON") || cmd == "1") {
-      digitalWrite(A0, HIGH);
-      Serial.println("A0 ON");
-    } else if (cmd.equalsIgnoreCase("OFF") || cmd == "0") {
-      digitalWrite(A0, LOW);
-      Serial.println("A0 OFF");
-    } else {
-      Serial.print("Unknown:");
-      Serial.println(cmd);
+    // default speed
+    int speed = 255;
+    int colon = cmd.indexOf(':');
+    if (colon >= 0) {
+      speed = cmd.substring(colon + 1).toInt();
+      speed = constrain(speed, 0, 255);
+    }
+
+    if (cmd.startsWith("M1F")) {
+      motor1_forward((uint8_t)speed);
+    } else if (cmd.startsWith("M1R")) {
+      motor1_reverse((uint8_t)speed);
+    } else if (cmd.startsWith("M2F")) {
+      motor2_forward((uint8_t)speed);
+    } else if (cmd.startsWith("M2R")) {
+      motor2_reverse((uint8_t)speed);
+    } else if (cmd.startsWith("M1S")) {
+      motor1_stop();
+    } else if (cmd.startsWith("M2S")) {
+      motor2_stop();
+    } else if (cmd.startsWith("ESTOP")) {
+      emergency_stop();
     }
   }
-  delay(10); // Add a small delay to avoid overwhelming the serial buffer
+  delay(10);
 }

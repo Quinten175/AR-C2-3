@@ -1,3 +1,63 @@
+#include "motor_control.h"
+
+// Pin definitions - replace these with your actual wiring
+static const uint8_t M1_PWM_PIN = 5; 
+static const uint8_t M1_DIR_PIN = 4; 
+static const uint8_t M2_PWM_PIN = 6; 
+static const uint8_t M2_DIR_PIN = 7; 
+
+static const uint8_t ENABLE_PIN = A0;
+
+void motor_control_init() {
+  pinMode(M1_PWM_PIN, OUTPUT);
+  pinMode(M1_DIR_PIN, OUTPUT);
+  pinMode(M2_PWM_PIN, OUTPUT);
+  pinMode(M2_DIR_PIN, OUTPUT);
+  pinMode(ENABLE_PIN, OUTPUT);
+  digitalWrite(ENABLE_PIN, LOW);
+
+  analogWrite(M1_PWM_PIN, 0);
+  analogWrite(M2_PWM_PIN, 0);
+}
+
+void motor1_forward(uint8_t speed) {
+  digitalWrite(ENABLE_PIN, HIGH);
+  digitalWrite(M1_DIR_PIN, HIGH);
+  analogWrite(M1_PWM_PIN, speed);
+}
+
+void motor1_reverse(uint8_t speed) {
+  digitalWrite(ENABLE_PIN, HIGH);
+  digitalWrite(M1_DIR_PIN, LOW);
+  analogWrite(M1_PWM_PIN, speed);
+}
+
+void motor2_forward(uint8_t speed) {
+  digitalWrite(ENABLE_PIN, HIGH);
+  digitalWrite(M2_DIR_PIN, HIGH);
+  analogWrite(M2_PWM_PIN, speed);
+}
+
+void motor2_reverse(uint8_t speed) {
+  digitalWrite(ENABLE_PIN, HIGH);
+  digitalWrite(M2_DIR_PIN, LOW);
+  analogWrite(M2_PWM_PIN, speed);
+}
+
+void motor1_stop() {
+  analogWrite(M1_PWM_PIN, 0);
+}
+
+void motor2_stop() {
+  analogWrite(M2_PWM_PIN, 0);
+}
+
+void emergency_stop() {
+  // immediately stop both motors and disable power
+  analogWrite(M1_PWM_PIN, 0);
+  analogWrite(M2_PWM_PIN, 0);
+  digitalWrite(ENABLE_PIN, LOW);
+}
 #include <Arduino.h>
 
 
