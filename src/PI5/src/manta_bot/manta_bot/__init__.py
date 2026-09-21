@@ -1,17 +1,10 @@
-"""Manta Bot package."""
+"""Manta Bot package.
 
-from launch_ros.parameter_descriptions import ParameterFile
-from launch_ros.actions import Node
+This module intentionally contains no top-level execution. Previous versions
+attempted to construct launch `Node` objects at import time which caused
+exceptions (e.g. when `get_package_share_directory` is not available during a
+plain import). Keep module initialization minimal to allow importing the
+package for runtime entry points.
+"""
 
-controllers_yaml = os.path.join(
-    get_package_share_directory('manta_bot'),
-    'config',
-    'diff_drive_controller.yaml'
-)
-
-Node(
-    package='controller_manager',
-    executable='ros2_control_node',
-    parameters=[robot_description, controllers_yaml],
-    output='screen',
-)
+__all__ = []

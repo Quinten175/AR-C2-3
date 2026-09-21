@@ -7,35 +7,53 @@ from .serial_com import send_command
 try:
     from hardware_interface.system_interface import SystemInterface
     from hardware_interface.types import HardwareInterfaceReturn
-except ImportError:
-    class SystemInterface:  # pragma: no cover
+    from hardware_interface.types import CallbackReturn
+except Exception:  #
+    class SystemInterface:
         pass
 
-    class HardwareInterfaceReturn:  # pragma: no cover
+    class HardwareInterfaceReturn:
         OK = 0
+        ERROR = 1
+
+    class CallbackReturn:
+        SUCCESS = 0
         ERROR = 1
 
 
 class MantaBotHardware(SystemInterface):
-    """ros2_control-compatible hardware interface for a 2-wheel differential drive robot.
 
-    This class receives wheel velocity commands from `diff_drive_controller` and converts
-    them to the serial commands your robot expects.
-    """
 
     def __init__(self):
-        self._cmd = [0.0, 0.0]
-        self._state = [0.0, 0.0]
+        self._cmd = []
+        self._state = []
+        self._joint_names = []
 
     def on_init(self, hardware_info):
         self._joint_names = [joint.name for joint in hardware_info.joints]
-        self._cmd = [0.0, 0.0]
-        self._state = [0.0, 0.0]
-        return True
+        self._cmd = [0.0 for _ in self._joint_names]
+        self._state = [0.0 for _ in self._joint_names]
+        return CallbackReturn.SUCCESS
+
+    def on_configure(self, previous_state=None):
+        return CallbackReturn.SUCCESS
+
+    def on_activate(self, previous_state=None):
+        return CallbackReturn.SUCCESS
+
+    def on_deactivate(self, previous_state=None):
+        return CallbackReturn.SUCCESS
+
+    def on_cleanup(self, previous_state=None):
+        return CallbackReturn.SUCCESS
+
+    def on_shutdown(self, previous_state=None):
+        return CallbackReturn.SUCCESS
 
     def read(self, time, period):
-        self._state[0] = self._cmd[0]
-        self._state[1] = self._cmd[1]
+        # For this simple robot we mirror commanded velocities to state
+        for i in range(len(self._state)):
+            self._state[i] = self._cmd[i]
         return HardwareInterfaceReturn.OK
 
     def write(self, time, period):
@@ -70,6 +88,21 @@ class MantaBotHardware(SystemInterface):
     @command.setter
     def command(self, values):
         self._cmd = list(values)
+
+    def export_state_interfaces(self):
+        interfaces = []
+        for i, name in enumerate(self._joint_names):
+            interfaces.append({'name': name, 'interface': 'velocity', 'get': (lambda idx=i: self._state[idx])})
+        return interfaces
+
+    def export_command_interfaces(self):
+        interfaces = []
+        for i, name in enumerate(self._joint_names):
+            interfaces.append({'name': name, 'interface': 'velocity', 'set': (lambda v, idx=i: self._set_cmd(idx, v))})
+        return interfaces
+
+    def _set_cmd(self, idx, value):
+        self._cmd[idx] = value
 
 
 class MovementHandler(Node):
