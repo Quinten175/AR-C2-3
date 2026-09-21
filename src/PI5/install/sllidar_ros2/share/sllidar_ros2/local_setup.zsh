@@ -1,0 +1,1 @@
+/home/quin/AR-C2-3/src/PI5/build/sllidar_ros2/ament_cmake_environment_hooks/local_setup.zsh

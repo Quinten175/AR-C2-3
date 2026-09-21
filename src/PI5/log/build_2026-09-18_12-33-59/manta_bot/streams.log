@@ -1,0 +1,19 @@
+[1.187s] Invoking command in '/home/quin/AR-C2-3/src/PI5/build/manta_bot': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/quin/AR-C2-3/src/PI5/build/manta_bot/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/quin/AR-C2-3/src/PI5/install/manta_bot/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/quin/AR-C2-3/src/PI5/build/manta_bot/build --no-deps symlink_data
+[1.520s] running develop
+[1.704s] /usr/lib/python3/dist-packages/setuptools/command/easy_install.py:363: UserWarning: Unbuilt egg for pytest-repeat [unknown version] (/usr/lib/python3/dist-packages)
+[1.705s]   self.local_index = Environment(self.shadow_path + sys.path)
+[1.743s] running egg_info
+[1.765s] writing manta_bot.egg-info/PKG-INFO
+[1.765s] writing dependency_links to manta_bot.egg-info/dependency_links.txt
+[1.765s] writing entry points to manta_bot.egg-info/entry_points.txt
+[1.765s] writing requirements to manta_bot.egg-info/requires.txt
+[1.765s] writing top-level names to manta_bot.egg-info/top_level.txt
+[1.810s] reading manifest file 'manta_bot.egg-info/SOURCES.txt'
+[1.811s] writing manifest file 'manta_bot.egg-info/SOURCES.txt'
+[1.834s] running build_ext
+[1.834s] Creating /home/quin/AR-C2-3/src/PI5/install/manta_bot/lib/python3.12/site-packages/manta-bot.egg-link (link to .)
+[1.835s] Installing static_odom_publisher script to /home/quin/AR-C2-3/src/PI5/install/manta_bot/lib/manta_bot
+[1.835s] 
+[1.835s] Installed /home/quin/AR-C2-3/src/PI5/build/manta_bot
+[1.835s] running symlink_data
+[1.862s] Invoked command in '/home/quin/AR-C2-3/src/PI5/build/manta_bot' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/quin/AR-C2-3/src/PI5/build/manta_bot/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/quin/AR-C2-3/src/PI5/install/manta_bot/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/quin/AR-C2-3/src/PI5/build/manta_bot/build --no-deps symlink_data

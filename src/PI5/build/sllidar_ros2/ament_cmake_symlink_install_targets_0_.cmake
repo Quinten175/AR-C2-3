@@ -1,0 +1,1 @@
+ament_cmake_symlink_install_targets("TARGET_FILES" "/home/quin/AR-C2-3/src/PI5/build/sllidar_ros2/sllidar_node" "/home/quin/AR-C2-3/src/PI5/build/sllidar_ros2/sllidar_client" "TARGETS" "sllidar_node" "sllidar_client" "RUNTIME_DESTINATION" "lib/sllidar_ros2")

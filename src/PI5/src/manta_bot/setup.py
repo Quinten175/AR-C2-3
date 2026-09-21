@@ -1,4 +1,5 @@
 from setuptools import find_packages, setup
+import os
 
 package_name = 'manta_bot'
 
@@ -10,6 +11,8 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        (os.path.join('share', package_name, 'launch'), ['launch/static_slam_launch.py']),
+        (os.path.join('share', package_name, 'config'), ['config/slam_config.yaml']),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -24,6 +27,8 @@ setup(
     },
     entry_points={
         'console_scripts': [
+            f'static_odom_publisher = {package_name}.Lidar.static_odom_publisher:main',
+            f'active_mapping = {package_name}.Lidar.active_mapping:main',
         ],
     },
 )

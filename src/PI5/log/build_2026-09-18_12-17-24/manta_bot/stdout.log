@@ -1,0 +1,26 @@
+running develop
+running egg_info
+creating manta_bot.egg-info
+writing manta_bot.egg-info/PKG-INFO
+writing dependency_links to manta_bot.egg-info/dependency_links.txt
+writing entry points to manta_bot.egg-info/entry_points.txt
+writing requirements to manta_bot.egg-info/requires.txt
+writing top-level names to manta_bot.egg-info/top_level.txt
+writing manifest file 'manta_bot.egg-info/SOURCES.txt'
+reading manifest file 'manta_bot.egg-info/SOURCES.txt'
+writing manifest file 'manta_bot.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/quin/AR-C2-3/src/PI5/install/manta_bot/lib/python3.12/site-packages/manta-bot.egg-link (link to .)
+Installing static_odom_publisher script to /home/quin/AR-C2-3/src/PI5/install/manta_bot/lib/manta_bot
+
+Installed /home/quin/AR-C2-3/src/PI5/build/manta_bot
+running symlink_data
+creating /home/quin/AR-C2-3/src/PI5/install/manta_bot/share/ament_index
+creating /home/quin/AR-C2-3/src/PI5/install/manta_bot/share/ament_index/resource_index
+creating /home/quin/AR-C2-3/src/PI5/install/manta_bot/share/ament_index/resource_index/packages
+symbolically linking /home/quin/AR-C2-3/src/PI5/build/manta_bot/resource/manta_bot -> /home/quin/AR-C2-3/src/PI5/install/manta_bot/share/ament_index/resource_index/packages
+symbolically linking /home/quin/AR-C2-3/src/PI5/build/manta_bot/package.xml -> /home/quin/AR-C2-3/src/PI5/install/manta_bot/share/manta_bot
+creating /home/quin/AR-C2-3/src/PI5/install/manta_bot/share/manta_bot/launch
+symbolically linking /home/quin/AR-C2-3/src/PI5/build/manta_bot/launch/static_slam_launch.py -> /home/quin/AR-C2-3/src/PI5/install/manta_bot/share/manta_bot/launch
+creating /home/quin/AR-C2-3/src/PI5/install/manta_bot/share/manta_bot/config
+symbolically linking /home/quin/AR-C2-3/src/PI5/build/manta_bot/config/slam_config.yaml -> /home/quin/AR-C2-3/src/PI5/install/manta_bot/share/manta_bot/config

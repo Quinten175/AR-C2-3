@@ -1,0 +1,19 @@
+running develop
+/usr/lib/python3/dist-packages/setuptools/command/easy_install.py:363: UserWarning: Unbuilt egg for pytest-repeat [unknown version] (/usr/lib/python3/dist-packages)
+  self.local_index = Environment(self.shadow_path + sys.path)
+running egg_info
+writing manta_bot.egg-info/PKG-INFO
+writing dependency_links to manta_bot.egg-info/dependency_links.txt
+writing entry points to manta_bot.egg-info/entry_points.txt
+writing requirements to manta_bot.egg-info/requires.txt
+writing top-level names to manta_bot.egg-info/top_level.txt
+reading manifest file 'manta_bot.egg-info/SOURCES.txt'
+writing manifest file 'manta_bot.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/quin/AR-C2-3/src/PI5/install/manta_bot/lib/python3.12/site-packages/manta-bot.egg-link (link to .)
+Installing static_odom_publisher script to /home/quin/AR-C2-3/src/PI5/install/manta_bot/lib/manta_bot
+
+Installed /home/quin/AR-C2-3/src/PI5/build/manta_bot
+running symlink_data
+creating /home/quin/AR-C2-3/src/PI5/install/manta_bot/share/manta_bot/config
+error: can't copy '/home/quin/AR-C2-3/src/PI5/build/manta_bot/config/my_mapper_params.yaml': doesn't exist or not a regular file

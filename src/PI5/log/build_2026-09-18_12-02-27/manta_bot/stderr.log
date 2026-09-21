@@ -1,0 +1,3 @@
+/usr/lib/python3/dist-packages/setuptools/command/easy_install.py:363: UserWarning: Unbuilt egg for pytest-repeat [unknown version] (/usr/lib/python3/dist-packages)
+  self.local_index = Environment(self.shadow_path + sys.path)
+error: can't copy '/home/quin/AR-C2-3/src/PI5/build/manta_bot/config/my_mapper_params.yaml': doesn't exist or not a regular file
