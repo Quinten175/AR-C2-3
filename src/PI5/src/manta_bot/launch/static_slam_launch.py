@@ -21,7 +21,7 @@ def launch_setup(context, *args, **kwargs):
         parameters=[slam_config_path]
     )
 
-    static_odom_node = Node(
+    activate_mapping_node = Node(
         package='manta_bot',
         executable='activate_mapping',
         name='activate_mapping',
@@ -37,7 +37,7 @@ def launch_setup(context, *args, **kwargs):
 
     rplidar_node = Node(
         package='rplidar_ros',
-        executable='rplidar_node',
+        executable='rplidar_composition',
         name='rplidar_node',
         output='screen',
         parameters=[{
@@ -48,7 +48,8 @@ def launch_setup(context, *args, **kwargs):
             'angle_compensate': True,
             'scan_mode': 'Standard'
         }]
-    )
+    )   
+
 
     static_tf_node = Node(
         package='tf2_ros',
@@ -59,6 +60,7 @@ def launch_setup(context, *args, **kwargs):
     )
 
     return [
+        activate_mapping_node,
         static_odom_node,
         rplidar_node,
         static_tf_node,
