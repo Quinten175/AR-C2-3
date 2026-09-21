@@ -3,13 +3,17 @@
 <package format="3">
   <name>manta_bot</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
+  <description>Manta Bot package with diff-drive controller support</description>
   <maintainer email="quintenvandervalk@gmail.com">quin</maintainer>
   <license>TODO: License declaration</license>
 
   <depend>rclpy</depend>
-  <depend>sensor_msgs</depend>
   <depend>geometry_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>hardware_interface</depend>
+  <depend>controller_manager</depend>
+  <depend>diff_drive_controller</depend>
+  <depend>ros2_control</depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>

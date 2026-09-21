@@ -1,1 +1,0 @@
-/home/quin/AR-C2-3/src/PI5/src/rplidar_ros/launch/view_rplidar_a2m12_launch.py

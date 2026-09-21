@@ -1,1 +1,0 @@
-/home/quin/AR-C2-3/src/PI5/src/build/rplidar_ros/ament_cmake_core/rplidar_rosConfig.cmake
