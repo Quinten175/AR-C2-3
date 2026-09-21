@@ -35,5 +35,9 @@ setup(
             f'active_mapping = {package_name}.Lidar.active_mapping:main',
             'movement_handler = manta_bot.movement_handler:main',
         ],
+        'ros2_control_systems': [
+            'manta_bot_hardware = manta_bot.movement_handler:MantaBotHardware',
+        ],
     },
 )
+
