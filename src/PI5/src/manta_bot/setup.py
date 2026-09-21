@@ -32,9 +32,13 @@ setup(
     entry_points={
         'console_scripts': [
             f'static_odom_publisher = {package_name}.Lidar.static_odom_publisher:main',
-            f'active_mapping = {package_name}.Lidar.active_mapping:main',
-            'movement_handler = manta_bot.movement_handler:main',
+
             'cmd_vel_dummy = manta_bot.Movement.cmd_vel_publisher:main',
+
+            f'activate_mapping = {package_name}.Lidar.activate_mapping:main',
+            f'movement_handler = {package_name}.movement_handler:main',
+            f'UI_app = {package_name}.UI.UI_app:main',
+
         ],
         'ros2_control_systems': [
             'manta_bot_hardware = manta_bot.movement_handler:MantaBotHardware',
