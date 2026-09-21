@@ -29,6 +29,7 @@ setup(
         'console_scripts': [
             f'static_odom_publisher = {package_name}.Lidar.static_odom_publisher:main',
             f'active_mapping = {package_name}.Lidar.active_mapping:main',
+            'movement_handler = manta_bot.movement_handler:main',
         ],
     },
 )
