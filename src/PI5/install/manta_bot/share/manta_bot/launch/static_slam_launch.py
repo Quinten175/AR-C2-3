@@ -1,1 +1,0 @@
-/home/quin/AR-C2-3/src/PI5/build/manta_bot/launch/static_slam_launch.py

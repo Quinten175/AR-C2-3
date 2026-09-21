@@ -1,3 +1,0 @@
-[console_scripts]
-active_mapping = manta_bot.Lidar.active_mapping:main
-static_odom_publisher = manta_bot.Lidar.static_odom_publisher:main
