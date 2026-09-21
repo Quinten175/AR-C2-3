@@ -11,14 +11,18 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+
+        ('share/' + package_name + '/config', ['config/diff_drive_controller.yaml']),
+
         (os.path.join('share', package_name, 'launch'), ['launch/static_slam_launch.py']),
         (os.path.join('share', package_name, 'config'), ['config/slam_config.yaml']),
+
     ],
     install_requires=['setuptools'],
     zip_safe=True,
     maintainer='quin',
     maintainer_email='quintenvandervalk@gmail.com',
-    description='TODO: Package description',
+    description='Manta Bot package with diff-drive controller support',
     license='TODO: License declaration',
     extras_require={
         'test': [
@@ -32,5 +36,9 @@ setup(
             f'movement_handler = {package_name}.movement_handler:main',
             f'UI_app = {package_name}.UI.UI_app:main',
         ],
+        'ros2_control_systems': [
+            'manta_bot_hardware = manta_bot.movement_handler:MantaBotHardware',
+        ],
     },
 )
+
