@@ -25,7 +25,7 @@ class ActiveMapping(Node):
             request.transition.id = Transition.TRANSITION_DEACTIVATE
             self.slam_client.call_async(request)
 
-            request.transition.id = Transition.TRANSITION_UNCONFIGURE
+            request.transition.id = Transition.TRANSITION_CLEANUP
             self.slam_client.call_async(request)
 
 
