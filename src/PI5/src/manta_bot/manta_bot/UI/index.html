@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>UI Active Mapping</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+        }
+        button.active {
+            background-color: #28a745;
+        }
+        .status {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Active Mapping</h2>
+        <button id="toggleBtn" onclick="toggleMapping()">Toggle mapping</button>
+        <div class="status">Status: <span id="statusText">Inactive</span></div>
+    </div>
+    <script>
+        function toggleMapping() {
+            fetch('/api/toggle', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    const btn = document.getElementById('toggleBtn');
+                    const statusText = document.getElementById('statusText');
+                    if (data.state) {
+                        btn.classList.add('active');
+                        statusText.innerText = 'Active';
+                    } else {
+                        btn.classList.remove('active');
+                        statusText.innerText = 'Inactive';
+                    }
+                });
+        }
+    </script>
+</body>
+</html>
