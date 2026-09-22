@@ -1,7 +1,5 @@
 #include "motor_control.h"
 
-public:
-//pin definitions
 int In1 = 3; // Motor 1 input pin 1
 int In2 = 4; // Motor 1 input pin 2
 int EnA = 2; // Motor 1 enable pin (PWM)
@@ -18,26 +16,26 @@ int motor_direction2 = 0; // Direction of the motor (0 for forward, 1 for revers
 
 
 
-void motor1_forward(){
-    motor_speed1 = 200;    // There is no real reason that it's set to 200, you can adjust as you like :)
+void motor1_forward(uint8_t speed){
+    motor_speed1 = speed;
     analogWrite(EnA, motor_speed1);   
     digitalWrite(In1, LOW);
     digitalWrite(In2, HIGH);
 } 
-void motor1_reverse(){
-    motor_speed1 = 200;
+void motor1_reverse(uint8_t speed){
+    motor_speed1 = speed;
     analogWrite(EnA, motor_speed1);
     digitalWrite(In1, HIGH);
     digitalWrite(In2, LOW);
 }
-void motor2_forward(){
-    motor_speed2 = 200;
+void motor2_forward(uint8_t speed){
+    motor_speed2 = speed;
     analogWrite(EnB, motor_speed2);
     digitalWrite(In3, LOW);
     digitalWrite(In4, HIGH);
 }
-void motor2_reverse(){
-    motor_speed2 = 200;
+void motor2_reverse(uint8_t speed){
+    motor_speed2 = speed;
     analogWrite(EnB, motor_speed2);
     digitalWrite(In3, HIGH);
     digitalWrite(In4, LOW); 
@@ -62,4 +60,21 @@ void emergency_stop(){
     digitalWrite(In2, LOW);
     digitalWrite(In3, LOW);
     digitalWrite(In4, LOW);
+}
+
+void motor_control_init() {
+    pinMode(In1, OUTPUT);
+    pinMode(In2, OUTPUT);
+    pinMode(EnA, OUTPUT);
+    pinMode(In3, OUTPUT);
+    pinMode(In4, OUTPUT);
+    pinMode(EnB, OUTPUT);
+    
+    // Initialize all pins to LOW
+    digitalWrite(In1, LOW);
+    digitalWrite(In2, LOW);
+    digitalWrite(EnA, LOW);
+    digitalWrite(In3, LOW);
+    digitalWrite(In4, LOW);
+    digitalWrite(EnB, LOW);
 }
