@@ -1,17 +1,15 @@
-from mpi4py import rc
-
 import rclpy
 from rclpy.node import Node
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import TransformStamped
-import tf2_ros
+from tf2_ros import TransformBroadcaster
 
 class StaticOdomPublisher(Node):
 
     def __init__(self):
         super().__init__('static_odom_publisher')
         self.odom_publisher = self.create_publisher(Odometry, 'odom', 10)
-        self.tf_broadcaster = tf2_ros.TransformBroadcaster(self)
+        self.tf_broadcaster = TransformBroadcaster(self)
         timer_period = 0.05
         self.timer = self.create_timer(timer_period, self.timer_callback)
         self.get_logger().info('Static Odom Publisher has been started.')

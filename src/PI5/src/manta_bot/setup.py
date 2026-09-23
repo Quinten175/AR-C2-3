@@ -1,5 +1,6 @@
 from setuptools import find_packages, setup
 import os
+from glob import glob
 
 package_name = 'manta_bot'
 
@@ -12,10 +13,8 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
 
-        ('share/' + package_name + '/config', ['config/diff_drive_controller.yaml']),
-
-        (os.path.join('share', package_name, 'launch'), ['launch/static_slam_launch.py']),
-        (os.path.join('share', package_name, 'config'), ['config/slam_config.yaml']),
+        (os.path.join('share', package_name, 'launch'), glob('launch/*.py')),
+        (os.path.join('share', package_name, 'config'), glob('config/*.yaml')),
 
     ],
     install_requires=['setuptools'],
@@ -41,4 +40,3 @@ setup(
         ],
     },
 )
-
