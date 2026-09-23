@@ -1,6 +1,6 @@
 import os
 import threading
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Bool
@@ -33,6 +33,52 @@ def index():
 def toggle():
     new_state = node.toggle_mapping_state()
     return jsonify({'state': new_state})
+
+
+@app.route('/api/drive', methods=['POST'])
+def drive():
+    """Accept serial motor commands from the web UI."""
+    data = request.get_json()
+    if not data or 'command' not in data:
+        return jsonify({'error': 'Missing command'}), 400
+
+    cmd = data['command']
+    # Forward to serial com module
+    try:
+        from manta_bot.Movement.serial_com import send_command
+        for c in cmd.split(';'):
+            c = c.strip()
+            if c:
+                send_command(c)
+        return jsonify({'status': 'ok', 'command': cmd})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/action', methods=['POST'])
+def action():
+    """Handle start/stop/reset actions."""
+    data = request.get_json()
+    if not data or 'action' not in data:
+        return jsonify({'error': 'Missing action'}), 400
+
+    act = data['action'].lower()
+    try:
+        from manta_bot.Movement.serial_com import send_command
+        commands = {
+            'start': 'START',
+            'stop': 'M1S;M2S',
+            'reset': 'RESET',
+        }
+        cmd = commands.get(act)
+        if not cmd:
+            return jsonify({'error': f'Unknown action: {act}'}), 400
+
+        for c in cmd.split(';'):
+            send_command(c.strip())
+        return jsonify({'status': 'ok', 'action': act})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 
 def spin_ros():
