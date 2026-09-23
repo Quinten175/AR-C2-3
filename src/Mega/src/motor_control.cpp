@@ -1,65 +1,107 @@
 #include "motor_control.h"
 
-public:
-//pin definitions
-int In1 = 3; // Motor 1 input pin 1
-int In2 = 4; // Motor 1 input pin 2
-int EnA = 2; // Motor 1 enable pin (PWM)
-int In3 = 5; // Motor 2 input pin 1
-int In4 = 6; // Motor 2 input pin 2
-int EnB = 7; // Motor 2 enable pin (PWM)
+const uint8_t In1 = 3;
+const uint8_t In2 = 4;
+const uint8_t EnA = 2;
+
+const uint8_t In3 = 5;
+const uint8_t In4 = 6;
+const uint8_t EnB = 7;
+
+int motor_speed1 = 0;
+int motor_speed2 = 0;
 
 
-int motor_speed1 = 0; // Speed of the motor (0-255)
-int motor_speed2 = 0; // Speed of the motor (0-255)
-int motor_direction1 = 0; // Direction of the motor (0 for forward, 1 for reverse)
-int motor_direction2 = 0; // Direction of the motor (0 for forward, 1 for reverse)
-
-
-
-
-void motor1_forward(){
-    motor_speed1 = 200;    // There is no real reason that it's set to 200, you can adjust as you like :)
-    analogWrite(EnA, motor_speed1);   
+void motor1_forward(uint8_t speed)
+{
     digitalWrite(In1, LOW);
     digitalWrite(In2, HIGH);
-} 
-void motor1_reverse(){
-    motor_speed1 = 200;
-    analogWrite(EnA, motor_speed1);
+
+    analogWrite(EnA, speed);
+
+    motor_speed1 = speed;
+}
+
+
+void motor1_reverse(uint8_t speed)
+{
     digitalWrite(In1, HIGH);
     digitalWrite(In2, LOW);
+
+    analogWrite(EnA, speed);
+
+    motor_speed1 = speed;
 }
-void motor2_forward(){
-    motor_speed2 = 200;
-    analogWrite(EnB, motor_speed2);
+
+
+void motor2_forward(uint8_t speed)
+{
     digitalWrite(In3, LOW);
     digitalWrite(In4, HIGH);
+
+    analogWrite(EnB, speed);
+
+    motor_speed2 = speed;
 }
-void motor2_reverse(){
-    motor_speed2 = 200;
-    analogWrite(EnB, motor_speed2);
+
+
+void motor2_reverse(uint8_t speed)
+{
     digitalWrite(In3, HIGH);
-    digitalWrite(In4, LOW); 
+    digitalWrite(In4, LOW);
+
+    analogWrite(EnB, speed);
+
+    motor_speed2 = speed;
 }
-void motor1_stop(){ 
-// EnA=Low and In1 and In2 = X (doesn't matter if high of low) is a freerunning motor stop.
-    motor_speed1 = 0;
-    analogWrite(EnA, motor_speed1);
+
+
+void motor1_stop()
+{
+    analogWrite(EnA, 0);
+
     digitalWrite(In1, LOW);
-    digitalWrite(In2, HIGH); 
+    digitalWrite(In2, LOW);
+
+    motor_speed1 = 0;
 }
-void motor2_stop(){
-    motor_speed2 = 0;
-    analogWrite(EnB, motor_speed2);
+
+
+void motor2_stop()
+{
+    analogWrite(EnB, 0);
+
     digitalWrite(In3, LOW);
-    digitalWrite(In4, HIGH);
+    digitalWrite(In4, LOW);
+
+    motor_speed2 = 0;
 }
-void emergency_stop(){
-    motor_speed1 = 200; 
-    motor_speed2 = 200;
+
+
+void emergency_stop()
+{
+    analogWrite(EnA, 0);
+    analogWrite(EnB, 0);
+
     digitalWrite(In1, LOW);
     digitalWrite(In2, LOW);
     digitalWrite(In3, LOW);
     digitalWrite(In4, LOW);
+
+    motor_speed1 = 0;
+    motor_speed2 = 0;
+}
+
+
+void motor_control_init()
+{
+    pinMode(In1, OUTPUT);
+    pinMode(In2, OUTPUT);
+    pinMode(EnA, OUTPUT);
+
+    pinMode(In3, OUTPUT);
+    pinMode(In4, OUTPUT);
+    pinMode(EnB, OUTPUT);
+
+    emergency_stop();
 }
