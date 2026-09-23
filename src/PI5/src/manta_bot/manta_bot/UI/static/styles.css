@@ -1,0 +1,37 @@
+
+:root {
+  --primary-bg-color: rgb(0, 157, 255);
+  --secondary-bg-color: rgb(5, 41, 79);
+  --active-color: rgb(0, 190, 0);
+  --inactive-color: rgb(190, 0, 0);
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+}
+.container {
+    text-align: center;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+button.active {
+    background-color: var(--active-color);
+}
+.btn {
+    background-color: var(--inactive-color);
+}
+.status {
+    margin-top: 15px;
+    font-weight: bold;
+}
