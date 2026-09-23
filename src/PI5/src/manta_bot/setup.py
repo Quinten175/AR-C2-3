@@ -36,12 +36,12 @@ setup(
             'cmd_vel_dummy = manta_bot.Movement.cmd_vel_publisher:main',
 
             f'activate_mapping = {package_name}.Lidar.activate_mapping:main',
-            f'movement_handler = {package_name}.movement_handler:main',
+            f'movement_handler = {package_name}.Movement.movement_handler:main',
             f'UI_app = {package_name}.UI.UI_app:main',
 
         ],
         'ros2_control_systems': [
-            'manta_bot_hardware = manta_bot.movement_handler:MantaBotHardware',
+            'manta_bot_hardware = manta_bot.Movement.movement_handler:MantaBotHardware',
         ],
     },
 )
