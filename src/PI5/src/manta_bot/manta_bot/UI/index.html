@@ -1,306 +1,495 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" data-bs-theme="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Manta Bot Control Panel</title>
 
     <!-- Bootstrap 5.3 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <!-- Bootstrap Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+      rel="stylesheet"
+    />
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-</head>
-<body>
-
-<nav class="navbar navbar-custom sticky-top py-2">
-    <div class="container-fluid px-4">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+  </head>
+  <body>
+    <nav class="navbar navbar-custom sticky-top py-2">
+      <div class="container-fluid px-4">
         <a class="navbar-brand d-flex align-items-center gap-2 mb-0" href="#">
-            <i class="bi bi-robot fs-4 text-success"></i>
-            <span class="fw-bold">Manta Bot</span>
-            <span class="badge bg-secondary ms-1" style="font-size: 0.7rem;">AR-C2-3</span>
+          <i class="bi bi-robot fs-4 text-success"></i>
+          <span class="fw-bold">Manta Bot</span>
+          <span class="badge bg-secondary ms-1" style="font-size: 0.7rem"
+            >AR-C2-3</span
+          >
         </a>
         <div class="d-flex align-items-center gap-3">
-            <span id="connectionStatus" class="d-flex align-items-center gap-1" style="color: var(--accent-green); font-size: 0.85rem;">
-                <i class="bi bi-circle-fill"></i> Connected
-            </span>
+          <span
+            id="connectionStatus"
+            class="d-flex align-items-center gap-1"
+            style="color: var(--accent-green); font-size: 0.85rem"
+          >
+            <i class="bi bi-circle-fill"></i> Connected
+          </span>
         </div>
-    </div>
-</nav>
+      </div>
+    </nav>
 
-<div id="toastContainer"></div>
+    <div id="toastContainer"></div>
 
-<div class="container-fluid py-3 px-4">
-    <div class="row g-3">
-
+    <div class="container-fluid py-3 px-4">
+      <div class="row g-3">
         <div class="col-lg-8">
-
-            <div class="card card-custom mb-3">
-                <div class="card-header d-flex align-items-center justify-content-between py-2 px-3">
-                    <span><i class="bi bi-camera-video me-2"></i>Camera Feed</span>
-                    <span class="badge bg-success" id="cameraBadge">LIVE</span>
-                </div>
-                <div class="card-body p-3">
-                    <div class="camera-feed" id="cameraFeed">
-                        <div class="text-center">
-                            <i class="bi bi-camera-video-off camera-placeholder-icon d-block mb-2"></i>
-                            <span class="text-muted small">Camera feed not available</span>
-                        </div>
-                    </div>
-                </div>
+          <div class="card card-custom mb-3">
+            <div
+              class="card-header d-flex align-items-center justify-content-between py-2 px-3"
+            >
+              <span><i class="bi bi-camera-video me-2"></i>Camera Feed</span>
+              <span class="badge bg-success" id="cameraBadge">LIVE</span>
             </div>
-
-            <div class="card card-custom mb-3">
-                <div class="card-header py-2 px-3">
-                    <i class="bi bi-arrows-move me-2"></i>Drive Control
+            <div class="card-body p-3">
+              <div class="camera-feed" id="cameraFeed">
+                <div class="text-center">
+                  <i
+                    class="bi bi-camera-video-off camera-placeholder-icon d-block mb-2"
+                  ></i>
+                  <span class="text-muted small"
+                    >Camera feed not available</span
+                  >
                 </div>
-                <div class="card-body p-4">
-                    <div class="mb-4">
-                        <label for="speedSlider" class="form-label d-flex justify-content-between">
-                            <span><i class="bi bi-speedometer me-1"></i>Speed</span>
-                            <span id="speedValue" class="badge bg-secondary">50%</span>
-                        </label>
-                        <input type="range" class="form-range" id="speedSlider" min="0" max="100" value="50">
-                    </div>
-
-                    <div class="drive-dpad">
-                        <div></div>
-                        <button class="btn drive-btn drive-btn-drive" data-dir="forward" onmousedown="sendDrive('forward', true)" onmouseup="sendDrive('stop')" ontouchstart="sendDrive('forward', true)" ontouchend="sendDrive('stop')">
-                            <i class="bi bi-arrow-up"></i>
-                        </button>
-                        <div></div>
-
-                        <button class="btn drive-btn drive-btn-drive" data-dir="left" onmousedown="sendDrive('left', true)" onmouseup="sendDrive('stop')" ontouchstart="sendDrive('left', true)" ontouchend="sendDrive('stop')">
-                            <i class="bi bi-arrow-left"></i>
-                        </button>
-
-                        <button class="btn drive-btn drive-btn-stop" id="emergencyStopBtn" onclick="sendDrive('stop')">
-                            <i class="bi bi-x-lg"></i> STOP
-                        </button>
-
-                        <button class="btn drive-btn drive-btn-drive" data-dir="right" onmousedown="sendDrive('right', true)" onmouseup="sendDrive('stop')" ontouchstart="sendDrive('right', true)" ontouchend="sendDrive('stop')">
-                            <i class="bi bi-arrow-right"></i>
-                        </button>
-
-                        <div></div>
-                        <button class="btn drive-btn drive-btn-drive" data-dir="backward" onmousedown="sendDrive('backward', true)" onmouseup="sendDrive('stop')" ontouchstart="sendDrive('backward', true)" ontouchend="sendDrive('stop')">
-                            <i class="bi bi-arrow-down"></i>
-                        </button>
-                        <div></div>
-                    </div>
-
-                    <p class="text-center text-muted mt-3 mb-0" style="font-size: 0.8rem;">
-                        <i class="bi bi-keyboard me-1"></i>Use keyboard: W/A/S/D or arrow keys to drive, SPACE to stop
-                    </p>
-                </div>
+              </div>
             </div>
+          </div>
 
+          <div class="card card-custom mb-3">
+            <div class="card-header py-2 px-3">
+              <i class="bi bi-arrows-move me-2"></i>Drive Control
+            </div>
+            <div class="card-body p-4">
+              <div class="mb-4">
+                <label
+                  for="speedSlider"
+                  class="form-label d-flex justify-content-between"
+                >
+                  <span><i class="bi bi-speedometer me-1"></i>Speed</span>
+                  <span id="speedValue" class="badge bg-secondary">50%</span>
+                </label>
+                <input
+                  type="range"
+                  class="form-range"
+                  id="speedSlider"
+                  min="0"
+                  max="100"
+                  value="50"
+                />
+              </div>
+
+              <div class="drive-dpad">
+                <div></div>
+                <button
+                  class="btn drive-btn drive-btn-drive"
+                  data-dir="forward"
+                  onpointerdown="startDrive('forward')"
+                  onpointerup="stopDrive()"
+                  onpointerleave="stopDrive()"
+                >
+                  <i class="bi bi-arrow-up"></i>
+                </button>
+                <div></div>
+
+                <button
+                  class="btn drive-btn drive-btn-drive"
+                  data-dir="left"
+                  onmousedown="sendDrive('left', true)"
+                  onmouseup="sendDrive('stop')"
+                  ontouchstart="sendDrive('left', true)"
+                  ontouchend="sendDrive('stop')"
+                >
+                  <i class="bi bi-arrow-left"></i>
+                </button>
+
+                <button
+                  class="btn drive-btn drive-btn-stop"
+                  id="emergencyStopBtn"
+                  onclick="sendDrive('stop')"
+                >
+                  <i class="bi bi-x-lg"></i> STOP
+                </button>
+
+                <button
+                  class="btn drive-btn drive-btn-drive"
+                  data-dir="right"
+                  onmousedown="sendDrive('right', true)"
+                  onmouseup="sendDrive('stop')"
+                  ontouchstart="sendDrive('right', true)"
+                  ontouchend="sendDrive('stop')"
+                >
+                  <i class="bi bi-arrow-right"></i>
+                </button>
+
+                <div></div>
+                <button
+                  class="btn drive-btn drive-btn-drive"
+                  data-dir="backward"
+                  onmousedown="sendDrive('backward', true)"
+                  onmouseup="sendDrive('stop')"
+                  ontouchstart="sendDrive('backward', true)"
+                  ontouchend="sendDrive('stop')"
+                >
+                  <i class="bi bi-arrow-down"></i>
+                </button>
+                <div></div>
+              </div>
+
+              <p
+                class="text-center text-muted mt-3 mb-0"
+                style="font-size: 0.8rem"
+              >
+                <i class="bi bi-keyboard me-1"></i>Use keyboard: W/A/S/D or
+                arrow keys to drive, SPACE to stop
+              </p>
+            </div>
+          </div>
         </div>
 
         <div class="col-lg-4">
-
-            <div class="card card-custom mb-3">
-                <div class="card-header py-2 px-3">
-                    <i class="bi bi-info-circle me-2"></i>Robot Status
-                </div>
-                <div class="card-body p-0">
-
-                    <div class="stat-item px-3">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="stat-label"><i class="bi bi-wifi me-1"></i>Connection</span>
-                            <span id="connStatusText" style="color: var(--accent-green); font-weight: 600; font-size: 0.9rem;">
-                                <i class="bi bi-check-circle-fill me-1"></i>Connected
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="stat-item px-3">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <span class="stat-label"><i class="bi bi-battery me-1"></i>Battery</span>
-                            <strong id="batteryPercent" style="color: var(--accent-green); font-size: 0.95rem;">87%</strong>
-                        </div>
-                        <div class="battery-bar-container">
-                            <div class="battery-bar-fill" id="batteryBar" style="width: 87%; background-color: var(--accent-green);"></div>
-                        </div>
-                    </div>
-
-                    <div class="stat-item px-3">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="stat-label"><i class="bi bi-thermometer-half me-1"></i>Temperature</span>
-                            <strong id="tempValue" style="font-size: 0.95rem;">36°C</strong>
-                        </div>
-                    </div>
-
-                    <div class="stat-item px-3">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="stat-label"><i class="bi bi-speedometer me-1"></i>Current Speed</span>
-                            <strong id="currentSpeed" style="font-size: 0.95rem;">0 m/s</strong>
-                        </div>
-                    </div>
-
-                    <div class="stat-item px-3">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="stat-label"><i class="bi bi-map me-1"></i>Mapping</span>
-                            <strong id="mappingStatus" style="font-size: 0.95rem; color: #888;">Inactive</strong>
-                        </div>
-                    </div>
-
-                </div>
+          <div class="card card-custom mb-3">
+            <div class="card-header py-2 px-3">
+              <i class="bi bi-info-circle me-2"></i>Robot Status
             </div>
-
-            <div class="card card-custom mb-3">
-                <div class="card-header py-2 px-3">
-                    <i class="bi bi-lightning me-2"></i>Actions
+            <div class="card-body p-0">
+              <div class="stat-item px-3">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="stat-label"
+                    ><i class="bi bi-wifi me-1"></i>Connection</span
+                  >
+                  <span
+                    id="connStatusText"
+                    style="
+                      color: var(--accent-green);
+                      font-weight: 600;
+                      font-size: 0.9rem;
+                    "
+                  >
+                    <i class="bi bi-check-circle-fill me-1"></i>Connected
+                  </span>
                 </div>
-                <div class="card-body p-3">
-                    <div class="row g-2">
+              </div>
 
-                        <div class="col-6">
-                            <button class="btn action-btn w-100" style="background-color: #2a4a2a; border: 1px solid #3d6b3d; color: #7ddf7d;" onclick="sendAction('start')">
-                                <i class="bi bi-play-fill"></i> Start
-                            </button>
-                        </div>
-
-                        <div class="col-6">
-                            <button class="btn action-btn w-100" style="background-color: #4a2a2a; border: 1px solid #7b3d3d; color: #ff7f7f;" onclick="sendAction('stop')">
-                                <i class="bi bi-stop-fill"></i> Stop
-                            </button>
-                        </div>
-
-                        <div class="col-6">
-                            <button class="btn action-btn w-100" style="background-color: #2a3a4a; border: 1px solid #3d5b7b; color: #7db8dd;" onclick="sendAction('reset')">
-                                <i class="bi bi-arrow-counterclockwise"></i> Reset
-                            </button>
-                        </div>
-
-                        <div class="col-6">
-                            <button id="toggleBtn" class="btn action-btn w-100" style="background-color: #4a2a3a; border: 1px solid #7b3d5b; color: #dd7fbb;" onclick="toggleMapping()">
-                                <i class="bi bi-map-fill"></i> Mapping
-                            </button>
-                        </div>
-
-                    </div>
+              <div class="stat-item px-3">
+                <div
+                  class="d-flex justify-content-between align-items-center mb-1"
+                >
+                  <span class="stat-label"
+                    ><i class="bi bi-battery me-1"></i>Battery</span
+                  >
+                  <strong
+                    id="batteryPercent"
+                    style="color: var(--accent-green); font-size: 0.95rem"
+                    >87%</strong
+                  >
                 </div>
+                <div class="battery-bar-container">
+                  <div
+                    class="battery-bar-fill"
+                    id="batteryBar"
+                    style="width: 87%; background-color: var(--accent-green)"
+                  ></div>
+                </div>
+              </div>
+
+              <div class="stat-item px-3">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="stat-label"
+                    ><i class="bi bi-thermometer-half me-1"></i
+                    >Temperature</span
+                  >
+                  <strong id="tempValue" style="font-size: 0.95rem"
+                    >36°C</strong
+                  >
+                </div>
+              </div>
+
+              <div class="stat-item px-3">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="stat-label"
+                    ><i class="bi bi-speedometer me-1"></i>Current Speed</span
+                  >
+                  <strong id="currentSpeed" style="font-size: 0.95rem"
+                    >0 m/s</strong
+                  >
+                </div>
+              </div>
+
+              <div class="stat-item px-3">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="stat-label"
+                    ><i class="bi bi-map me-1"></i>Mapping</span
+                  >
+                  <strong
+                    id="mappingStatus"
+                    style="font-size: 0.95rem; color: #888"
+                    >Inactive</strong
+                  >
+                </div>
+              </div>
             </div>
+          </div>
 
+          <div class="card card-custom mb-3">
+            <div class="card-header py-2 px-3">
+              <i class="bi bi-lightning me-2"></i>Actions
+            </div>
+            <div class="card-body p-3">
+              <div class="row g-2">
+                <div class="col-6">
+                  <button
+                    class="btn action-btn w-100"
+                    style="
+                      background-color: #2a4a2a;
+                      border: 1px solid #3d6b3d;
+                      color: #7ddf7d;
+                    "
+                    onclick="sendAction('start')"
+                  >
+                    <i class="bi bi-play-fill"></i> Start
+                  </button>
+                </div>
+
+                <div class="col-6">
+                  <button
+                    class="btn action-btn w-100"
+                    style="
+                      background-color: #4a2a2a;
+                      border: 1px solid #7b3d3d;
+                      color: #ff7f7f;
+                    "
+                    onclick="sendAction('stop')"
+                  >
+                    <i class="bi bi-stop-fill"></i> Stop
+                  </button>
+                </div>
+
+                <div class="col-6">
+                  <button
+                    class="btn action-btn w-100"
+                    style="
+                      background-color: #2a3a4a;
+                      border: 1px solid #3d5b7b;
+                      color: #7db8dd;
+                    "
+                    onclick="sendAction('reset')"
+                  >
+                    <i class="bi bi-arrow-counterclockwise"></i> Reset
+                  </button>
+                </div>
+
+                <div class="col-6">
+                  <button
+                    id="toggleBtn"
+                    class="btn action-btn w-100"
+                    style="
+                      background-color: #4a2a3a;
+                      border: 1px solid #7b3d5b;
+                      color: #dd7fbb;
+                    "
+                    onclick="toggleMapping()"
+                  >
+                    <i class="bi bi-map-fill"></i> Mapping
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-
+      </div>
     </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<script>
-    let mappingActive = false;
-    let currentSpeedPercent = 50;
+    <script>
+      let mappingActive = false;
+      let currentSpeedPercent = 50;
+      let driveInterval = null;
+      let currentDirection = null;
 
-    function sendDrive(direction, active) {
-        const speed = Math.round(currentSpeedPercent / 100 * 255);
-        let cmd = '';
+      function getDriveVelocity(direction) {
+        const maxLinearSpeed = 0.5;
+        const maxAngularSpeed = 1.0;
+
+        const speedPercent = currentSpeedPercent / 100.0;
+
+        let linear = 0.0;
+        let angular = 0.0;
 
         switch (direction) {
-            case 'forward':
-                cmd = `M1F:${speed};M2F:${speed}`;
-                break;
-            case 'backward':
-                cmd = `M1R:${speed};M2R:${speed}`;
-                break;
-            case 'left':
-                cmd = `M1R:${Math.round(speed * 0.5)};M2F:${Math.round(speed * 0.5)}`;
-                break;
-            case 'right':
-                cmd = `M1F:${Math.round(speed * 0.5)};M2R:${Math.round(speed * 0.5)}`;
-                break;
-            case 'stop':
-                cmd = 'M1S;M2S';
-                break;
+          case "forward":
+            linear = maxLinearSpeed * speedPercent;
+            break;
+
+          case "backward":
+            linear = -maxLinearSpeed * speedPercent;
+            break;
+
+          case "left":
+            angular = maxAngularSpeed * speedPercent;
+            break;
+
+          case "right":
+            angular = -maxAngularSpeed * speedPercent;
+            break;
+
+          case "stop":
+          default:
+            break;
         }
 
-        fetch('/api/drive', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ command: cmd })
-        }).catch(err => console.error('Drive error:', err));
-    }
+        return { linear, angular };
+      }
 
-    function sendAction(action) {
-        fetch('/api/action', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ action: action })
-        }).then(r => r.json())
-          .then(data => showToast(`${action.charAt(0).toUpperCase() + action.slice(1)} executed`, 'success'))
-          .catch(err => showToast(`Action failed: ${err}`, 'danger'));
-    }
+      function publishDrive(direction) {
+        const velocity = getDriveVelocity(direction);
 
-    function toggleMapping() {
-        fetch('/api/toggle', { method: 'POST' })
-            .then(response => response.json())
-            .then(data => {
-                mappingActive = data.state;
-                updateMappingUI();
-                showToast(`Mapping ${mappingActive ? 'activated' : 'deactivated'}`, 'info');
-            })
-            .catch(error => {
-                console.error('Mapping error:', error);
-                showToast('Failed to toggle mapping', 'danger');
-            });
-    }
+        fetch("/api/drive", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(velocity),
+        }).catch((err) => {
+          console.error("Drive error:", err);
+        });
+      }
 
-    function updateMappingUI() {
-        const btn = document.getElementById('toggleBtn');
-        const status = document.getElementById('mappingStatus');
+      function startDrive(direction) {
+        // Stop an existing command loop
+        stopDrive(false);
+
+        currentDirection = direction;
+
+        // Publish immediately
+        publishDrive(direction);
+
+        // Then keep publishing at 10 Hz
+        driveInterval = setInterval(() => {
+          publishDrive(currentDirection);
+        }, 100);
+      }
+
+      function stopDrive(sendStop = true) {
+        if (driveInterval !== null) {
+          clearInterval(driveInterval);
+          driveInterval = null;
+        }
+
+        currentDirection = null;
+
+        if (sendStop) {
+          publishDrive("stop");
+        }
+      }
+
+      function sendAction(action) {
+        fetch("/api/action", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: action }),
+        })
+          .then((r) => r.json())
+          .then((data) =>
+            showToast(
+              `${action.charAt(0).toUpperCase() + action.slice(1)} executed`,
+              "success",
+            ),
+          )
+          .catch((err) => showToast(`Action failed: ${err}`, "danger"));
+      }
+
+      function toggleMapping() {
+        fetch("/api/toggle", { method: "POST" })
+          .then((response) => response.json())
+          .then((data) => {
+            mappingActive = data.state;
+            updateMappingUI();
+            showToast(
+              `Mapping ${mappingActive ? "activated" : "deactivated"}`,
+              "info",
+            );
+          })
+          .catch((error) => {
+            console.error("Mapping error:", error);
+            showToast("Failed to toggle mapping", "danger");
+          });
+      }
+
+      function updateMappingUI() {
+        const btn = document.getElementById("toggleBtn");
+        const status = document.getElementById("mappingStatus");
 
         if (mappingActive) {
-            btn.classList.add('mapping-active');
-            btn.innerHTML = '<i class="bi bi-map-fill"></i> Active';
-            status.textContent = 'Active';
-            status.style.color = 'var(--accent-green)';
+          btn.classList.add("mapping-active");
+          btn.innerHTML = '<i class="bi bi-map-fill"></i> Active';
+          status.textContent = "Active";
+          status.style.color = "var(--accent-green)";
         } else {
-            btn.classList.remove('mapping-active');
-            btn.innerHTML = '<i class="bi bi-map-fill"></i> Mapping';
-            status.textContent = 'Inactive';
-            status.style.color = '#888';
+          btn.classList.remove("mapping-active");
+          btn.innerHTML = '<i class="bi bi-map-fill"></i> Mapping';
+          status.textContent = "Inactive";
+          status.style.color = "#888";
         }
-    }
+      }
 
-    document.getElementById('speedSlider').addEventListener('input', function () {
-        currentSpeedPercent = parseInt(this.value);
-        document.getElementById('speedValue').textContent = `${currentSpeedPercent}%`;
-    });
+      document
+        .getElementById("speedSlider")
+        .addEventListener("input", function () {
+          currentSpeedPercent = parseInt(this.value);
+          document.getElementById("speedValue").textContent =
+            `${currentSpeedPercent}%`;
+        });
 
-    const keyMap = {
-        'w': 'forward', 'W': 'forward',
-        's': 'backward', 'S': 'backward',
-        'a': 'left', 'A': 'left',
-        'd': 'right', 'D': 'right',
-        'ArrowUp': 'forward',
-        'ArrowDown': 'backward',
-        'ArrowLeft': 'left',
-        'ArrowRight': 'right'
-    };
+      const keyMap = {
+        w: "forward",
+        W: "forward",
+        s: "backward",
+        S: "backward",
+        a: "left",
+        A: "left",
+        d: "right",
+        D: "right",
+        ArrowUp: "forward",
+        ArrowDown: "backward",
+        ArrowLeft: "left",
+        ArrowRight: "right",
+      };
 
-    document.addEventListener('keydown', (e) => {
-        if (keyMap[e.key] && e.key !== ' ') {
-            sendDrive(keyMap[e.key], true);
-        } else if (e.key === ' ') {
-            e.preventDefault();
-            sendDrive('stop');
+      document.addEventListener("keydown", (e) => {
+        if (keyMap[e.key] && e.key !== " ") {
+          sendDrive(keyMap[e.key], true);
+        } else if (e.key === " ") {
+          e.preventDefault();
+          sendDrive("stop");
         }
-    });
+      });
 
-    document.addEventListener('keyup', (e) => {
+      document.addEventListener("keyup", (e) => {
         if (keyMap[e.key]) {
-            sendDrive('stop');
+          sendDrive("stop");
         }
-    });
+      });
 
-    function showToast(message, type = 'info') {
-        const container = document.getElementById('toastContainer');
-        const toastEl = document.createElement('div');
+      function showToast(message, type = "info") {
+        const container = document.getElementById("toastContainer");
+        const toastEl = document.createElement("div");
         toastEl.className = `toast align-items-center text-bg-${type} border-0 show`;
-        toastEl.setAttribute('role', 'alert');
+        toastEl.setAttribute("role", "alert");
         toastEl.innerHTML = `
             <div class="d-flex">
                 <div class="toast-body">${message}</div>
@@ -310,25 +499,32 @@
         container.appendChild(toastEl);
 
         setTimeout(() => {
-            toastEl.remove();
+          toastEl.remove();
         }, 3000);
-    }
+      }
 
-    function updateTelemetry() {
-        const battery = Math.max(10, Math.min(100, 87 + Math.round(Math.sin(Date.now() / 60000) * 3)));
-        document.getElementById('batteryPercent').textContent = `${battery}%`;
-        const bar = document.getElementById('batteryBar');
+      function updateTelemetry() {
+        const battery = Math.max(
+          10,
+          Math.min(100, 87 + Math.round(Math.sin(Date.now() / 60000) * 3)),
+        );
+        document.getElementById("batteryPercent").textContent = `${battery}%`;
+        const bar = document.getElementById("batteryBar");
         bar.style.width = `${battery}%`;
-        bar.style.backgroundColor = battery > 50 ? 'var(--accent-green)' : battery > 20 ? '#ddaa00' : 'var(--accent-red)';
+        bar.style.backgroundColor =
+          battery > 50
+            ? "var(--accent-green)"
+            : battery > 20
+              ? "#ddaa00"
+              : "var(--accent-red)";
 
         const temp = Math.round(36 + Math.sin(Date.now() / 120000) * 2);
-        document.getElementById('tempValue').textContent = `${temp}°C`;
+        document.getElementById("tempValue").textContent = `${temp}°C`;
 
-        document.getElementById('currentSpeed').textContent = '0 m/s';
-    }
+        document.getElementById("currentSpeed").textContent = "0 m/s";
+      }
 
-    setInterval(updateTelemetry, 5000);
-</script>
-
-</body>
+      setInterval(updateTelemetry, 5000);
+    </script>
+  </body>
 </html>
