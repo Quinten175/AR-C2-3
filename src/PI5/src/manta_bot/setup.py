@@ -15,6 +15,8 @@ setup(
 
         (os.path.join('share', package_name, 'launch'), glob('launch/*.py')),
         (os.path.join('share', package_name, 'config'), glob('config/*.yaml')),
+        (os.path.join('share', package_name, 'meshes'), glob('meshes/*.stl')),
+        (os.path.join('share', package_name, 'urdf'), glob('urdf/*.urdf')),
 
     ],
     install_requires=['setuptools'],

@@ -1,383 +1,144 @@
-<robot name="robotassembly">
-    <link name="base_footprint" />
-
-    <link name="base_link" />
-
-    <joint name="base_footprint_to_base_link_joint" type="fixed">
-        <origin xyz="0 0 0" rpy="0 0 0" />
-        <parent link="base_footprint" />
-        <child link="base_link" />
-    </joint>
-
-    <joint name="base_link_to_root_joint" type="fixed">
-        <origin xyz="0 0 0" rpy="0 0 0" />
+<?xml version='1.0' encoding='utf-8'?>
+<robot name="robotassembly_1_back">
+    <link name="lidar_link">
+        <inertial>
+            <origin xyz="0.00015440202932244464 -0.0065620385299784935 -0.04185367413520978" rpy="0.0 -0.0 0.0" />
+            <mass value="1.2633173769153754" />
+            <inertia ixx="0.000908075615510668" iyy="0.0005749447965669693" izz="0.0010693282911537476" ixy="-2.1548862294420028e-06" iyz="0.00014759832310927304" ixz="1.7052572358954195e-06" />
+        </inertial>
+        <visual name="lidar_link_visual">
+            <origin xyz="-0.0005000000000000555 -0.025500000000000043 0.07049999999999998" rpy="-3.1415926535897927 -0.0 0.0" />
+            <geometry>
+                <mesh filename="package://manta_bot/meshes/lidar_link.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </visual>
+        <collision name="lidar_link_collision">
+            <origin xyz="-0.0005000000000000555 -0.025500000000000043 0.07049999999999998" rpy="-3.1415926535897927 -0.0 0.0" />
+            <geometry>
+                <mesh filename="package://manta_bot/meshes/lidar_link.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+    <link name="base_link">
+        <inertial>
+            <origin xyz="-0.0005076972341926869 0.014314030630268343 0.011970132819396764" rpy="0.0 0.0 0.0" />
+            <mass value="1.7931358002694335" />
+            <inertia ixx="0.008196158089978147" iyy="0.0066773805248528904" izz="0.012459279844548692" ixy="2.0511076616401395e-06" iyz="0.0008834065234856804" ixz="1.9756875760289105e-05" />
+        </inertial>
+        <visual name="base_link_visual">
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+            <geometry>
+                <mesh filename="package://manta_bot/meshes/base_link.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </visual>
+        <collision name="base_link_collision">
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+            <geometry>
+                <mesh filename="package://manta_bot/meshes/base_link.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+    <link name="motor_left_1">
+        <inertial>
+            <origin xyz="-0.0006362127421936681 5.489180224467205e-06 -0.023584074177749787" rpy="0.0 -0.0 0.0" />
+            <mass value="0.1340810398508418" />
+            <inertia ixx="6.162333327173163e-05" iyy="6.213756663175918e-05" izz="2.3227934704746775e-05" ixy="-3.1696205792720837e-09" iyz="2.851906472778489e-09" ixz="2.325552057778415e-06" />
+        </inertial>
+        <visual name="motor_left_1_visual">
+            <origin xyz="-0.0063733600000000085 -0.06750000000000007 -0.09599999999999995" rpy="-0.0 1.570796326794896 0" />
+            <geometry>
+                <mesh filename="package://manta_bot/meshes/motor_left_1.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </visual>
+        <collision name="motor_left_1_collision">
+            <origin xyz="-0.0063733600000000085 -0.06750000000000007 -0.09599999999999995" rpy="-0.0 1.570796326794896 0" />
+            <geometry>
+                <mesh filename="package://manta_bot/meshes/motor_left_1.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+    <link name="motor_right_1">
+        <inertial>
+            <origin xyz="-0.0006362047414121897 5.485242672920165e-06 -0.023584073737024785" rpy="0.0 -0.0 0.0" />
+            <mass value="0.13408104001880694" />
+            <inertia ixx="6.162333309657768e-05" iyy="6.21375665391669e-05" izz="2.3227934719583547e-05" ixy="-3.171030048689435e-09" iyz="2.8343180009722656e-09" ixz="2.3255520760948766e-06" />
+        </inertial>
+        <visual name="motor_right_1_visual">
+            <origin xyz="-0.006396029999999886 0.06749805999999993 -0.09600000000000006" rpy="-3.141592653589793 -1.5707963267948952 0" />
+            <geometry>
+                <mesh filename="package://manta_bot/meshes/motor_right_1.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </visual>
+        <collision name="motor_right_1_collision">
+            <origin xyz="-0.006396029999999886 0.06749805999999993 -0.09600000000000006" rpy="-3.141592653589793 -1.5707963267948952 0" />
+            <geometry>
+                <mesh filename="package://manta_bot/meshes/motor_right_1.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+    <link name="wheel_right_1">
+        <inertial>
+            <origin xyz="4.240722671494668e-09 -2.1337818800759577e-09 0.021417095115681004" rpy="0.0 -0.0 0.0" />
+            <mass value="0.690719357277638" />
+            <inertia ixx="0.0002111188473839752" iyy="0.0002111188473948155" izz="0.00030970906018714956" ixy="-5.082197683525809e-20" iyz="1.0069039990052151e-16" ixz="1.5739499283699238e-19" />
+        </inertial>
+        <visual name="wheel_right_1_visual">
+            <origin xyz="0.0006039700000001219 0.06749805999999993 -0.10200000000000005" rpy="-3.141592653589793 -1.5707963267948952 0" />
+            <geometry>
+                <mesh filename="package://manta_bot/meshes/wheel_right_1.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </visual>
+        <collision name="wheel_right_1_collision">
+            <origin xyz="0.0006039700000001219 0.06749805999999993 -0.10200000000000005" rpy="-3.141592653589793 -1.5707963267948952 0" />
+            <geometry>
+                <mesh filename="package://manta_bot/meshes/wheel_right_1.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+    <link name="wheel_left_1">
+        <inertial>
+            <origin xyz="-3.6576842633861963e-09 -5.74296166178101e-14 0.021417095115681094" rpy="0.0 -0.0 0.0" />
+            <mass value="0.6907193572776398" />
+            <inertia ixx="0.00021111884744365317" iyy="0.00021111884737491302" izz="0.0003097090602269376" ixy="1.8024861117571504e-18" iyz="-1.2074453477412487e-17" ixz="-9.65521154413386e-19" />
+        </inertial>
+        <visual name="wheel_left_1_visual">
+            <origin xyz="0.0006266399999999918 -0.06750000000000007 -0.10199999999999994" rpy="-0.0 1.570796326794896 0" />
+            <geometry>
+                <mesh filename="package://manta_bot/meshes/wheel_left_1.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </visual>
+        <collision name="wheel_left_1_collision">
+            <origin xyz="0.0006266399999999918 -0.06750000000000007 -0.10199999999999994" rpy="-0.0 1.570796326794896 0" />
+            <geometry>
+                <mesh filename="package://manta_bot/meshes/wheel_left_1.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="base_link_motor_left_to_base_link" type="fixed">
+        <origin xyz="-0.096 0.0675 0.006373360000000001" rpy="6.959195283221548e-16 -1.5707963267948966 0" />
         <parent link="base_link" />
-        <child link="root" />
+        <child link="motor_left_1" />
     </joint>
-
-    <link name="motor_shaft__jgb37_520__chamfer1">
-        <inertial>
-            <mass value="5.9251e-07" />
-            <origin xyz="-5.99947e-05 -1.4541e-10 0.0106081" rpy="0 -0 0" />
-            <inertia ixx="2.40785e-11" ixy="0" ixz="1.68452e-13" iyy="2.39875e-11" iyz="0" izz="2.61188e-12" />
-        </inertial>
-        <visual>
-            <origin xyz="0 0 0" rpy="0 -0 0" />
-            <geometry>
-                <mesh filename="package://robotassembly/meshes/MOTOR_SHAFT__JGB37_520__CHAMFER1.stl" scale="1 1 1" />
-            </geometry>
-            <material name="0.811765_0.843137_0.909804_0.000000_0.000000">
-                <color rgba="0.811765 0.843137 0.909804 1" />
-            </material>
-        </visual>
-    </link>
-
-    <link name="motor_shaft__jgb37_520__chamfer1_1">
-        <inertial>
-            <mass value="5.9251e-07" />
-            <origin xyz="-5.99947e-05 -1.4541e-10 0.0106081" rpy="0 -0 0" />
-            <inertia ixx="2.40785e-11" ixy="0" ixz="1.68452e-13" iyy="2.39875e-11" iyz="0" izz="2.61188e-12" />
-        </inertial>
-        <visual>
-            <origin xyz="0 0 0" rpy="0 -0 0" />
-            <geometry>
-                <mesh filename="package://robotassembly/meshes/MOTOR_SHAFT__JGB37_520__CHAMFER1.stl" scale="1 1 1" />
-            </geometry>
-            <material name="0.811765_0.843137_0.909804_0.000000_0.000000">
-                <color rgba="0.811765 0.843137 0.909804 1" />
-            </material>
-        </visual>
-    </link>
-
-    <link name="root">
-        <visual>
-            <origin xyz="-0.0695 -0.126 0.0685" rpy="0 -0 0" />
-            <geometry>
-                <mesh filename="package://robotassembly/meshes/rplidarsheet__SB_Tab__1_.stl" scale="1 1 1" />
-            </geometry>
-            <material name="0.611765_0.658824_0.670588_0.000000_0.000000">
-                <color rgba="0.611765 0.658824 0.670588 1" />
-            </material>
-        </visual>
-        <visual>
-            <origin xyz="0.0005 -0.0175 0.036" rpy="0 -0 0" />
-            <geometry>
-                <mesh filename="package://robotassembly/meshes/lastbaseplate__BODY1.stl" scale="1 1 1" />
-            </geometry>
-            <material name="0.611765_0.658824_0.670588_0.000000_0.000000">
-                <texture />
-                <color rgba="0.611765 0.658824 0.670588 1" />
-            </material>
-        </visual>
-        <visual>
-            <origin xyz="0.0005 -0.0255 0.1005" rpy="8.05827e-16 -5.87673e-16 1.5708" />
-            <geometry>
-                <mesh filename="package://robotassembly/meshes/RPlidar__Body1.stl" scale="1 1 1" />
-            </geometry>
-            <material name="0.000000_0.000000_0.000000_0.000000_0.000000">
-                <texture />
-                <color rgba="0 0 0 1" />
-            </material>
-        </visual>
-        <visual>
-            <origin xyz="-0.096 0.0675 0.00637336" rpy="-1.5708 -1.25363e-06 1.5708" />
-            <geometry>
-                <mesh filename="package://robotassembly/meshes/GEARED_BODY__MOTOR__JGB37_5201484__BODY2.stl" scale="1 1 1" />
-            </geometry>
-            <material name="0.600000_0.600000_0.600000_0.000000_0.000000">
-                <texture />
-                <color rgba="0.6 0.6 0.6 1" />
-            </material>
-        </visual>
-        <visual>
-            <origin xyz="0.096 0.0674981 0.00639603" rpy="-1.5708 -0.000754694 -1.5708" />
-            <geometry>
-                <mesh filename="package://robotassembly/meshes/GEARED_BODY__MOTOR__JGB37_5201484__BODY2.stl" scale="1 1 1" />
-            </geometry>
-            <material name="0.600000_0.600000_0.600000_0.000000_0.000000">
-                <texture />
-                <color rgba="0.6 0.6 0.6 1" />
-            </material>
-        </visual>
-        <visual>
-            <origin xyz="-0.1 -0.1075 -0.016" rpy="0 -0 0" />
-            <geometry>
-                <mesh filename="package://robotassembly/meshes/Sheetmetalbase__SB_Tab__1_.stl" scale="1 1 1" />
-            </geometry>
-            <material name="0.611765_0.658824_0.670588_0.000000_0.000000">
-                <texture />
-                <color rgba="0.611765 0.658824 0.670588 1" />
-            </material>
-        </visual>
-        <visual>
-            <origin xyz="-0.096 0.0675 0.00637336" rpy="-1.5708 -1.25363e-06 1.5708" />
-            <geometry>
-                <mesh filename="package://robotassembly/meshes/GEARED_BODY__MOTOR__JGB37_520__FILLET1.stl" scale="1 1 1" />
-            </geometry>
-            <material name="0.811765_0.843137_0.909804_0.000000_0.000000">
-                <texture />
-                <color rgba="0.811765 0.843137 0.909804 1" />
-            </material>
-        </visual>
-        <visual>
-            <origin xyz="-0.067 0.0675 0.00637336" rpy="0 1.5708 3.14159" />
-            <geometry>
-                <mesh filename="package://robotassembly/meshes/DC_MOTOR__JGB37_520__FILLET1.stl" scale="1 1 1" />
-            </geometry>
-            <material name="0.811765_0.843137_0.909804_0.000000_0.000000">
-                <texture />
-                <color rgba="0.811765 0.843137 0.909804 1" />
-            </material>
-        </visual>
-        <visual>
-            <origin xyz="-0.096 0.052 0.00637334" rpy="1.164 2.07079e-15 1.39184e-15" />
-            <geometry>
-                <mesh filename="package://robotassembly/meshes/pan_cross_head_am_B18_6_7M___M2_x_0_4_x_25_Type_I_Cross_Recessed_PHMS___25N__CIRPATTERN1.stl" scale="1 1 1" />
-            </geometry>
-            <material name="0.800000_0.800000_0.800000_0.000000_0.000000">
-                <texture />
-                <color rgba="0.8 0.8 0.8 1" />
-            </material>
-        </visual>
-        <visual>
-            <origin xyz="-0.096 0.0675 -0.000626644" rpy="-1.5708 -0.683857 1.5708" />
-            <geometry>
-                <mesh filename="package://robotassembly/meshes/SHAFT_COUPLER__JGB37_520__CHAMFER1.stl" scale="1 1 1" />
-            </geometry>
-            <material name="0.811765_0.843137_0.909804_0.000000_0.000000">
-                <texture />
-                <color rgba="0.811765 0.843137 0.909804 1" />
-            </material>
-        </visual>
-        <visual>
-            <origin xyz="-0.071 0.0675 0.00637336" rpy="0 1.5708 -3.14159" />
-            <geometry>
-                <mesh filename="package://robotassembly/meshes/COUPLING_BRACKET__GEARED_BODY_TO_DC_MOTOR__JGB37_520__CUT_EXTRUDE1.stl" scale="1 1 1" />
-            </geometry>
-            <material name="0.811765_0.843137_0.909804_0.000000_0.000000">
-                <texture />
-                <color rgba="0.811765 0.843137 0.909804 1" />
-            </material>
-        </visual>
-        <visual>
-            <origin xyz="-0.04575 0.0803 0.00637337" rpy="0 1.5708 -1.25363e-06" />
-            <geometry>
-                <mesh filename="package://robotassembly/meshes/CONNECTION__DC_MOTOR__JGB37_520__CHAMFER1.stl" scale="1 1 1" />
-            </geometry>
-            <material name="0.607843_0.564706_0.000000_0.000000_0.000000">
-                <texture />
-                <color rgba="0.607843 0.564706 0 1" />
-            </material>
-        </visual>
-        <visual>
-            <origin xyz="-0.096 0.07525 0.0197968" rpy="-0.930396 2.07079e-15 1.39184e-15" />
-            <geometry>
-                <mesh filename="package://robotassembly/meshes/pan_cross_head_am_B18_6_7M___M2_x_0_4_x_25_Type_I_Cross_Recessed_PHMS___25N__CIRPATTERN1.stl" scale="1 1 1" />
-            </geometry>
-            <material name="0.800000_0.800000_0.800000_0.000000_0.000000">
-                <texture />
-                <color rgba="0.8 0.8 0.8 1" />
-            </material>
-        </visual>
-        <visual>
-            <origin xyz="-0.04575 0.0547 0.00637334" rpy="0 -1.5708 3.14159" />
-            <geometry>
-                <mesh filename="package://robotassembly/meshes/CONNECTION__DC_MOTOR__JGB37_520__CHAMFER1.stl" scale="1 1 1" />
-            </geometry>
-            <material name="0.607843_0.564706_0.000000_0.000000_0.000000">
-                <texture />
-                <color rgba="0.607843 0.564706 0 1" />
-            </material>
-        </visual>
-        <visual>
-            <origin xyz="-0.0475 0.0675 0.00637336" rpy="0 -1.5708 1.25363e-06" />
-            <geometry>
-                <mesh filename="package://robotassembly/meshes/PLASTIC_COVER__DC_MOTOR__JGB37_520__FILLET2.stl" scale="1 1 1" />
-            </geometry>
-            <material name="0.490196_0.490196_0.490196_0.000000_0.000000">
-                <texture />
-                <color rgba="0.490196 0.490196 0.490196 1" />
-            </material>
-        </visual>
-        <visual>
-            <origin xyz="-0.096 0.07525 -0.00705003" rpy="-3.02479 2.07079e-15 1.39184e-15" />
-            <geometry>
-                <mesh filename="package://robotassembly/meshes/pan_cross_head_am_B18_6_7M___M2_x_0_4_x_25_Type_I_Cross_Recessed_PHMS___25N__CIRPATTERN1.stl" scale="1 1 1" />
-            </geometry>
-            <material name="0.800000_0.800000_0.800000_0.000000_0.000000">
-                <texture />
-                <color rgba="0.8 0.8 0.8 1" />
-            </material>
-        </visual>
-        <visual>
-            <origin xyz="0.04575 0.0546981 0.00640569" rpy="0 1.5708 -3.14235" />
-            <geometry>
-                <mesh filename="package://robotassembly/meshes/CONNECTION__DC_MOTOR__JGB37_520__CHAMFER1.stl" scale="1 1 1" />
-            </geometry>
-            <material name="0.607843_0.564706_0.000000_0.000000_0.000000">
-                <texture />
-                <color rgba="0.607843 0.564706 0 1" />
-            </material>
-        </visual>
-        <visual>
-            <origin xyz="0.096 0.0597379 -0.00702151" rpy="-3.02404 4.62013e-15 -3.14159" />
-            <geometry>
-                <mesh filename="package://robotassembly/meshes/pan_cross_head_am_B18_6_7M___M2_x_0_4_x_25_Type_I_Cross_Recessed_PHMS___25N__CIRPATTERN1.stl" scale="1 1 1" />
-            </geometry>
-            <material name="0.800000_0.800000_0.800000_0.000000_0.000000">
-                <texture />
-                <color rgba="0.8 0.8 0.8 1" />
-            </material>
-        </visual>
-        <visual>
-            <origin xyz="0.096 0.0674928 -0.000603964" rpy="-1.5708 -0.68461 -1.5708" />
-            <geometry>
-                <mesh filename="package://robotassembly/meshes/SHAFT_COUPLER__JGB37_520__CHAMFER1.stl" scale="1 1 1" />
-            </geometry>
-            <material name="0.811765_0.843137_0.909804_0.000000_0.000000">
-                <texture />
-                <color rgba="0.811765 0.843137 0.909804 1" />
-            </material>
-        </visual>
-        <visual>
-            <origin xyz="0.04575 0.0802981 0.00638637" rpy="0 -1.5708 -0.000754694" />
-            <geometry>
-                <mesh filename="package://robotassembly/meshes/CONNECTION__DC_MOTOR__JGB37_520__CHAMFER1.stl" scale="1 1 1" />
-            </geometry>
-            <material name="0.607843_0.564706_0.000000_0.000000_0.000000">
-                <texture />
-                <color rgba="0.607843 0.564706 0 1" />
-            </material>
-        </visual>
-        <visual>
-            <origin xyz="0.071 0.0674981 0.00639603" rpy="0 1.5708 0.000754694" />
-            <geometry>
-                <mesh filename="package://robotassembly/meshes/COUPLING_BRACKET__GEARED_BODY_TO_DC_MOTOR__JGB37_520__CUT_EXTRUDE1.stl" scale="1 1 1" />
-            </geometry>
-            <material name="0.811765_0.843137_0.909804_0.000000_0.000000">
-                <texture />
-                <color rgba="0.811765 0.843137 0.909804 1" />
-            </material>
-        </visual>
-        <visual>
-            <origin xyz="0.0475 0.0674981 0.00639603" rpy="0 -1.5708 3.14235" />
-            <geometry>
-                <mesh filename="package://robotassembly/meshes/PLASTIC_COVER__DC_MOTOR__JGB37_520__FILLET2.stl" scale="1 1 1" />
-            </geometry>
-            <material name="0.490196_0.490196_0.490196_0.000000_0.000000">
-                <texture />
-                <color rgba="0.490196 0.490196 0.490196 1" />
-            </material>
-        </visual>
-        <visual>
-            <origin xyz="0.096 0.0674981 0.00639603" rpy="-1.5708 -0.000754694 -1.5708" />
-            <geometry>
-                <mesh filename="package://robotassembly/meshes/GEARED_BODY__MOTOR__JGB37_520__FILLET1.stl" scale="1 1 1" />
-            </geometry>
-            <material name="0.811765_0.843137_0.909804_0.000000_0.000000">
-                <texture />
-                <color rgba="0.811765 0.843137 0.909804 1" />
-            </material>
-        </visual>
-        <visual>
-            <origin xyz="0.096 0.0597582 0.0198253" rpy="-0.929643 4.62013e-15 -3.14159" />
-            <geometry>
-                <mesh filename="package://robotassembly/meshes/pan_cross_head_am_B18_6_7M___M2_x_0_4_x_25_Type_I_Cross_Recessed_PHMS___25N__CIRPATTERN1.stl" scale="1 1 1" />
-            </geometry>
-            <material name="0.800000_0.800000_0.800000_0.000000_0.000000">
-                <texture />
-                <color rgba="0.8 0.8 0.8 1" />
-            </material>
-        </visual>
-        <visual>
-            <origin xyz="0.096 0.0829981 0.00638434" rpy="1.16475 4.62013e-15 -3.14159" />
-            <geometry>
-                <mesh filename="package://robotassembly/meshes/pan_cross_head_am_B18_6_7M___M2_x_0_4_x_25_Type_I_Cross_Recessed_PHMS___25N__CIRPATTERN1.stl" scale="1 1 1" />
-            </geometry>
-            <material name="0.800000_0.800000_0.800000_0.000000_0.000000">
-                <texture />
-                <color rgba="0.8 0.8 0.8 1" />
-            </material>
-        </visual>
-        <visual>
-            <origin xyz="0.067 0.0674981 0.00639603" rpy="0 1.5708 0.000754694" />
-            <geometry>
-                <mesh filename="package://robotassembly/meshes/DC_MOTOR__JGB37_520__FILLET1.stl" scale="1 1 1" />
-            </geometry>
-            <material name="0.811765_0.843137_0.909804_0.000000_0.000000">
-                <texture />
-                <color rgba="0.811765 0.843137 0.909804 1" />
-            </material>
-        </visual>
-    </link>
-
-    <link name="laser_frame" />
-
-    <joint name="root_to_laser_frame_joint" type="fixed">
-        <origin xyz="0.0005 -0.0255 0.1005" rpy="0 0 1.5708" />
-        <parent link="root" />
-        <child link="laser_frame" />
+    <joint name="base_link_motor_right_to_base_link" type="fixed">
+        <origin xyz="0.096 0.06749806000000001 0.0063960300000000005" rpy="-3.1415926535897927 -1.5707963267948966 0" />
+        <parent link="base_link" />
+        <child link="motor_right_1" />
     </joint>
-
-    <link name="wheel__extrude__2_">
-        <inertial>
-            <mass value="8.79897e-05" />
-            <origin xyz="-5.42815e-20 0.0214171 1.92154e-20" rpy="0 -0 0" />
-            <inertia ixx="2.68941e-08" ixy="0" ixz="0" iyy="3.94534e-08" iyz="0" izz="2.68941e-08" />
-        </inertial>
-        <visual>
-            <origin xyz="0 0.037 0" rpy="0 -0 0" />
-            <geometry>
-                <mesh filename="package://robotassembly/meshes/wheele2.stl" scale="1 1 1" />
-            </geometry>
-            <material name="0.611765_0.658824_0.670588_0.000000_0.000000">
-                <color rgba="0.611765 0.658824 0.670588 1" />
-            </material>
-        </visual>
-    </link>
-
-    <link name="wheel__extrude__2__1">
-        <inertial>
-            <mass value="8.79897e-05" />
-            <origin xyz="-0.003 0.0214171 3.86609e-19" rpy="0 -0 0" />
-            <inertia ixx="2.68941e-08" ixy="0" ixz="0" iyy="3.94534e-08" iyz="0" izz="2.68941e-08" />
-        </inertial>
-        <visual>
-            <origin xyz="-0.003 0.037 3.67394e-19" rpy="0 -0 0" />
-            <geometry>
-                <mesh filename="package://robotassembly/meshes/wheele2.stl" scale="1 1 1" />
-            </geometry>
-            <material name="0.611765_0.658824_0.670588_0.000000_0.000000">
-                <color rgba="0.611765 0.658824 0.670588 1" />
-            </material>
-        </visual>
-    </link>
-
-    <joint name="hanging_node_to_root_joint" type="fixed">
-        <origin xyz="-0.096 0.0675 -0.000626644" rpy="-1.5708 1.23005 1.5708" />
-        <axis xyz="0 0 1" />
-        <parent link="root" />
-        <child link="motor_shaft__jgb37_520__chamfer1" />
+    <joint name="motor_right_1_wheel_right_to_motor_right" type="continuous">
+        <origin xyz="-0.007000000000000007 8.881784197001253e-18 0.005999999999999997" rpy="-1.9721522630525295e-31 -0.0 0.0" />
+        <parent link="motor_right_1" />
+        <child link="wheel_right_1" />
+        <axis xyz="0.0 7.753132050511999e-16 1.0" />
     </joint>
-
-    <joint name="hanging_node_to_root_joint_1" type="fixed">
-        <origin xyz="0.096 0.0674928 -0.000603964" rpy="-1.5708 1.2293 -1.5708" />
-        <axis xyz="0 0 1" />
-        <parent link="root" />
-        <child link="motor_shaft__jgb37_520__chamfer1_1" />
+    <joint name="motor_left_1_wheel_left_to_motor_left" type="continuous">
+        <origin xyz="-0.006999999999999999 0.0 0.005999999999999997" rpy="0.0 -0.0 0.0" />
+        <parent link="motor_left_1" />
+        <child link="wheel_left_1" />
+        <axis xyz="-0.0 6.959195283221548e-16 1.0" />
     </joint>
-
-    <joint name="revolute_1" type="continuous">
-        <origin xyz="-3.46945e-18 -1.38778e-17 0.0105" rpy="1.5708 -0 -1.5708" />
-        <axis xyz="0 -1 0" />
-        <parent link="motor_shaft__jgb37_520__chamfer1_1" />
-        <child link="wheel__extrude__2__1" />
-    </joint>
-
-    <joint name="revolute_2" type="continuous">
-        <origin xyz="-3.46945e-18 1.38778e-17 0.0105" rpy="1.5708 -0 -1.5708" />
-        <axis xyz="0 1 0" />
-        <parent link="motor_shaft__jgb37_520__chamfer1" />
-        <child link="wheel__extrude__2_" />
+    <joint name="base_link_lidar_link_to_base_link" type="fixed">
+        <origin xyz="0.0005 -0.0255 0.0705" rpy="3.1415926535897927 -0.0 0.0" />
+        <parent link="base_link" />
+        <child link="lidar_link" />
     </joint>
 </robot>

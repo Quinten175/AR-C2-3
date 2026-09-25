@@ -26,7 +26,7 @@ def launch_setup(context, *args, **kwargs):
     urdf_file_arg = DeclareLaunchArgument(
         'urdf_file',
         default_value=os.path.join(
-            get_package_share_directory('robotassembly'),
+            get_package_share_directory('manta_bot'),
             'urdf',
             'robotassembly.urdf'
         )
