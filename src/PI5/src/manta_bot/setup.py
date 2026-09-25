@@ -17,7 +17,10 @@ setup(
         (os.path.join('share', package_name, 'config'), glob('config/*.yaml')),
         (os.path.join('share', package_name, 'meshes'), glob('meshes/*.stl')),
         (os.path.join('share', package_name, 'urdf'), glob('urdf/*.urdf')),
-
+        (
+            'lib/python3.12/site-packages/manta_bot/UI',
+            glob('manta_bot/UI/*.html')
+        ),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -35,6 +38,7 @@ setup(
             f'static_odom_publisher = {package_name}.Lidar.static_odom_publisher:main',
             f'activate_mapping = {package_name}.Lidar.activate_mapping:main',
             f'movement_handler = {package_name}.movement_handler:main',
+            f'wheel_test = {package_name}.Sim.wheel_test:main',
             f'UI_app = {package_name}.UI.UI_app:main',
         ],
         'ros2_control_systems': [

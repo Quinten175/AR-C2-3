@@ -46,14 +46,32 @@ def launch_setup(context, *args, **kwargs):
         name='joint_state_publisher_gui',
         parameters=[{'zeros': {}}]
     )
-
-    static_odom_node = Node(
-        package='manta_bot',
-        executable='static_odom_publisher',
-        name='static_odom_publisher',
-        output='screen'
+    
+    STNP_map_root = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='map_to_root',
+        arguments=['0', '0', '0', '0', '0', '0', 'map', 'root']
     )
-
+    
+    STPN_odom_base = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='odom_to_base_link',
+        arguments=[
+            '0', '0', '0',
+            '0', '0', '0',
+            'odom', 'base_link'
+        ]
+    )
+    
+    # STPN_map_base = Node(
+    #     package='tf2_ros',
+    #     executable='static_transform_publisher',
+    #     name='map_to_base_link',
+    #     arguments=['0', '0', '0', '0', '0', '0', 'map', 'base_link']
+    # )
+    
     # --- SENSOR NODES
     rplidar_node = Node(
         package='rplidar_ros',
@@ -63,7 +81,7 @@ def launch_setup(context, *args, **kwargs):
         parameters=[{
             'serial_port': '/dev/ttyUSB0',
             'serial_baudrate': 115200,
-            'frame_id': 'laser_frame',
+            'frame_id': 'lidar_link',
             'inverted': False,
             'angle_compensate': True,
             'scan_mode': 'Boost',
@@ -100,7 +118,9 @@ def launch_setup(context, *args, **kwargs):
         urdf_file_arg,
         robot_state_publisher_node,
         joint_state_publisher_gui_node,
-        static_odom_node,
+        STNP_map_root,
+        STPN_odom_base,
+        # STPN_map_base,
         
         # --- SENSOR NODES
         rplidar_node,

@@ -38,14 +38,14 @@ def generate_launch_description():
         parameters=[{'zeros': {}}]
     )
 
-    static_transform_publisher_node = Node(
+    STNP_map_root = Node(
         package='tf2_ros',
         executable='static_transform_publisher',
         name='map_to_root',
         arguments=['0', '0', '0', '0', '0', '0', 'map', 'root']
     )
     
-    static_transform_publisher_node = Node(
+    STPN_map_base = Node(
         package='tf2_ros',
         executable='static_transform_publisher',
         name='map_to_base_link',
@@ -63,6 +63,7 @@ def generate_launch_description():
         urdf_file_arg,
         robot_state_publisher_node,
         joint_state_publisher_gui_node,
-        static_transform_publisher_node,
+        STNP_map_root,
+        STPN_map_base,
         rviz_node
     ])
