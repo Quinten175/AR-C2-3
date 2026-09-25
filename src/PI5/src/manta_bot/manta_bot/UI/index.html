@@ -108,10 +108,9 @@
                 <button
                   class="btn drive-btn drive-btn-drive"
                   data-dir="left"
-                  onmousedown="sendDrive('left', true)"
-                  onmouseup="sendDrive('stop')"
-                  ontouchstart="sendDrive('left', true)"
-                  ontouchend="sendDrive('stop')"
+                  onpointerdown="startDrive('left')"
+                  onpointerup="stopDrive()"
+                  onpointerleave="stopDrive()"
                 >
                   <i class="bi bi-arrow-left"></i>
                 </button>
@@ -119,7 +118,7 @@
                 <button
                   class="btn drive-btn drive-btn-stop"
                   id="emergencyStopBtn"
-                  onclick="sendDrive('stop')"
+                  onclick="stopDrive()"
                 >
                   <i class="bi bi-x-lg"></i> STOP
                 </button>
@@ -127,10 +126,9 @@
                 <button
                   class="btn drive-btn drive-btn-drive"
                   data-dir="right"
-                  onmousedown="sendDrive('right', true)"
-                  onmouseup="sendDrive('stop')"
-                  ontouchstart="sendDrive('right', true)"
-                  ontouchend="sendDrive('stop')"
+                  onpointerdown="startDrive('right')"
+                  onpointerup="stopDrive()"
+                  onpointerleave="stopDrive()"
                 >
                   <i class="bi bi-arrow-right"></i>
                 </button>
@@ -139,10 +137,9 @@
                 <button
                   class="btn drive-btn drive-btn-drive"
                   data-dir="backward"
-                  onmousedown="sendDrive('backward', true)"
-                  onmouseup="sendDrive('stop')"
-                  ontouchstart="sendDrive('backward', true)"
-                  ontouchend="sendDrive('stop')"
+                  onpointerdown="startDrive('backward')"
+                  onpointerup="stopDrive()"
+                  onpointerleave="stopDrive()"
                 >
                   <i class="bi bi-arrow-down"></i>
                 </button>
@@ -472,16 +469,16 @@
 
       document.addEventListener("keydown", (e) => {
         if (keyMap[e.key] && e.key !== " ") {
-          sendDrive(keyMap[e.key], true);
+          startDrive(keyMap[e.key]);
         } else if (e.key === " ") {
           e.preventDefault();
-          sendDrive("stop");
+          stopDrive();
         }
       });
 
       document.addEventListener("keyup", (e) => {
         if (keyMap[e.key]) {
-          sendDrive("stop");
+          stopDrive();
         }
       });
 
