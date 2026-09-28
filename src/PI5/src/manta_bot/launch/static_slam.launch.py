@@ -40,6 +40,14 @@ def launch_setup(context, *args, **kwargs):
             'robot_description': robot_description_content
         }]
     )
+    
+    joint_state_publisher_node = Node(
+        package='joint_state_publisher',
+        executable='joint_state_publisher',
+        name='joint_state_publisher',
+        output='screen'
+    )
+
 
     joint_state_publisher_gui_node = Node(
         package='joint_state_publisher_gui',
@@ -111,7 +119,8 @@ def launch_setup(context, *args, **kwargs):
     return [
         urdf_file_arg,
         robot_state_publisher_node,
-        joint_state_publisher_gui_node,
+        # joint_state_publisher_gui_node,
+        joint_state_publisher_node,
 
         odom_to_base_link,
 
@@ -121,7 +130,7 @@ def launch_setup(context, *args, **kwargs):
         activate_mapping_node,
         UI_app,
 
-        rviz_node
+ #       rviz_node
     ]
 
 

@@ -303,6 +303,20 @@
                     <i class="bi bi-map-fill"></i> Mapping
                   </button>
                 </div>
+                <div class="col-6">
+                  <button
+                    id="toggleBtn"
+                    class="btn action-btn w-100"
+                    style="
+                      background-color: #f7a130;
+                      border: 1px solid #9b5a04;
+                      color: #fa9006;
+                    "
+                    onclick="saveMap()"
+                  >
+                    <i class="bi bi-save"></i> Save Map
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -426,6 +440,25 @@
             showToast("Failed to toggle mapping", "danger");
           });
       }
+
+      function saveMap() {
+        fetch("/api/save", {
+          method: "POST",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              showToast("Map saved successfully", "success");
+            } else {
+              showToast(data.error || "Failed to save map", "danger");
+            }
+          })
+          .catch((error) => {
+            console.error("Save map error:", error);
+            showToast("Failed to save map", "danger");
+          });
+      }
+
 
       function updateMappingUI() {
         const btn = document.getElementById("toggleBtn");

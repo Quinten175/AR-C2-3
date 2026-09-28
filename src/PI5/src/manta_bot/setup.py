@@ -8,21 +8,13 @@ def generate_data_files():
     data_files = [
         ('share/ament_index/resource_index/packages', ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        (os.path.join('share', package_name, 'launch'), glob('launch/*.launch.py')),
+        (os.path.join('share', package_name, 'config'), glob('config/*')),
+        (os.path.join('share', package_name, 'meshes'), glob('meshes/*')),
+        (os.path.join('share', package_name, 'urdf'), glob('urdf/*')),
+        (os.path.join('share', package_name, 'UI'),glob('manta_bot/UI/*.html')),
+        (os.path.join('share', package_name, 'UI', 'static'),glob('manta_bot/UI/static/*')),
     ]
-
-    patterns = [
-        (os.path.join('share', package_name, 'launch'), 'launch/*.[launch.py][py]*'),
-        (os.path.join('share', package_name, 'config'), 'config/*'),
-        (os.path.join('share', package_name, 'meshes'), 'meshes/*'),
-        (os.path.join('share', package_name, 'urdf'), 'urdf/*'),
-        ('lib/python3.12/site-packages/manta_bot/UI', 'manta_bot/UI/*.html'),
-    ]
-
-    for destination, pattern in patterns:
-        files = glob(pattern)
-        if files:
-            data_files.append((destination, files))
-
     return data_files
 
 setup(
@@ -54,4 +46,4 @@ setup(
             f'manta_bot_hardware = {package_name}.Movement.movement_handler:MantaBotHardware',
         ],
     },
-)
+)   

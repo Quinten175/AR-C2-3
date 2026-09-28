@@ -9,9 +9,20 @@ from rclpy.node import Node
 from std_msgs.msg import Bool
 from geometry_msgs.msg import Twist
 
+from ament_index_python.packages import get_package_share_directory
 
-template_dir = os.path.dirname(os.path.abspath(__file__))
-app = Flask(__name__, template_folder=template_dir)
+from slam_toolbox.srv import SaveMap
+
+package_dir = get_package_share_directory('manta_bot')
+template_dir = os.path.join(package_dir, 'UI')
+static_dir = os.path.join(template_dir, 'static')
+map_dir = os.path.join(template_dir, 'map')
+
+app = Flask(
+    __name__,
+    template_folder=template_dir,
+    static_folder=static_dir
+)
 
 node = None
 
@@ -20,14 +31,17 @@ class ROSNode(Node):
     def __init__(self):
         super().__init__('UI_app')
 
-        # Mapping publisher
         self.mapping_pub = self.create_publisher(
             Bool,
             'activate_mapping',
             10
         )
-
-        # cmd_vel publisher
+        
+        self.slam_save_client = self.create_client(
+            SaveMap,
+            '/slam_toolbox/save_map'
+        )
+        
         self.cmd_vel_pub = self.create_publisher(
             Twist,
             'cmd_vel',
@@ -43,20 +57,23 @@ class ROSNode(Node):
         msg.data = self.active_mapping_state
 
         self.mapping_pub.publish(msg)
-
+        
         return self.active_mapping_state
+    
+    def save_map(self):
+        pass
+    
+    def reset_map(self):
+        pass
 
     def publish_cmd_vel(self, linear_x=0.0, angular_z=0.0):
         msg = Twist()
 
-        # Linear velocity
         msg.linear.x = float(linear_x)
 
-        # Everything else stays zero
         msg.linear.y = 0.0
         msg.linear.z = 0.0
 
-        # Angular velocity
         msg.angular.x = 0.0
         msg.angular.y = 0.0
         msg.angular.z = float(angular_z)
@@ -77,18 +94,51 @@ def toggle():
     new_state = node.toggle_mapping_state()
     return jsonify({'state': new_state})
 
+def save_map_done(self, future):
+    try:
+        response = future.result()
+        self.get_logger().info('Map saved successfully')
+    except Exception as e:
+        self.get_logger().error(f'Failed to save map: {e}')
+
+@app.route('/api/save', methods=['POST'])
+def save(self):
+    if not self.client.wait_for_service(timeout_sec=5.0):
+        self.get_logger().error(
+            'SLAM Toolbox save_map service not available'
+        )
+        return jsonify({
+            'success': False,
+            'error': 'SLAM Toolbox service unavailable'
+        }), 503
+
+    map_dir = (
+        Path(get_package_share_directory('my_robot_package'))
+        / 'map'
+    )
+    map_dir.mkdir(parents=True, exist_ok=True)
+
+    map_path = map_dir / 'map'
+
+    request = SaveMap.Request()
+    request.name.data = str(map_path)
+
+    future = self.client.call_async(request)
+    future.add_done_callback(self.save_map_done)
+
+    return jsonify({
+        'success': True,
+        'path': str(map_path)
+    })
+
+@app.route('/api/reset', methods=['POST'])
+def reset():
+
+    return jsonify({'success': True})
 
 @app.route('/api/drive', methods=['POST'])
 def drive():
-    """
-    Receive velocity commands from the web UI.
 
-    Expected JSON:
-    {
-        "linear": 0.5,
-        "angular": 0.2
-    }
-    """
 
     data = request.get_json()
 
@@ -113,7 +163,6 @@ def drive():
 
 @app.route('/api/action', methods=['POST'])
 def action():
-    """Handle start/stop/reset actions."""
 
     data = request.get_json()
 
@@ -124,15 +173,13 @@ def action():
 
     try:
         if act == 'start':
-            # Start action
             node.get_logger().info('START')
 
         elif act == 'stop':
-            # Stop robot by publishing zero velocity
             node.stop_robot()
 
         elif act == 'reset':
-            # Reset action
+
             node.get_logger().info('RESET')
 
         else:
