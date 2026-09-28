@@ -6,7 +6,7 @@ from lifecycle_msgs.msg import Transition
 
 class ActiveMapping(Node):
     def __init__(self):
-        super().__init__('active_mapping')
+        super().__init__('activate_mapping')
         self.activation_subscriber = self.create_subscription(Bool, 'activate_mapping', self.activation_callback, 10)
         self.slam_client = self.create_client(ChangeState, '/slam_toolbox/change_state')
 
