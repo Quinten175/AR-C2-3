@@ -91,6 +91,15 @@ def launch_setup(context, *args, **kwargs):
         name='activate_mapping',
         output='screen'
     )
+    
+    
+    UI_app = Node(
+        package='manta_bot',
+        executable='UI_app',
+        name='UI_app',
+        output='screen'
+    )
+
 
     rviz_node = Node(
         package='rviz2',
@@ -110,6 +119,7 @@ def launch_setup(context, *args, **kwargs):
 
         slam_node,
         activate_mapping_node,
+        UI_app,
 
         rviz_node
     ]

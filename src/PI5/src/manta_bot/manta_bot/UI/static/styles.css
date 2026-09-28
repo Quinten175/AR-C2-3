@@ -1,0 +1,220 @@
+:root {
+    --bg-primary: #0d0d0d;
+    --bg-card: #1a1a1a;
+    --border-color: #2c2c2c;
+    --accent-green: #00bd00;
+    --accent-red: #bd0000;
+}
+
+body {
+    background-color: var(--bg-primary);
+}
+
+.navbar-custom {
+    background-color: rgba(26, 26, 26, 0.95) !important;
+    border-bottom: 1px solid var(--border-color);
+    backdrop-filter: blur(8px);
+}
+
+.card-custom {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 0.75rem;
+}
+
+.card-custom .card-header {
+    background-color: transparent;
+    border-bottom: 1px solid var(--border-color);
+    font-weight: 600;
+}
+
+.camera-feed {
+    width: 100%;
+    height: 340px;
+    background: radial-gradient(circle at center, #292929 0%, #151515 60%, #101010 100%);
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.camera-feed img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0.5rem;
+}
+
+.camera-placeholder-icon {
+    font-size: 3rem;
+    color: #555;
+}
+
+.live-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background-color: var(--accent-red);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 0.375rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.live-badge .dot {
+    width: 8px;
+    height: 8px;
+    background-color: white;
+    border-radius: 50%;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+.stat-item {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.stat-item:last-child {
+    border-bottom: none;
+}
+
+.stat-label {
+    color: #888;
+    font-size: 0.875rem;
+    margin-bottom: 4px;
+}
+
+.stat-value {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.battery-bar-container {
+    height: 8px;
+    background-color: #333;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 6px;
+}
+
+.battery-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s ease, background-color 0.5s ease;
+}
+
+.drive-dpad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    max-width: 260px;
+    margin: 0 auto;
+}
+
+.drive-btn {
+    width: 72px;
+    height: 56px;
+    border-radius: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.1s ease;
+    user-select: none;
+}
+
+.drive-btn:active {
+    transform: scale(0.93);
+}
+
+.drive-btn-drive {
+    background-color: #2a4a2a;
+    border: 1px solid #3d6b3d;
+    color: #7ddf7d;
+}
+
+.drive-btn-drive:hover {
+    background-color: #356035;
+    border-color: #5aad5a;
+}
+
+.drive-btn-stop {
+    background-color: #4a2a2a;
+    border: 1px solid #7b3d3d;
+    color: #ff7f7f;
+}
+
+.drive-btn-stop:hover {
+    background-color: #603535;
+    border-color: #ad5a5a;
+}
+
+.action-btn {
+    height: 80px;
+    border-radius: 0.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.15s ease;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+}
+
+.action-btn:active {
+    transform: scale(0.96);
+}
+
+.mapping-active {
+    background-color: var(--accent-green) !important;
+    border-color: #65dd65 !important;
+    color: white !important;
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+#toastContainer {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 9999;
+}
+
+@media (max-width: 768px) {
+    .camera-feed {
+        height: 220px;
+    }
+
+    .drive-btn {
+        width: 64px;
+        height: 50px;
+        font-size: 1rem;
+    }
+
+    .action-btn {
+        height: 70px;
+        font-size: 0.9rem;
+    }
+}

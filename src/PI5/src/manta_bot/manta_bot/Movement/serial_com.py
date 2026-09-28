@@ -7,7 +7,7 @@ import atexit
 import threading
 
 PORT = '/dev/ttyAMA0'  # change to the correct device if needed
-BAUD = 115600
+BAUD = 115200
 
 _SER = None
 _SER_LOCK = threading.Lock()
@@ -53,8 +53,8 @@ def send_command(cmd: str):
             _SER.write((cmd + '\n').encode('utf-8'))
             _SER.flush()
             time.sleep(0.01)
-            if _SER.in_waiting > 0:
-                print(_SER.readline().decode('utf-8', errors='replace').rstrip())
+
+            print(_SER.readline().decode('utf-8', errors='replace').rstrip())
         except Exception as e:
             print(f"Serial write failed: {e}", file=sys.stderr)
 
@@ -65,4 +65,5 @@ class SerialCommunicationNode(Node):
     def __init__(self):
         super().__init__('serial_communication_node')
         self.get_logger().info('Serial Communication Node has been started.')
+        
 
