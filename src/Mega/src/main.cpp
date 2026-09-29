@@ -12,6 +12,10 @@
 unsigned long last_update = 0;
 const unsigned long LOOP_MS = 20;   // 50 Hz control rate
 
+unsigned long last_cmd_ms = 0;
+bool timed_out = false;
+const unsigned long CMD_TIMEOUT_MS = 500;   // stop if the host goes silent
+
 void setup() {
   // Start Serial for communication with Raspberry Pi / host
   Serial.begin(115200);
@@ -35,10 +39,14 @@ void loop() {
       float rpm = cmd.substring(colon + 1).toFloat();
       Serial.println("V1 target: " + String(rpm));
       closed_loop_set_target1(rpm);
+      last_cmd_ms = millis();
+      timed_out = false;
     } else if (cmd.startsWith("V2") && colon >= 0) {
       float rpm = cmd.substring(colon + 1).toFloat();
       Serial.println("V2 target: " + String(rpm));
       closed_loop_set_target2(rpm);
+      last_cmd_ms = millis();
+      timed_out = false;
     } else if (cmd.startsWith("VS")) {
       Serial.println("Closed loop stop");
       closed_loop_stop();
@@ -92,5 +100,12 @@ void loop() {
     float dt = (now - last_update) / 1000.0;
     last_update = now;
     closed_loop_update(dt);
+  }
+
+  // host went silent: stop once
+  if (!timed_out && now - last_cmd_ms > CMD_TIMEOUT_MS) {
+    timed_out = true;
+    Serial.println("Timeout, stopping");
+    closed_loop_stop();
   }
 }

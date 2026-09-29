@@ -367,17 +367,34 @@
         <child link="motor_shaft__jgb37_520__chamfer1_1" />
     </joint>
 
-    <joint name="revolute_1" type="continuous">
+    <joint name="left_wheel_joint" type="continuous">
         <origin xyz="-3.46945e-18 -1.38778e-17 0.0105" rpy="1.5708 -0 -1.5708" />
         <axis xyz="0 -1 0" />
         <parent link="motor_shaft__jgb37_520__chamfer1_1" />
         <child link="wheel__extrude__2__1" />
     </joint>
 
-    <joint name="revolute_2" type="continuous">
+    <joint name="right_wheel_joint" type="continuous">
         <origin xyz="-3.46945e-18 1.38778e-17 0.0105" rpy="1.5708 -0 -1.5708" />
         <axis xyz="0 1 0" />
         <parent link="motor_shaft__jgb37_520__chamfer1" />
         <child link="wheel__extrude__2_" />
     </joint>
+
+    <ros2_control name="manta_hardware" type="system">
+        <hardware>
+            <plugin>manta_hardware/MantaHardware</plugin>
+            <param name="serial_port">/dev/ttyAMA0</param>
+        </hardware>
+        <joint name="left_wheel_joint">
+            <command_interface name="velocity" />
+            <state_interface name="velocity" />
+            <state_interface name="position" />
+        </joint>
+        <joint name="right_wheel_joint">
+            <command_interface name="velocity" />
+            <state_interface name="velocity" />
+            <state_interface name="position" />
+        </joint>
+    </ros2_control>
 </robot>
