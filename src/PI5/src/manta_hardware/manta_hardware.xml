@@ -1,0 +1,9 @@
+<library path="manta_hardware">
+  <class name="manta_hardware/MantaHardware"
+         type="manta_hardware::MantaHardware"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      Hardware interface for the manta bot, talks to the Arduino Mega over serial.
+    </description>
+  </class>
+</library>

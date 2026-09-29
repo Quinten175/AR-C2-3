@@ -11,7 +11,7 @@ static float target1 = 0;
 static float target2 = 0;
 static float rpm1 = 0;
 static float rpm2 = 0;
-static bool sync_motors = true;
+static bool sync_motors = false;   // diff drive needs independent wheels
 
 // below ~80 PWM the motor stalls, so hold the duty up
 const uint8_t PWM_FLOOR = 80;

@@ -9,8 +9,9 @@ const uint8_t ENC2_B = 21;
 static volatile long count1 = 0;
 static volatile long count2 = 0;
 
-void isr1() { count1++; }
-void isr2() { count2++; }
+// B pin says which way the wheel was turning when A changed
+void isr1() { if (digitalRead(ENC1_B)) count1++; else count1--; }
+void isr2() { if (digitalRead(ENC2_B)) count2++; else count2--; }
 
 void encoder_init() {
     pinMode(ENC1_A, INPUT_PULLUP);
