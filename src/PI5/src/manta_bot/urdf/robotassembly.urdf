@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <robot name="robotassembly_1_back">
+    <link name="base_footprint" />
     <link name="lidar_link">
         <inertial>
             <origin xyz="0.00015440202932244464 -0.0065620385299784935 -0.04185367413520978" rpy="0.0 -0.0 0.0" />
@@ -114,6 +115,11 @@
             </geometry>
         </collision>
     </link>
+    <joint name="base_footprint_to_base_link" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 3.141592653589793" />
+        <parent link="base_footprint" />
+        <child link="base_link" />
+    </joint>
     <joint name="base_link_motor_left_to_base_link" type="fixed">
         <origin xyz="-0.096 0.0675 0.006373360000000001" rpy="6.959195283221548e-16 -1.5707963267948966 0" />
         <parent link="base_link" />
@@ -136,9 +142,10 @@
         <child link="wheel_left_1" />
         <axis xyz="-0.0 6.959195283221548e-16 1.0" />
     </joint>
-<joint name="base_link_lidar_link_to_base_link" type="fixed">
-  <origin xyz="0.0005 -0.0255 0.0705" rpy="0.0 0.0 -1.5707963267948966" />
-  <parent link="base_link" />
-  <child link="lidar_link" />
-</joint>   
-</robot>    
+    <joint name="base_link_lidar_link_to_base_link" type="fixed">
+        <!-- <origin xyz="0.0005 -0.0255 0.0705" rpy="3.1415926535897927 -0.0 0.0" /> -->
+        <origin xyz="0.0005 -0.0255 0.0705" rpy="3.1415926535897927 -0.0 1.5707963267948966" />
+        <parent link="base_link" />
+        <child link="lidar_link" />
+    </joint>
+</robot>

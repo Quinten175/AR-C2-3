@@ -16,7 +16,8 @@ from slam_toolbox.srv import SaveMap
 package_dir = get_package_share_directory('manta_bot')
 template_dir = os.path.join(package_dir, 'UI')
 static_dir = os.path.join(template_dir, 'static')
-map_dir = os.path.join(template_dir, 'map')
+map_dir = os.path.join(package_dir, 'map')
+os.makedirs(map_dir, exist_ok=True)
 
 app = Flask(
     __name__,
@@ -30,6 +31,7 @@ node = None
 class ROSNode(Node):
     def __init__(self):
         super().__init__('UI_app')
+        app.config['ros_node'] = self
 
         self.mapping_pub = self.create_publisher(
             Bool,
@@ -94,17 +96,34 @@ def toggle():
     new_state = node.toggle_mapping_state()
     return jsonify({'state': new_state})
 
-def save_map_done(self, future):
+def save_map_done(future):
     try:
         response = future.result()
-        self.get_logger().info('Map saved successfully')
+
+        print(f'SaveMap result code: {response.result}')
+
+        if response.result == SaveMap.Response.RESULT_SUCCESS:
+            print('Map saved successfully')
+
+        elif response.result == SaveMap.Response.RESULT_NO_MAP_RECEIEVD:
+            print('SLAM Toolbox has not received a map')
+
+        else:
+            print(
+                f'SLAM Toolbox failed to save the map. '
+                f'Result code: {response.result}'
+            )
+
     except Exception as e:
-        self.get_logger().error(f'Failed to save map: {e}')
+        print(f'Failed to call save_map service: {e}')
+
 
 @app.route('/api/save', methods=['POST'])
-def save(self):
-    if not self.client.wait_for_service(timeout_sec=5.0):
-        self.get_logger().error(
+def save():
+    node = app.config['ros_node']
+
+    if not node.slam_save_client.wait_for_service(timeout_sec=5.0):
+        node.get_logger().error(
             'SLAM Toolbox save_map service not available'
         )
         return jsonify({
@@ -112,23 +131,17 @@ def save(self):
             'error': 'SLAM Toolbox service unavailable'
         }), 503
 
-    map_dir = (
-        Path(get_package_share_directory('my_robot_package'))
-        / 'map'
-    )
-    map_dir.mkdir(parents=True, exist_ok=True)
-
-    map_path = map_dir / 'map'
+    map_path = os.path.join(map_dir, 'my_map')
 
     request = SaveMap.Request()
-    request.name.data = str(map_path)
+    request.name.data = map_path
 
-    future = self.client.call_async(request)
-    future.add_done_callback(self.save_map_done)
+    future = node.slam_save_client.call_async(request)
+    future.add_done_callback(save_map_done)
 
     return jsonify({
         'success': True,
-        'path': str(map_path)
+        'path': map_path
     })
 
 @app.route('/api/reset', methods=['POST'])

@@ -58,14 +58,14 @@ def launch_setup(context, *args, **kwargs):
         }]
     )
 
-    odom_to_base_link = Node(
+    odom_to_base_footprint = Node(
         package='tf2_ros',
         executable='static_transform_publisher',
-        name='odom_to_base_link',
+        name='odom_to_base_footprint',
         arguments=[
             '0', '0', '0',
             '0', '0', '0',
-            'odom', 'base_link'
+            'odom', 'base_footprint'
         ]
     )
 
@@ -122,7 +122,7 @@ def launch_setup(context, *args, **kwargs):
         # joint_state_publisher_gui_node,
         joint_state_publisher_node,
 
-        odom_to_base_link,
+        odom_to_base_footprint,
 
         rplidar_node,
 

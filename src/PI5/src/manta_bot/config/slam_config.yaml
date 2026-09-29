@@ -8,7 +8,7 @@ slam_toolbox:
     ceres_loss_function: None
 
     odom_frame: odom
-    base_frame: base_link
+    base_frame: base_footprint
     map_frame: map
     scan_topic: /scan
     scan_frame: lidar_link
