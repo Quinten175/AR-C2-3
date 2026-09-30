@@ -13,6 +13,8 @@ endif()
 find_package(ament_cmake_auto REQUIRED)
 ament_auto_find_build_dependencies()
 
+find_package(camera_info_manager REQUIRED)
+
 find_package(OpenCV REQUIRED)
 
 find_package(PkgConfig REQUIRED)
