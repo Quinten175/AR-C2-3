@@ -8,7 +8,7 @@ from rclpy.node import Node
 from rclpy.qos import qos_profile_sensor_data
 from sensor_msgs.msg import CompressedImage
 
-PORT = 9090
+PORT = 9091
 # The detector already JPEG-encodes the annotated frame, so we just pass the bytes
 # through: no raw image over DDS, no decode, no second encode.
 TOPIC = '/image_annotated/compressed'
