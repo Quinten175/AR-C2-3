@@ -9,7 +9,7 @@ function findWorkspaceSetup() {
   if (process.env.WS_SETUP) return process.env.WS_SETUP;
   let dir = __dirname;
   while (true) {
-    const candidate = path.join(dir, 'install', 'setup.bash');
+    const candidate = path.join(dir, '..', 'install', 'setup.bash');
     if (fs.existsSync(candidate)) return candidate;
     const parent = path.dirname(dir);
     if (parent === dir) return null;
@@ -49,3 +49,12 @@ setTimeout(() => run('ros2 run pi_stream stream'), 2000);
 // evt als nodig veranderen naar setTimeout(() => run('ros2 run manta_bot stream'), 2000);
 
 setTimeout(() => children.push(spawn('ngrok', ['http', '9090'], { stdio: 'inherit' })), 4000);
+
+run(
+  'ros2 run usb_cam usb_cam_node_exe --ros-args ' +
+  '-p video_device:=/dev/video0 -p pixel_format:=yuyv ' +
+  '-p image_width:=640 -p image_height:=480 -p framerate:=30.0'
+);
+setTimeout(() => run('ros2 run yolo26_ros2 yolo26_ros2'), 1000);
+setTimeout(() => run('ros2 run pi_stream stream'), 2000);
+setTimeout(() => children.push(spawn('ngrok', ['http', '9091'], { stdio: 'inherit' })), 4000);
