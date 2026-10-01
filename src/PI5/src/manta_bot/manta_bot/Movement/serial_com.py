@@ -59,6 +59,28 @@ def send_command(cmd: str):
             print(f"Serial write failed: {e}", file=sys.stderr)
 
 
+def send_wheel_velocities(left_rpm: float, right_rpm: float):
+    """Send BOTH wheel target velocities in one atomic packet: V:<left>,<right>.
+
+    The Mega applies both targets together, so the wheels never get a
+    half-updated command pair.
+    """
+    left_rpm = float(left_rpm)
+    right_rpm = float(right_rpm)
+
+    # keep the packet inside the Mega's line buffer (32 bytes incl. terminator)
+    if abs(left_rpm) > 999.0 or abs(right_rpm) > 999.0:
+        print(
+            f"Wheel rpm out of range, clamping: left={left_rpm} right={right_rpm}",
+            file=sys.stderr,
+        )
+        left_rpm = max(-999.0, min(999.0, left_rpm))
+        right_rpm = max(-999.0, min(999.0, right_rpm))
+
+    cmd = f"V:{left_rpm:.1f},{right_rpm:.1f}"
+    send_command(cmd)
+
+
 
 class SerialCommunicationNode(Node):
 

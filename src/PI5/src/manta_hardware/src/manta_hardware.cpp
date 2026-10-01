@@ -165,8 +165,9 @@ hardware_interface::return_type MantaHardware::write(
   double rpm1 = to_rpm(cmd_vel_[0]);
   double rpm2 = to_rpm(cmd_vel_[1]);
 
+  // both wheel targets in one atomic packet so the mega updates them together
   char buf[64];
-  int n = snprintf(buf, sizeof(buf), "V1:%.1f\nV2:%.1f\n", rpm1, rpm2);
+  int n = snprintf(buf, sizeof(buf), "V:%.1f,%.1f\n", rpm1, rpm2);
   if (::write(fd_, buf, n) < 0) {
     static rclcpp::Clock steady_clock(RCL_STEADY_TIME);
     RCLCPP_WARN_THROTTLE(rclcpp::get_logger("MantaHardware"),

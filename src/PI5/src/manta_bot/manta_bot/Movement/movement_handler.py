@@ -2,7 +2,13 @@ import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Twist
 
-from .serial_com import send_command
+import math
+
+from .serial_com import send_command, send_wheel_velocities
+
+# robot geometry, must match config/diff_drive_controller.yaml
+WHEEL_RADIUS = 0.0295      # m
+WHEEL_SEPARATION = 0.255   # m
 
 try:
     from hardware_interface.system_interface import SystemInterface
@@ -62,24 +68,10 @@ class MantaBotHardware(SystemInterface):
         return HardwareInterfaceReturn.OK
 
     def _drive_wheels(self, left_rad_per_sec: float, right_rad_per_sec: float):
-        left_pwm = self._rad_per_sec_to_pwm(left_rad_per_sec)
-        right_pwm = self._rad_per_sec_to_pwm(right_rad_per_sec)
-
-        if left_pwm >= 0:
-            send_command(f'M1F:{int(left_pwm)}')
-        else:
-            send_command(f'M1R:{int(abs(left_pwm))}')
-
-        if right_pwm >= 0:
-            send_command(f'M2F:{int(right_pwm)}')
-        else:
-            send_command(f'M2R:{int(abs(right_pwm))}')
-
-    def _rad_per_sec_to_pwm(self, velocity: float) -> int:
-
-        pwm = int(abs(velocity) * 300.0)
-        pwm = max(0, min(255, pwm))
-        return pwm if velocity >= 0 else -pwm
+        # both wheels in one atomic packet (rad/s -> rpm, sign = direction)
+        left_rpm = left_rad_per_sec * 60.0 / (2.0 * math.pi)
+        right_rpm = right_rad_per_sec * 60.0 / (2.0 * math.pi)
+        send_wheel_velocities(left_rpm, right_rpm)
 
     @property
     def command(self):
@@ -120,54 +112,32 @@ class MovementHandler(Node):
         )
 
     def velocity_callback(self, msg: Twist):
-        """Convert Twist message to motor commands."""
+        """Convert Twist message to ONE combined wheel-velocity packet."""
         lin_x = msg.linear.x
         ang_z = msg.angular.z
 
         threshold = 0.01
 
-        speed = int(abs(lin_x) * 255)
-        turn_speed = int(abs(ang_z) * 255)
-
         if abs(lin_x) < threshold and abs(ang_z) < threshold:
-            self.motor1_stop()
-            self.motor2_stop()
-        elif lin_x > threshold and abs(ang_z) < threshold:
-            self.motor1_forward(speed)
-            self.motor2_forward(speed)
-        elif lin_x < -threshold and abs(ang_z) < threshold:
-            self.motor1_reverse(speed)
-            self.motor2_reverse(speed)
-        elif ang_z > threshold:
-            self.motor1_forward(turn_speed)
-            self.motor2_reverse(turn_speed)
-        elif ang_z < -threshold:
-            self.motor1_reverse(turn_speed)
-            self.motor2_forward(turn_speed)
+            self.stop_wheels()
+            return
 
-    def motor1_forward(self, speed: int = 255):
-        self.get_logger().info(f'Motor 1 Forward - Speed: {speed}')
-        send_command(f'M1F:{speed}')
+        # differential drive kinematics -> per-wheel linear speed (m/s)
+        v_left = lin_x - (ang_z * WHEEL_SEPARATION / 2.0)
+        v_right = lin_x + (ang_z * WHEEL_SEPARATION / 2.0)
 
-    def motor1_reverse(self, speed: int = 255):
-        self.get_logger().info(f'Motor 1 Reverse - Speed: {speed}')
-        send_command(f'M1R:{speed}')
+        # m/s -> rad/s -> rpm (sign = direction)
+        left_rpm = (v_left / WHEEL_RADIUS) * 60.0 / (2.0 * math.pi)
+        right_rpm = (v_right / WHEEL_RADIUS) * 60.0 / (2.0 * math.pi)
 
-    def motor2_forward(self, speed: int = 255):
-        self.get_logger().info(f'Motor 2 Forward - Speed: {speed}')
-        send_command(f'M2F:{speed}')
+        self.get_logger().info(
+            f'Wheel targets - left: {left_rpm:.1f} rpm, right: {right_rpm:.1f} rpm'
+        )
+        send_wheel_velocities(left_rpm, right_rpm)
 
-    def motor2_reverse(self, speed: int = 255):
-        self.get_logger().info(f'Motor 2 Reverse - Speed: {speed}')
-        send_command(f'M2R:{speed}')
-
-    def motor1_stop(self):
-        self.get_logger().info('Motor 1 Stop')
-        send_command('M1S')
-
-    def motor2_stop(self):
-        self.get_logger().info('Motor 2 Stop')
-        send_command('M2S')
+    def stop_wheels(self):
+        self.get_logger().info('Stop both wheels')
+        send_command('VS')
 
     def emergency_stop(self):
         self.get_logger().info('EMERGENCY STOP - All motors stopped')
