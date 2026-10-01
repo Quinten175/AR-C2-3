@@ -11,12 +11,12 @@ from geometry_msgs.msg import Twist
 
 from ament_index_python.packages import get_package_share_directory
 
-from slam_toolbox.srv import SaveMap
+from slam_toolbox.srv import SaveMap, DeserializePoseGraph, Reset, SerializePoseGraph
 
 package_dir = get_package_share_directory('manta_bot')
 template_dir = os.path.join(package_dir, 'UI')
 static_dir = os.path.join(template_dir, 'static')
-map_dir = os.path.join(package_dir, 'map')
+map_dir = os.path.join(package_dir, 'map')  
 os.makedirs(map_dir, exist_ok=True)
 
 app = Flask(
@@ -42,6 +42,21 @@ class ROSNode(Node):
         self.slam_save_client = self.create_client(
             SaveMap,
             '/slam_toolbox/save_map'
+        )
+        
+        self.slam_serialize_client = self.create_client(
+            SerializePoseGraph,
+            '/slam_toolbox/serialize_map'
+        )
+        
+        self.slam_load_client = self.create_client(
+            DeserializePoseGraph,
+            '/slam_toolbox/deserialize_map'
+        )
+
+        self.slam_reset_client = self.create_client(
+            Reset,
+            '/slam_toolbox/reset'
         )
         
         self.cmd_vel_pub = self.create_publisher(
@@ -96,58 +111,98 @@ def toggle():
     new_state = node.toggle_mapping_state()
     return jsonify({'state': new_state})
 
-def save_map_done(future):
+def slam_service_done(future, operation):
     try:
         response = future.result()
 
-        print(f'SaveMap result code: {response.result}')
+        if hasattr(response, 'resultf'):
+            print(f'{operation} result code: {response.result}')
 
-        if response.result == SaveMap.Response.RESULT_SUCCESS:
-            print('Map saved successfully')
-
-        elif response.result == SaveMap.Response.RESULT_NO_MAP_RECEIEVD:
-            print('SLAM Toolbox has not received a map')
-
+            if response.result == 0:
+                print(f'{operation} completed successfully')
+            else:
+                print(
+                    f'SLAM Toolbox failed to perform {operation}. '
+                    f'Result code: {response.result}'
+                )
         else:
-            print(
-                f'SLAM Toolbox failed to save the map. '
-                f'Result code: {response.result}'
-            )
+            print(f'{operation} completed successfully')
 
     except Exception as e:
-        print(f'Failed to call save_map service: {e}')
+        print(f'Failed to call {operation} service: {e}')
 
 
 @app.route('/api/save', methods=['POST'])
 def save():
     node = app.config['ros_node']
 
-    if not node.slam_save_client.wait_for_service(timeout_sec=5.0):
+    if not node.slam_save_client.wait_for_service(timeout_sec=5.0) or \
+       not node.slam_serialize_client.wait_for_service(timeout_sec=5.0):
+        return jsonify({'success': False, 'error': 'SLAM Toolbox service unavailable'}), 503
+
+    map_path = os.path.abspath(os.path.join(map_dir, 'my_map'))
+
+    save_req = SaveMap.Request()
+    save_req.name.data = map_path
+    node.slam_save_client.call_async(save_req)
+
+    ser_req = SerializePoseGraph.Request()
+    ser_req.filename = map_path
+    ser_future = node.slam_serialize_client.call_async(ser_req)
+
+    event = threading.Event()
+    ser_future.add_done_callback(lambda f: event.set())
+    if not event.wait(timeout=30.0):
+        return jsonify({'success': False, 'error': 'serialize timeout'}), 504
+
+    result = ser_future.result().result
+    if result != 0:
+        return jsonify({'success': False, 'error': f'serialize failed ({result})'}), 500
+
+    return jsonify({'success': True})
+    
+@app.route('/api/load', methods=['POST'])
+def load():
+    node = app.config['ros_node']
+
+    if not node.slam_load_client.wait_for_service(timeout_sec=5.0):
+        return jsonify({'success': False, 'error': 'SLAM Toolbox service unavailable'}), 503
+
+    map_path = os.path.join(map_dir, 'my_map')
+    node.get_logger().info(f'Loading map from: \'{map_path}\'')
+    
+    request = DeserializePoseGraph.Request()
+    request.filename = map_path
+    request.match_type = 1   
+    node.get_logger().info(f'Request: {request}')
+    future = node.slam_load_client.call_async(request)
+    future.add_done_callback(lambda f: slam_service_done(f, 'load_map'))
+
+    return jsonify({'success': True})   
+
+@app.route('/api/reset', methods=['POST'])
+def reset():
+    node = app.config['ros_node']
+
+    if not node.slam_reset_client.wait_for_service(timeout_sec=5.0):
         node.get_logger().error(
-            'SLAM Toolbox save_map service not available'
+            'SLAM Toolbox reset service not available'
         )
         return jsonify({
             'success': False,
             'error': 'SLAM Toolbox service unavailable'
         }), 503
 
-    map_path = os.path.join(map_dir, 'my_map')
+    request = Reset.Request()
 
-    request = SaveMap.Request()
-    request.name.data = map_path
-
-    future = node.slam_save_client.call_async(request)
-    future.add_done_callback(save_map_done)
+    future = node.slam_reset_client.call_async(request)
+    future.add_done_callback(
+        lambda future: slam_service_done(future, 'reset_map')
+    )
 
     return jsonify({
         'success': True,
-        'path': map_path
     })
-
-@app.route('/api/reset', methods=['POST'])
-def reset():
-
-    return jsonify({'success': True})
 
 @app.route('/api/drive', methods=['POST'])
 def drive():
