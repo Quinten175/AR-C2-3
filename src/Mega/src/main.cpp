@@ -74,13 +74,15 @@ void handle_line(const char *raw) {
     closed_loop_set_manual(1, true);
     last_cmd_ms = millis();
     timed_out = false;
-  } else if (cmd.startsWith("M1R")) {
+  } 
+  else if (cmd.startsWith("M1R")) {
     motor1_reverse((uint8_t)speed);
     closed_loop_set_target1(0);
     closed_loop_set_manual(1, true);
     last_cmd_ms = millis();
     timed_out = false;
-  } else if (cmd.startsWith("M2F")) {
+  }  
+  if (cmd.startsWith("M2F")) {
     motor2_forward((uint8_t)speed);
     closed_loop_set_target2(0);
     closed_loop_set_manual(2, true);
@@ -92,15 +94,15 @@ void handle_line(const char *raw) {
     closed_loop_set_manual(2, true);
     last_cmd_ms = millis();
     timed_out = false;
-  } else if (cmd.startsWith("M1S")) {
+  }  if (cmd.startsWith("M1S")) {
     motor1_stop();
     closed_loop_set_target1(0);
     closed_loop_set_manual(1, false);
-  } else if (cmd.startsWith("M2S")) {
+  }  if (cmd.startsWith("M2S")) {
     motor2_stop();
     closed_loop_set_target2(0);
     closed_loop_set_manual(2, false);
-  } else if (cmd.startsWith("ESTOP")) {
+  }  if (cmd.startsWith("ESTOP")) {
     closed_loop_stop();
     emergency_stop();
   }

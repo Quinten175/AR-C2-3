@@ -137,11 +137,11 @@ class MovementHandler(Node):
 
     def stop_wheels(self):
         self.get_logger().info('Stop both wheels')
-        send_command('VS')
+        send_wheel_velocities(0.0, 0.0)
 
     def emergency_stop(self):
         self.get_logger().info('EMERGENCY STOP - All motors stopped')
-        send_command('ESTOP')
+        send_wheel_velocities(0.0, 0.0)
 
 
 def main(args=None):
