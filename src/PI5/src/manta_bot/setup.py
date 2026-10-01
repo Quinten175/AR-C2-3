@@ -1,9 +1,8 @@
 from setuptools import find_packages, setup
 import os
 from glob import glob
-
+ 
 package_name = 'manta_bot'
-
 def generate_data_files():
     data_files = [
         ('share/ament_index/resource_index/packages', ['resource/' + package_name]),
@@ -16,14 +15,19 @@ def generate_data_files():
         (os.path.join('share', package_name, 'UI', 'static'),glob('manta_bot/UI/static/*')),
     ]
     return data_files
-
 setup(
     name=package_name,
     version='0.0.0',
     packages=find_packages(exclude=['test']),
+    package_data={
+        'manta_bot': [
+            'UI/*.html',
+            'UI/static/*',
+        ],
+    },
     data_files=generate_data_files(),
     install_requires=['setuptools'],
-    zip_safe=True,
+    zip_safe=False,
     maintainer='quin',
     maintainer_email='quintenvandervalk@gmail.com',
     description='Manta Bot package with diff-drive controller support',
@@ -47,3 +51,4 @@ setup(
         ],
     },
 )   
+ 
