@@ -38,7 +38,7 @@ def close_serial():
 atexit.register(close_serial)
 
 
-def send_command(cmd: str):
+def send_command(cmd: str, wait_for_response: bool = False):
 
     _open_serial()
     global _SER
@@ -48,13 +48,16 @@ def send_command(cmd: str):
 
     with _SER_LOCK:
         try:
-            time.sleep(0.01)
-            _SER.reset_input_buffer()
+            # Do not clear the RX buffer or block waiting for a reply on normal motion commands.
+            # Those operations delay the next command and make motor start/stop timing drift.
             _SER.write((cmd + '\n').encode('utf-8'))
             _SER.flush()
-            time.sleep(0.01)
 
-            print(_SER.readline().decode('utf-8', errors='replace').rstrip())
+            if wait_for_response:
+                time.sleep(0.01)
+                line = _SER.readline()
+                if line:
+                    print(line.decode('utf-8', errors='replace').rstrip())
         except Exception as e:
             print(f"Serial write failed: {e}", file=sys.stderr)
 
@@ -62,13 +65,11 @@ def send_command(cmd: str):
 def send_wheel_velocities(left_rpm: float, right_rpm: float):
     """Send BOTH wheel target velocities in one atomic packet: V:<left>,<right>.
 
-    The Mega applies both targets together, so the wheels never get a
-    half-updated command pair.
+    This is the only safe way to keep wheel start/stop times synchronized.
     """
     left_rpm = float(left_rpm)
     right_rpm = float(right_rpm)
 
-    # keep the packet inside the Mega's line buffer (32 bytes incl. terminator)
     if abs(left_rpm) > 999.0 or abs(right_rpm) > 999.0:
         print(
             f"Wheel rpm out of range, clamping: left={left_rpm} right={right_rpm}",
@@ -78,7 +79,7 @@ def send_wheel_velocities(left_rpm: float, right_rpm: float):
         right_rpm = max(-999.0, min(999.0, right_rpm))
 
     cmd = f"V:{left_rpm:.1f},{right_rpm:.1f}"
-    send_command(cmd)
+    send_command(cmd, wait_for_response=False)
 
 
 
@@ -87,5 +88,5 @@ class SerialCommunicationNode(Node):
     def __init__(self):
         super().__init__('serial_communication_node')
         self.get_logger().info('Serial Communication Node has been started.')
-        
+
 

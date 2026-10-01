@@ -4,9 +4,9 @@
 #include "motor_control.h"
 
 // tuned values
-static PID pid2(0.68, 8.2);
-static PID pid1(0.71, 7.5);
-
+static PID pid1(0.68, 8.2);
+static PID pid2(0.71, 7.5);
+pid1 = pid2;
 static float target1 = 0;
 static float target2 = 0;
 static float rpm1 = 0;
