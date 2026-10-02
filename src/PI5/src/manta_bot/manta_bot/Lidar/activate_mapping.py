@@ -1,88 +1,62 @@
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import Bool
 from lifecycle_msgs.srv import ChangeState
 from lifecycle_msgs.msg import Transition
+from sensor_msgs.msg import LaserScan
 
 
-class ActiveMapping(Node):
+class AutoStartMapping(Node):
     def __init__(self):
-        super().__init__('activate_mapping')
-
-        self.activation_subscriber = self.create_subscription(
-            Bool,
-            'activate_mapping',
-            self.activation_callback,
-            10
+        super().__init__('auto_start_mapping')
+        self.slam_client = self.create_client(ChangeState, '/slam_toolbox/change_state')
+        self._scan_received = False
+        self.create_subscription(
+            LaserScan, '/scan', self._scan_cb, 10
         )
 
-        self.slam_client = self.create_client(
-            ChangeState,
-            '/slam_toolbox/change_state'
-        )
+    def _scan_cb(self, msg):
+        self._scan_received = True
 
-    def activation_callback(self, msg):
-        if not self.slam_client.wait_for_service(timeout_sec=5.0):
-            self.get_logger().error(
-                'SLAM Toolbox change_state service not available'
-            )
-            return
+    def start(self):
+        # Wait for /scan to be publishing
+        while rclpy.ok() and not self._scan_received:
+            rclpy.spin_once(self, timeout_sec=0.1)
+            if not self._scan_received:
+                self.get_logger().info('Waiting for /scan ...')
 
-        if msg.data:
-            self.change_state(
-                Transition.TRANSITION_CONFIGURE,
-                self.activate_mapping
-            )
-        else:
-            self.change_state(
-                Transition.TRANSITION_DEACTIVATE
-            )
+        # Wait for slam_toolbox service
+        while rclpy.ok() and not self.slam_client.wait_for_service(timeout_sec=0.1):
+            rclpy.spin_once(self, timeout_sec=0.1)
 
-    def change_state(self, transition_id, callback=None):
+        self._change_state(Transition.TRANSITION_CONFIGURE, self._activate)
+
+    def _activate(self):
+        self._change_state(Transition.TRANSITION_ACTIVATE)
+
+    def _change_state(self, transition_id, callback=None):
         request = ChangeState.Request()
         request.transition.id = transition_id
-
         future = self.slam_client.call_async(request)
+        future.add_done_callback(lambda f: self._on_result(f, transition_id, callback))
 
-        def done(future):
-            try:
-                response = future.result()
-
-                if response.success:
-                    self.get_logger().info(
-                        f'Lifecycle transition {transition_id} succeeded'
-                    )
-
-                    if callback is not None:
-                        callback()
-                else:
-                    self.get_logger().error(
-                        f'Lifecycle transition {transition_id} failed'
-                    )
-
-            except Exception as e:
-                self.get_logger().error(
-                    f'Failed to change SLAM Toolbox state: {e}'
-                )
-
-        future.add_done_callback(done)
-
-    def activate_mapping(self):
-        self.change_state(
-            Transition.TRANSITION_ACTIVATE
-        )
+    def _on_result(self, future, transition_id, callback):
+        try:
+            response = future.result()
+            if response.success:
+                self.get_logger().info(f'Transition {transition_id} succeeded')
+                if callback:
+                    callback()
+            else:
+                self.get_logger().error(f'Transition {transition_id} failed')
+        except Exception as e:
+            self.get_logger().error(f'Error: {e}')
 
 
 def main(args=None):
     rclpy.init(args=args)
-
-    node = ActiveMapping()
-
-    rclpy.spin(node)
-
+    node = AutoStartMapping()
+    node.start()
+    while rclpy.ok():
+        rclpy.spin_once(node, timeout_sec=0.1)
     node.destroy_node()
-    rclpy.shutdown()
-
-
-if __name__ == '__main__':
-    main()
+    rclpy.shutdown()   

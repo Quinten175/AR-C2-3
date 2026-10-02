@@ -11,7 +11,7 @@ slam_toolbox:
     base_frame: base_footprint
     map_frame: map
     scan_topic: /scan
-    scan_frame: lidar_link
+    scan_frame: laser_frame
     mode: mapping
 
     minimum_time_interval: 0.1

@@ -32,12 +32,6 @@ class ROSNode(Node):
     def __init__(self):
         super().__init__('UI_app')
         app.config['ros_node'] = self
-
-        self.mapping_pub = self.create_publisher(
-            Bool,
-            'activate_mapping',
-            10
-        )
         
         self.slam_save_client = self.create_client(
             SaveMap,
@@ -104,32 +98,6 @@ class ROSNode(Node):
 @app.route('/')
 def index():
     return render_template('index.html')
-
-
-@app.route('/api/toggle', methods=['POST'])
-def toggle():
-    new_state = node.toggle_mapping_state()
-    return jsonify({'state': new_state})
-
-def slam_service_done(future, operation):
-    try:
-        response = future.result()
-
-        if hasattr(response, 'resultf'):
-            print(f'{operation} result code: {response.result}')
-
-            if response.result == 0:
-                print(f'{operation} completed successfully')
-            else:
-                print(
-                    f'SLAM Toolbox failed to perform {operation}. '
-                    f'Result code: {response.result}'
-                )
-        else:
-            print(f'{operation} completed successfully')
-
-    except Exception as e:
-        print(f'Failed to call {operation} service: {e}')
 
 
 @app.route('/api/save', methods=['POST'])
