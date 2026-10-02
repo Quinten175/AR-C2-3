@@ -100,6 +100,27 @@ def index():
     return render_template('index.html')
 
 
+def slam_service_done(future, operation):
+    try:
+        response = future.result()
+
+        if hasattr(response, 'resultf'):
+            print(f'{operation} result code: {response.result}')
+
+            if response.result == 0:
+                print(f'{operation} completed successfully')
+            else:
+                print(
+                    f'SLAM Toolbox failed to perform {operation}. '
+                    f'Result code: {response.result}'
+                )
+        else:
+            print(f'{operation} completed successfully')
+
+    except Exception as e:
+        print(f'Failed to call {operation} service: {e}')
+
+
 @app.route('/api/save', methods=['POST'])
 def save():
     node = app.config['ros_node']
@@ -171,6 +192,7 @@ def reset():
     return jsonify({
         'success': True,
     })
+
 
 @app.route('/api/drive', methods=['POST'])
 def drive():
