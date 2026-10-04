@@ -1,17 +1,18 @@
 import rclpy
 from rclpy.node import Node
-from geometry_msgs.msg import Twist
+from geometry_msgs.msg import TwistStamped
+from std_msgs.msg import Header
 
 
 class CmdVelDummy(Node):
-    """Publishes a sequence of Twist commands to `/cmd_vel` for testing.
+    """Publishes a sequence of TwistStamped commands to `/cmd_vel` for testing.
 
     Sequence steps are (duration_seconds, linear_x, angular_z).
     """
 
     def __init__(self):
         super().__init__('cmd_vel_dummy')
-        self.pub = self.create_publisher(Twist, '/cmd_vel', 10)
+        self.pub = self.create_publisher(TwistStamped, '/cmd_vel', 10)
 
         # Define a movement sequence: forward, stop, turn left, forward-right, reverse, stop
         self.sequence = [
@@ -31,14 +32,20 @@ class CmdVelDummy(Node):
     def _tick(self):
         if self._step_index >= len(self.sequence):
             # keep publishing zero to ensure robot stops
-            msg = Twist()
+            msg = TwistStamped()
+            msg.header = Header()
+            msg.header.stamp = self.get_clock().now().to_msg()
+            msg.header.frame_id = 'base_link'
             self.pub.publish(msg)
             return
 
         duration, lin_x, ang_z = self.sequence[self._step_index]
-        msg = Twist()
-        msg.linear.x = float(lin_x)
-        msg.angular.z = float(ang_z)
+        msg = TwistStamped()
+        msg.header = Header()
+        msg.header.stamp = self.get_clock().now().to_msg()
+        msg.header.frame_id = 'base_link'
+        msg.twist.linear.x = float(lin_x)
+        msg.twist.angular.z = float(ang_z)
         self.pub.publish(msg)
 
         self._step_elapsed += 1.0 / self._rate_hz

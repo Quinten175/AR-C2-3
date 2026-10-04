@@ -6,7 +6,8 @@ import threading
 
 import rclpy
 from rclpy.node import Node
-from geometry_msgs.msg import Twist
+from geometry_msgs.msg import TwistStamped
+from std_msgs.msg import Header
 
 
 DEVICE = "/dev/input/js0"
@@ -24,7 +25,7 @@ class GamepadCmdVel(Node):
         super().__init__("gamepad_cmd_vel")
 
         self.pub = self.create_publisher(
-            Twist,
+            TwistStamped,
             "/cmd_vel",
             10
         )
@@ -120,11 +121,14 @@ class GamepadCmdVel(Node):
 
     def publish_cmd_vel(self):
 
-        msg = Twist()
+        msg = TwistStamped()
+        msg.header = Header()
+        msg.header.stamp = self.get_clock().now().to_msg()
+        msg.header.frame_id = 'base_link'
 
         # Your original speed limits
-        msg.linear.x = self.forward * 0.25
-        msg.angular.z = self.steering * 0.5
+        msg.twist.linear.x = self.forward * 0.25
+        msg.twist.angular.z = self.steering * 0.5
 
         self.pub.publish(msg)
 
