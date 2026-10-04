@@ -15,13 +15,9 @@ class CmdVelDummy(Node):
 
         # Define a movement sequence: forward, stop, turn left, forward-right, reverse, stop
         self.sequence = [
-            (3.0, 0.2, 0.0),  # drive forward
+            (2.0, 0.2, 0.0),  # drive forward
             (1.0, 0.0, 0.0),  # stop
-            (2.0, 0.0, 0.6),  # turn left in place
-            (1.0, 0.0, 0.0),  # stop
-            (3.0, 0.15, -0.2),  # forward with slight right
-            (2.0, -0.15, 0.0),  # reverse
-            (1.0, 0.0, 0.0),  # stop
+
         ]
 
         self._step_index = 0

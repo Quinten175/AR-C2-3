@@ -33,7 +33,8 @@ body {
     height: 340px;
     background: radial-gradient(circle at center, #292929 0%, #151515 60%, #101010 100%);
     border-radius: 0.5rem;
-    display: flex;
+    width: 640px;
+    height: 480px;
     align-items: center;
     justify-content: center;
     position: relative;
