@@ -7,7 +7,8 @@ import rclpy
 from rclpy.node import Node
 
 from std_msgs.msg import Bool
-from geometry_msgs.msg import Twist
+from geometry_msgs.msg import TwistStamped
+from std_msgs.msg import Header
 
 from ament_index_python.packages import get_package_share_directory
 
@@ -60,7 +61,7 @@ class ROSNode(Node):
         )
         
         self.cmd_vel_pub = self.create_publisher(
-            Twist,
+            TwistStamped,
             'cmd_vel',
             10
         )
@@ -84,16 +85,22 @@ class ROSNode(Node):
         pass
 
     def publish_cmd_vel(self, linear_x=0.0, angular_z=0.0):
-        msg = Twist()
+        msg = TwistStamped()
+        msg.header = Header()
+        msg.header.stamp = self.get_clock().now().to_msg()
+        msg.header.frame_id = 'base_link'
 
-        msg.linear.x = float(linear_x)
+        # Linear velocity
+        msg.twist.linear.x = float(linear_x)
 
-        msg.linear.y = 0.0
-        msg.linear.z = 0.0
+        # Everything else stays zero
+        msg.twist.linear.y = 0.0
+        msg.twist.linear.z = 0.0
 
-        msg.angular.x = 0.0
-        msg.angular.y = 0.0
-        msg.angular.z = float(angular_z)
+        # Angular velocity
+        msg.twist.angular.x = 0.0
+        msg.twist.angular.y = 0.0
+        msg.twist.angular.z = float(angular_z)
 
         self.cmd_vel_pub.publish(msg)
 

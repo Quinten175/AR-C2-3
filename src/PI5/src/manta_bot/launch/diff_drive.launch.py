@@ -29,7 +29,10 @@ def generate_launch_description():
         package='controller_manager',
         executable='ros2_control_node',
         output='screen',
-        parameters=[{'robot_description': robot_description}, controllers_file]
+        parameters=[{'robot_description': robot_description}, controllers_file],
+        # Controllers are spawned inside this process, so topic remappings for
+        # controllers must be applied here (not on the spawner nodes).
+        remappings=[('diff_drive_controller/cmd_vel', '/cmd_vel')]
     )
 
     joint_state_spawner = Node(

@@ -1,10 +1,8 @@
 import rclpy
 from rclpy.node import Node
-from geometry_msgs.msg import Twist
+from geometry_msgs.msg import TwistStamped
 
 import math
-
-from .serial_com import send_command, send_wheel_velocities
 
 # robot geometry, must match config/diff_drive_controller.yaml
 WHEEL_RADIUS = 0.0295      # m
@@ -105,21 +103,21 @@ class MovementHandler(Node):
         self.get_logger().info('Movement Handler Node has been started.')
 
         self.subscription = self.create_subscription(
-            Twist,
+            TwistStamped,
             '/cmd_vel',
             self.velocity_callback,
             10,
         )
 
-    def velocity_callback(self, msg: Twist):
-        """Convert Twist message to ONE combined wheel-velocity packet."""
-        lin_x = msg.linear.x
-        ang_z = msg.angular.z
+    def velocity_callback(self, msg: TwistStamped):
+        """Log cmd_vel for debugging. Hardware interface handles actual motor commands."""
+        lin_x = msg.twist.linear.x
+        ang_z = msg.twist.angular.z
 
         threshold = 0.01
 
         if abs(lin_x) < threshold and abs(ang_z) < threshold:
-            self.stop_wheels()
+            self.get_logger().debug('Stop command received')
             return
 
         # differential drive kinematics -> per-wheel linear speed (m/s)
@@ -131,17 +129,20 @@ class MovementHandler(Node):
         right_rpm = ((v_right / WHEEL_RADIUS) * 60.0 / (2.0 * math.pi)*2)
 
         self.get_logger().info(
-            f'Wheel targets - left: {left_rpm:.1f} rpm, right: {right_rpm:.1f} rpm'
+            f'cmd_vel: linear={lin_x:.2f} m/s, angular={ang_z:.2f} rad/s → wheel targets: left={left_rpm:.1f} rpm, right={right_rpm:.1f} rpm'
         )
-        send_wheel_velocities(left_rpm, right_rpm)
+        # NOTE: Hardware interface (MantaBotHardware) sends actual motor commands at 50 Hz
+        # This node is for monitoring/debugging only
 
-    def stop_wheels(self):
-        self.get_logger().info('Stop both wheels')
-        send_wheel_velocities(0.0, 0.0)
 
-    def emergency_stop(self):
-        self.get_logger().info('EMERGENCY STOP - All motors stopped')
-        send_wheel_velocities(0.0, 0.0)
+    # Old methods - no longer used, hardware interface handles motor control
+    # def stop_wheels(self):
+    #     self.get_logger().info('Stop both wheels')
+    #     send_wheel_velocities(0.0, 0.0)
+    # 
+    # def emergency_stop(self):
+    #     self.get_logger().info('EMERGENCY STOP - All motors stopped')
+    #     send_wheel_velocities(0.0, 0.0)
 
 
 def main(args=None):

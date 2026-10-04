@@ -138,22 +138,10 @@ bool MantaHardware::read_status(double & rpm1, double & rpm2)
 hardware_interface::return_type MantaHardware::read(
   const rclcpp::Time &, const rclcpp::Duration & period)
 {
-  double rpm1, rpm2;
-  if (!read_status(rpm1, rpm2)) {
-    static rclcpp::Clock steady_clock(RCL_STEADY_TIME);
-    RCLCPP_WARN_THROTTLE(rclcpp::get_logger("MantaHardware"),
-                         steady_clock, 2000,
-                         "no rpm answer from mega");
-    return hardware_interface::return_type::OK;  // keep last state
-  }
-
-  double rpms[2] = {rpm1, rpm2};
+  // TODO: Implement non-blocking RPM feedback when Arduino firmware supports it
+  // For now, mirror commanded velocities to state to avoid blocking serial reads
   for (int i = 0; i < 2; i++) {
-    // encoder only counts magnitude, so direction comes from the last command
-    double dir = 0;
-    if (last_rpm_[i] > 0) dir = 1;
-    else if (last_rpm_[i] < 0) dir = -1;
-    state_vel_[i] = to_rad_s(rpms[i]) * dir;
+    state_vel_[i] = cmd_vel_[i];
     state_pos_[i] += state_vel_[i] * period.seconds();
   }
   return hardware_interface::return_type::OK;
@@ -164,6 +152,16 @@ hardware_interface::return_type MantaHardware::write(
 {
   double rpm1 = to_rpm(cmd_vel_[0]);
   double rpm2 = to_rpm(cmd_vel_[1]);
+
+  // Debug: log whenever velocity changes significantly
+  static double last_rpm1 = 0, last_rpm2 = 0;
+  if (fabs(rpm1 - last_rpm1) > 1.0 || fabs(rpm2 - last_rpm2) > 1.0) {
+    RCLCPP_INFO(rclcpp::get_logger("MantaHardware"),
+                "cmd_vel updated: [%.2f, %.2f] rad/s → [%.1f, %.1f] rpm",
+                cmd_vel_[0], cmd_vel_[1], rpm1, rpm2);
+    last_rpm1 = rpm1;
+    last_rpm2 = rpm2;
+  }
 
   // both wheel targets in one atomic packet so the mega updates them together
   char buf[64];
