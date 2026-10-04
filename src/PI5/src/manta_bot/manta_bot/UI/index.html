@@ -57,13 +57,16 @@
             </div>
             <div class="card-body p-3">
               <div class="camera-feed" id="cameraFeed">
-                <div class="text-center">
-                  <i
-                    class="bi bi-camera-video-off camera-placeholder-icon d-block mb-2"
-                  ></i>
-                  <span class="text-muted small"
-                    >Camera feed not available</span
-                  >
+                <img 
+                  id="videoStream" 
+                  src="http://192.168.0.2:9091/" 
+                  alt="Live Camera Feed"
+                  style="width: 100%; height: auto; display: block; border-radius: 6px;"
+                  onerror="handleStreamError()"
+                />
+                <div id="streamError" style="display: none; text-align: center;">
+                  <i class="bi bi-exclamation-triangle camera-placeholder-icon d-block mb-2"></i>
+                  <span class="text-muted small">Failed to load camera stream</span>
                 </div>
               </div>
             </div>
@@ -371,6 +374,14 @@
       let driveInterval = null;
       let currentDirection = null;
 
+      function handleStreamError() {
+        const streamImg = document.getElementById('videoStream');
+        const streamError = document.getElementById('streamError');
+        if (streamImg) streamImg.style.display = 'none';
+        if (streamError) streamError.style.display = 'block';
+        console.error('Failed to load video stream from http://192.168.0.2:9091/');
+      }
+
       function getDriveVelocity(direction) {
         const maxLinearSpeed = 0.5;
         const maxAngularSpeed = 1.0;
@@ -629,6 +640,34 @@
       }
 
       setInterval(updateTelemetry, 5000);
+
+      // Video stream auto-reconnect
+      let streamReconnectAttempts = 0;
+      const maxReconnectAttempts = 5;
+      const streamUrl = 'http://192.168.0.2:9091/';
+
+      function reconnectStream() {
+        if (streamReconnectAttempts < maxReconnectAttempts) {
+          const streamImg = document.getElementById('videoStream');
+          const streamError = document.getElementById('streamError');
+          
+          // Add timestamp to bypass cache
+          streamImg.src = streamUrl + '?t=' + Date.now();
+          streamImg.style.display = 'block';
+          if (streamError) streamError.style.display = 'none';
+          
+          streamReconnectAttempts++;
+          console.log(`Stream reconnection attempt ${streamReconnectAttempts}/${maxReconnectAttempts}`);
+        }
+      }
+
+      // Attempt to reconnect stream every 5 seconds if failed
+      setInterval(() => {
+        const streamError = document.getElementById('streamError');
+        if (streamError && streamError.style.display !== 'none') {
+          reconnectStream();
+        }
+      }, 5000);
     </script>
   </body>
 </html>

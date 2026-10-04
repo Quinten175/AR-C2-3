@@ -44,6 +44,7 @@ setup(
             f'activate_mapping = {package_name}.Lidar.activate_mapping:main',
             f'wheel_test = {package_name}.Sim.wheel_test:main',
             f'movement_handler = {package_name}.Movement.movement_handler:main',
+            f'gamepad_controller = {package_name}.Movement.controller:main',
             f'UI_app = {package_name}.UI.UI_app:main',
         ],
         'ros2_control_systems': [

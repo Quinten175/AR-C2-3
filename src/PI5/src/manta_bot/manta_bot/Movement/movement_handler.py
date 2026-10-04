@@ -127,8 +127,8 @@ class MovementHandler(Node):
         v_right = lin_x + (ang_z * WHEEL_SEPARATION / 2.0)
 
         # m/s -> rad/s -> rpm (sign = direction)
-        left_rpm = (v_left / WHEEL_RADIUS) * 60.0 / (2.0 * math.pi)
-        right_rpm = (v_right / WHEEL_RADIUS) * 60.0 / (2.0 * math.pi)
+        left_rpm = ((v_left / WHEEL_RADIUS) * 60.0 / (2.0 * math.pi)*2)
+        right_rpm = ((v_right / WHEEL_RADIUS) * 60.0 / (2.0 * math.pi)*2)
 
         self.get_logger().info(
             f'Wheel targets - left: {left_rpm:.1f} rpm, right: {right_rpm:.1f} rpm'
