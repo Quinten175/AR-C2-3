@@ -55,6 +55,9 @@ run(
   '-p video_device:=/dev/video0 -p pixel_format:=yuyv ' +
   '-p image_width:=640 -p image_height:=480 -p framerate:=30.0'
 );
-setTimeout(() => run('ros2 run yolo26_ros2 yolo26_ros2'), 1000);
+setTimeout(() => run(
+  'ros2 run yolo26_ros2 yolo26_ros2 --ros-args ' +
+  '-p model_name:=yolo26n_ncnn_model'
+), 1000);
 setTimeout(() => run('ros2 run pi_stream stream'), 2000);
 setTimeout(() => children.push(spawn('ngrok', ['http', '9091'], { stdio: 'inherit' })), 4000);
