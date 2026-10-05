@@ -37,6 +37,8 @@ setup(
             f'activate_mapping = {package_name}.Lidar.activate_mapping:main',
             f'movement_handler = {package_name}.Movement.movement_handler:main',
             f'UI_app = {package_name}.UI.UI_app:main',
+            f'person_fusion = {package_name}.translation.test_file:main'
+            
 
         ],
         'ros2_control_systems': [

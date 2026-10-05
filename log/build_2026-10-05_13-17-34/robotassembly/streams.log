@@ -1,0 +1,19 @@
+[0.461s] Invoking command in '/home/rik-noorman/AR-C2-3/src/PI5/src/robotassembly': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/rik-noorman/AR-C2-3/build/robotassembly/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/rik-noorman/AR-C2-3/install/robotassembly/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../../../build/robotassembly build --build-base /home/rik-noorman/AR-C2-3/build/robotassembly/build install --record /home/rik-noorman/AR-C2-3/build/robotassembly/install.log --install-scripts $base/lib/robotassembly --single-version-externally-managed install_data
+[0.649s] running egg_info
+[0.662s] writing ../../../../build/robotassembly/robotassembly.egg-info/PKG-INFO
+[0.662s] writing dependency_links to ../../../../build/robotassembly/robotassembly.egg-info/dependency_links.txt
+[0.662s] writing requirements to ../../../../build/robotassembly/robotassembly.egg-info/requires.txt
+[0.662s] writing top-level names to ../../../../build/robotassembly/robotassembly.egg-info/top_level.txt
+[0.689s] reading manifest file '../../../../build/robotassembly/robotassembly.egg-info/SOURCES.txt'
+[0.690s] writing manifest file '../../../../build/robotassembly/robotassembly.egg-info/SOURCES.txt'
+[0.690s] running build
+[0.690s] running build_py
+[0.690s] running install
+[0.693s] running install_lib
+[0.707s] running install_data
+[0.707s] running install_egg_info
+[0.720s] removing '/home/rik-noorman/AR-C2-3/install/robotassembly/lib/python3.12/site-packages/robotassembly-0.0.0-py3.12.egg-info' (and everything under it)
+[0.720s] Copying ../../../../build/robotassembly/robotassembly.egg-info to /home/rik-noorman/AR-C2-3/install/robotassembly/lib/python3.12/site-packages/robotassembly-0.0.0-py3.12.egg-info
+[0.721s] running install_scripts
+[0.747s] writing list of installed files to '/home/rik-noorman/AR-C2-3/build/robotassembly/install.log'
+[0.762s] Invoked command in '/home/rik-noorman/AR-C2-3/src/PI5/src/robotassembly' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/rik-noorman/AR-C2-3/build/robotassembly/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/rik-noorman/AR-C2-3/install/robotassembly/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../../../build/robotassembly build --build-base /home/rik-noorman/AR-C2-3/build/robotassembly/build install --record /home/rik-noorman/AR-C2-3/build/robotassembly/install.log --install-scripts $base/lib/robotassembly --single-version-externally-managed install_data
