@@ -1,0 +1,9 @@
+[console_scripts]
+UI_app = manta_bot.UI.UI_app:main
+activate_mapping = manta_bot.Lidar.activate_mapping:main
+cmd_vel_dummy = manta_bot.Movement.cmd_vel_publisher:main
+movement_handler = manta_bot.Movement.movement_handler:main
+static_odom_publisher = manta_bot.Lidar.static_odom_publisher:main
+
+[ros2_control_systems]
+manta_bot_hardware = manta_bot.Movement.movement_handler:MantaBotHardware

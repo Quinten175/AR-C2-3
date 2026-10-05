@@ -1,0 +1,45 @@
+running egg_info
+creating ../../../../build/robotassembly/robotassembly.egg-info
+writing ../../../../build/robotassembly/robotassembly.egg-info/PKG-INFO
+writing dependency_links to ../../../../build/robotassembly/robotassembly.egg-info/dependency_links.txt
+writing requirements to ../../../../build/robotassembly/robotassembly.egg-info/requires.txt
+writing top-level names to ../../../../build/robotassembly/robotassembly.egg-info/top_level.txt
+writing manifest file '../../../../build/robotassembly/robotassembly.egg-info/SOURCES.txt'
+reading manifest file '../../../../build/robotassembly/robotassembly.egg-info/SOURCES.txt'
+writing manifest file '../../../../build/robotassembly/robotassembly.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/rik-noorman/AR-C2-3/build/robotassembly/build/lib/robotassembly
+copying robotassembly/__init__.py -> /home/rik-noorman/AR-C2-3/build/robotassembly/build/lib/robotassembly
+running install
+running install_lib
+creating /home/rik-noorman/AR-C2-3/install/robotassembly/lib/python3.12/site-packages/robotassembly
+copying /home/rik-noorman/AR-C2-3/build/robotassembly/build/lib/robotassembly/__init__.py -> /home/rik-noorman/AR-C2-3/install/robotassembly/lib/python3.12/site-packages/robotassembly
+byte-compiling /home/rik-noorman/AR-C2-3/install/robotassembly/lib/python3.12/site-packages/robotassembly/__init__.py to __init__.cpython-312.pyc
+running install_data
+creating /home/rik-noorman/AR-C2-3/install/robotassembly/share/ament_index/resource_index/packages
+copying resource/robotassembly -> /home/rik-noorman/AR-C2-3/install/robotassembly/share/ament_index/resource_index/packages
+copying package.xml -> /home/rik-noorman/AR-C2-3/install/robotassembly/share/robotassembly
+creating /home/rik-noorman/AR-C2-3/install/robotassembly/share/robotassembly/launch
+copying launch/display.launch.py -> /home/rik-noorman/AR-C2-3/install/robotassembly/share/robotassembly/launch
+creating /home/rik-noorman/AR-C2-3/install/robotassembly/share/robotassembly/urdf
+copying urdf/robotassembly.urdf -> /home/rik-noorman/AR-C2-3/install/robotassembly/share/robotassembly/urdf
+creating /home/rik-noorman/AR-C2-3/install/robotassembly/share/robotassembly/meshes
+copying meshes/MOTOR_SHAFT__JGB37_520__CHAMFER1.stl -> /home/rik-noorman/AR-C2-3/install/robotassembly/share/robotassembly/meshes
+copying meshes/pan_cross_head_am_B18_6_7M___M2_x_0_4_x_25_Type_I_Cross_Recessed_PHMS___25N__CIRPATTERN1.stl -> /home/rik-noorman/AR-C2-3/install/robotassembly/share/robotassembly/meshes
+copying meshes/SHAFT_COUPLER__JGB37_520__CHAMFER1.stl -> /home/rik-noorman/AR-C2-3/install/robotassembly/share/robotassembly/meshes
+copying meshes/Sheetmetalbase__SB_Tab__1_.stl -> /home/rik-noorman/AR-C2-3/install/robotassembly/share/robotassembly/meshes
+copying meshes/rplidarsheet__SB_Tab__1_.stl -> /home/rik-noorman/AR-C2-3/install/robotassembly/share/robotassembly/meshes
+copying meshes/DC_MOTOR__JGB37_520__FILLET1.stl -> /home/rik-noorman/AR-C2-3/install/robotassembly/share/robotassembly/meshes
+copying meshes/GEARED_BODY__MOTOR__JGB37_520__FILLET1.stl -> /home/rik-noorman/AR-C2-3/install/robotassembly/share/robotassembly/meshes
+copying meshes/COUPLING_BRACKET__GEARED_BODY_TO_DC_MOTOR__JGB37_520__CUT_EXTRUDE1.stl -> /home/rik-noorman/AR-C2-3/install/robotassembly/share/robotassembly/meshes
+copying meshes/PLASTIC_COVER__DC_MOTOR__JGB37_520__FILLET2.stl -> /home/rik-noorman/AR-C2-3/install/robotassembly/share/robotassembly/meshes
+copying meshes/lastbaseplate__BODY1.stl -> /home/rik-noorman/AR-C2-3/install/robotassembly/share/robotassembly/meshes
+copying meshes/RPlidar__Body1.stl -> /home/rik-noorman/AR-C2-3/install/robotassembly/share/robotassembly/meshes
+copying meshes/CONNECTION__DC_MOTOR__JGB37_520__CHAMFER1.stl -> /home/rik-noorman/AR-C2-3/install/robotassembly/share/robotassembly/meshes
+copying meshes/wheele2.stl -> /home/rik-noorman/AR-C2-3/install/robotassembly/share/robotassembly/meshes
+copying meshes/GEARED_BODY__MOTOR__JGB37_5201484__BODY2.stl -> /home/rik-noorman/AR-C2-3/install/robotassembly/share/robotassembly/meshes
+running install_egg_info
+Copying ../../../../build/robotassembly/robotassembly.egg-info to /home/rik-noorman/AR-C2-3/install/robotassembly/lib/python3.12/site-packages/robotassembly-0.0.0-py3.12.egg-info
+running install_scripts
+writing list of installed files to '/home/rik-noorman/AR-C2-3/build/robotassembly/install.log'

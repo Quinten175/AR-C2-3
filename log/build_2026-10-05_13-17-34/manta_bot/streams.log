@@ -1,0 +1,25 @@
+[0.464s] Invoking command in '/home/rik-noorman/AR-C2-3/src/PI5/src/manta_bot': AMENT_PREFIX_PATH=/home/rik-noorman/AR-C2-3/install/robotassembly:${AMENT_PREFIX_PATH} DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/rik-noorman/AR-C2-3/build/manta_bot/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/rik-noorman/AR-C2-3/install/manta_bot/lib/python3.12/site-packages:/home/rik-noorman/AR-C2-3/install/robotassembly/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../../../build/manta_bot build --build-base /home/rik-noorman/AR-C2-3/build/manta_bot/build install --record /home/rik-noorman/AR-C2-3/build/manta_bot/install.log --install-scripts $base/lib/manta_bot --single-version-externally-managed install_data
+[0.654s] running egg_info
+[0.667s] writing ../../../../build/manta_bot/manta_bot.egg-info/PKG-INFO
+[0.668s] writing dependency_links to ../../../../build/manta_bot/manta_bot.egg-info/dependency_links.txt
+[0.668s] writing entry points to ../../../../build/manta_bot/manta_bot.egg-info/entry_points.txt
+[0.668s] writing requirements to ../../../../build/manta_bot/manta_bot.egg-info/requires.txt
+[0.668s] writing top-level names to ../../../../build/manta_bot/manta_bot.egg-info/top_level.txt
+[0.695s] reading manifest file '../../../../build/manta_bot/manta_bot.egg-info/SOURCES.txt'
+[0.695s] writing manifest file '../../../../build/manta_bot/manta_bot.egg-info/SOURCES.txt'
+[0.695s] running build
+[0.695s] running build_py
+[0.696s] running install
+[0.699s] running install_lib
+[0.712s] running install_data
+[0.713s] running install_egg_info
+[0.726s] removing '/home/rik-noorman/AR-C2-3/install/manta_bot/lib/python3.12/site-packages/manta_bot-0.0.0-py3.12.egg-info' (and everything under it)
+[0.726s] Copying ../../../../build/manta_bot/manta_bot.egg-info to /home/rik-noorman/AR-C2-3/install/manta_bot/lib/python3.12/site-packages/manta_bot-0.0.0-py3.12.egg-info
+[0.726s] running install_scripts
+[0.753s] Installing UI_app script to /home/rik-noorman/AR-C2-3/install/manta_bot/lib/manta_bot
+[0.753s] Installing activate_mapping script to /home/rik-noorman/AR-C2-3/install/manta_bot/lib/manta_bot
+[0.753s] Installing cmd_vel_dummy script to /home/rik-noorman/AR-C2-3/install/manta_bot/lib/manta_bot
+[0.753s] Installing movement_handler script to /home/rik-noorman/AR-C2-3/install/manta_bot/lib/manta_bot
+[0.753s] Installing static_odom_publisher script to /home/rik-noorman/AR-C2-3/install/manta_bot/lib/manta_bot
+[0.753s] writing list of installed files to '/home/rik-noorman/AR-C2-3/build/manta_bot/install.log'
+[0.768s] Invoked command in '/home/rik-noorman/AR-C2-3/src/PI5/src/manta_bot' returned '0': AMENT_PREFIX_PATH=/home/rik-noorman/AR-C2-3/install/robotassembly:${AMENT_PREFIX_PATH} DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/rik-noorman/AR-C2-3/build/manta_bot/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/rik-noorman/AR-C2-3/install/manta_bot/lib/python3.12/site-packages:/home/rik-noorman/AR-C2-3/install/robotassembly/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../../../build/manta_bot build --build-base /home/rik-noorman/AR-C2-3/build/manta_bot/build install --record /home/rik-noorman/AR-C2-3/build/manta_bot/install.log --install-scripts $base/lib/manta_bot --single-version-externally-managed install_data
