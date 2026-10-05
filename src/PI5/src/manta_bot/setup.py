@@ -41,6 +41,7 @@ setup(
             f'wheel_test = {package_name}.Sim.wheel_test:main',
             f'movement_handler = {package_name}.Movement.movement_handler:main',
             f'UI_app = {package_name}.UI.UI_app:main',
+            f'waypoint_orderer= {package_name}.waypoint_orderer:main',
         ],
         'ros2_control_systems': [
             f'manta_bot_hardware = {package_name}.Movement.movement_handler:MantaBotHardware',
