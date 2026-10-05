@@ -62,7 +62,7 @@ class YoloDetectorNode(Node):
         try:
             cv_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding="bgr8")
 
-            kwargs = {"verbose": False}
+            kwargs = {"verbose": False, "classes": [0]}
             if not self.exported:
                 kwargs["imgsz"] = self.imgsz
             result = self.model(cv_image, **kwargs)[0]
