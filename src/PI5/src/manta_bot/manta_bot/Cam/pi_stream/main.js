@@ -9,7 +9,7 @@ function findWorkspaceSetup() {
   if (process.env.WS_SETUP) return process.env.WS_SETUP;
   let dir = __dirname;
   while (true) {
-    const candidate = path.join(dir, '..', 'install', 'setup.bash');
+    const candidate = path.join(dir, 'install', 'setup.bash');
     if (fs.existsSync(candidate)) return candidate;
     const parent = path.dirname(dir);
     if (parent === dir) return null;
@@ -60,4 +60,4 @@ setTimeout(() => run(
   '-p model_name:=yolo26n_ncnn_model'
 ), 1000);
 setTimeout(() => run('ros2 run pi_stream stream'), 2000);
-setTimeout(() => children.push(spawn('ngrok', ['http', '9091'], { stdio: 'inherit' })), 4000);
+setTimeout(() => children.push(spawn('ngrok', ['http', '9090'], { stdio: 'inherit' })), 4000);

@@ -118,10 +118,10 @@ def launch_setup(context, *args, **kwargs):
         
         # --- MAPPING & SLAM NODES
         slam_node,
-        activate_mapping_node,
+        # activate_mapping_node,
         
         # --- VISUALIZATION NODES
-        rviz_node
+        # rviz_node
     ]
     
 def generate_launch_description():

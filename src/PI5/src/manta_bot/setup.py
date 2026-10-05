@@ -63,6 +63,7 @@ setup(
             f'movement_handler = {package_name}.Movement.movement_handler:main',
             f'gamepad_controller = {package_name}.Movement.controller:main',
             f'UI_app = {package_name}.UI.UI_app:main',
+<<<<<<< HEAD
             f'serial_debug = {package_name}.Movement.serial_debug:main',
             # f'person_fusion = {package_name}.translation.test_file:main',
             # f'fake_scan_c = {package_name}.translation.fakelidarnode_c:main',
@@ -71,6 +72,10 @@ setup(
             # f'yolo_detector = {package_name}.Cam.yolo26_ros2:main', 
             # f'stream = {package_name}.Cam.stream:main',
             # f'stream_node = {package_name}.Cam.stream_node:main',
+=======
+            f'person_fusion = {package_name}.translation.test_file:main'
+            
+>>>>>>> 7575e69 (fix)
 
             f'make_nodes = {package_name}.Navigation.make_nodes:main',
             f'waypoint_orderer= {package_name}.Movement.waypoint_orderer:main',
