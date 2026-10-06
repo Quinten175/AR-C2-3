@@ -3,6 +3,7 @@ import os
 from launch import LaunchDescription
 from launch_ros.actions import Node
 from launch.actions import DeclareLaunchArgument, RegisterEventHandler
+from launch.conditions import IfCondition
 from launch.event_handlers import OnProcessStart
 from launch.substitutions import LaunchConfiguration, Command
 from launch_ros.parameter_descriptions import ParameterValue
@@ -53,23 +54,6 @@ def launch_setup(context, *args, **kwargs):
         output='screen'
     )
 
-    map_to_odom_node = Node(
-        package='tf2_ros',
-        executable='static_transform_publisher',
-        name='map_to_odom',
-        output='screen',
-        arguments=[
-            '0',
-            '0',
-            '0',
-            '0',
-            '0',
-            '0',
-            'map',
-            'odom'
-        ]
-    )
-
     odom_to_base_footprint_node = Node(
         package='tf2_ros',
         executable='static_transform_publisher',
@@ -84,7 +68,7 @@ def launch_setup(context, *args, **kwargs):
             '0',
             'odom',
             'base_footprint'
-        ]
+        ],
     )
 
     rplidar_node = Node(
@@ -138,7 +122,6 @@ def launch_setup(context, *args, **kwargs):
         urdf_file_arg,
         robot_state_publisher_node,
         joint_state_publisher_node,
-        map_to_odom_node,
         odom_to_base_footprint_node,
         rplidar_node,
         slam_node,
@@ -149,5 +132,10 @@ def launch_setup(context, *args, **kwargs):
 
 def generate_launch_description():
     return LaunchDescription([
+        DeclareLaunchArgument(
+            'publish_static_odom_tf',
+            default_value='true',
+            description='Set false if another node publishes odom to base_footprint TF'
+        ),
         OpaqueFunction(function=launch_setup)
     ])
