@@ -29,9 +29,10 @@ slam_toolbox:
 
     max_num_submaps: 3
     minimum_note_distance: 0.2
+
     use_scan_matching: true
     use_scan_barycenter: true
-    
+
     do_loop_closing: false
 
     distance_variance_penalty: 0.5
@@ -49,4 +50,5 @@ slam_toolbox:
 
     map_free_threshold: 0.25
     map_occupied_threshold: 0.65
+
     update_rate: 1.0

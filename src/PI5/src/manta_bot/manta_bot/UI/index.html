@@ -225,29 +225,17 @@
                   >
                 </div>
               </div>
-
-              <div class="stat-item px-3">
-                <div class="d-flex justify-content-between align-items-center">
-                  <span class="stat-label"
-                    ><i class="bi bi-map me-1"></i>Mapping</span
-                  >
-                  <strong
-                    id="mappingStatus"
-                    style="font-size: 0.95rem; color: #888"
-                    >Inactive</strong
-                  >
-                </div>
-              </div>
             </div>
           </div>
 
+          <!-- General actions -->
           <div class="card card-custom mb-3">
             <div class="card-header py-2 px-3">
-              <i class="bi bi-lightning me-2"></i>Actions
+              <i class="bi bi-lightning me-2"></i>General
             </div>
             <div class="card-body p-3">
               <div class="row g-2">
-                <div class="col-6">
+                <div class="col-4">
                   <button
                     class="btn action-btn w-100"
                     style="
@@ -261,7 +249,7 @@
                   </button>
                 </div>
 
-                <div class="col-6">
+                <div class="col-4">
                   <button
                     class="btn action-btn w-100"
                     style="
@@ -275,7 +263,7 @@
                   </button>
                 </div>
 
-                <div class="col-6">
+                <div class="col-4">
                   <button
                     class="btn action-btn w-100"
                     style="
@@ -288,19 +276,56 @@
                     <i class="bi bi-arrow-counterclockwise"></i> Reset
                   </button>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mapping actions -->
+          <div class="card card-custom mb-3">
+            <div class="card-header py-2 px-3">
+              <i class="bi bi-map me-2"></i>Mapping
+            </div>
+            <div class="card-body p-3">
+              <div class="row g-2">
+                <div class="col-6">
+                  <button
+                    class="btn action-btn w-100"
+                    style="
+                      background-color: #4a3a1a;
+                      border: 1px solid #7b5f2a;
+                      color: #ffc266;
+                    "
+                    onclick="saveMap()"
+                  >
+                    <i class="bi bi-save"></i> Save Map
+                  </button>
+                </div>
 
                 <div class="col-6">
                   <button
-                    id="toggleBtn"
                     class="btn action-btn w-100"
                     style="
-                      background-color: #4a2a3a;
-                      border: 1px solid #7b3d5b;
-                      color: #dd7fbb;
+                      background-color: #1a3f3f;
+                      border: 1px solid #2f6b6b;
+                      color: #6fdfdf;
                     "
-                    onclick="toggleMapping()"
+                    onclick="loadMap()"
                   >
-                    <i class="bi bi-map-fill"></i> Mapping
+                    <i class="bi bi-folder2-open"></i> Load Map
+                  </button>
+                </div>
+
+                <div class="col-6">
+                  <button
+                    class="btn action-btn w-100"
+                    style="
+                      background-color: #3a2a4a;
+                      border: 1px solid #5f3d7b;
+                      color: #b98cff;
+                    "
+                    onclick="resetMap()"
+                  >
+                    <i class="bi bi-trash"></i> Clear Map
                   </button>
                 </div>
               </div>
@@ -424,6 +449,60 @@
           .catch((error) => {
             console.error("Mapping error:", error);
             showToast("Failed to toggle mapping", "danger");
+          });
+      }
+
+      function saveMap() {
+        fetch("/api/save", {
+          method: "POST",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              showToast("Map saved successfully", "success");
+            } else {
+              showToast(data.error || "Failed to save map", "danger");
+            }
+          })
+          .catch((error) => {
+            console.error("Save map error:", error);
+            showToast("Failed to save map", "danger");
+          });
+      }
+
+      function loadMap() {
+        fetch("/api/load", {
+          method: "POST",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              showToast("Map loaded successfully", "success");
+            } else {
+              showToast(data.error || "Failed to load map", "danger");
+            }
+          })
+          .catch((error) => {
+            console.error("Load map error:", error);
+            showToast("Failed to load map", "danger");
+          });
+      }
+
+      function resetMap() {
+        fetch("/api/reset", {
+          method: "POST",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              showToast("Map reset successfully", "success");
+            } else {
+              showToast(data.error || "Failed to reset map", "danger");
+            }
+          })
+          .catch((error) => {
+            console.error("Reset map error:", error);
+            showToast("Failed to reset map", "danger");
           });
       }
 

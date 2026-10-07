@@ -16,11 +16,13 @@
   <depend>controller_manager</depend>
   <depend>diff_drive_controller</depend>
   <depend>ros2_control</depend>
-  <depend>robotassembly</depend>
-  <depend>rplidar_ros</depend>
   <depend>cv_bridge</depend>
   <depend>python3-ultralytics-pip</depend>
   
+  <depend>robot_state_publisher</depend>
+  <depend>robot_state_publisher_gui</depend>
+  <depend>manta_bot_interfaces</depend>
+
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
   <test_depend>ament_pep257</test_depend>
