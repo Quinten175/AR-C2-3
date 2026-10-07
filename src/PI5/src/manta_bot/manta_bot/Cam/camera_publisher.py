@@ -18,6 +18,8 @@ class CameraPublisher(Node):
         if not self.cap.isOpened():
             self.get_logger().error("Failed to open camera")
             return
+        if self.cap.isOpened():
+            self.get_logger().info("Camera opened successfully")
 
         # Request YUYV first
         fourcc = cv2.VideoWriter_fourcc(*"YUYV")
@@ -49,7 +51,7 @@ class CameraPublisher(Node):
         msg = self.bridge.cv2_to_imgmsg(frame, encoding='bgr8')
         self.publisher.publish(msg)
 
-        self.get_logger().info(f"Published frame: shape={frame.shape}, read={elapsed * 1000:.1f} ms")
+        #self.get_logger().info(f"Published frame: shape={frame.shape}, read={elapsed * 1000:.1f} ms")
 
 
 def main(args=None):

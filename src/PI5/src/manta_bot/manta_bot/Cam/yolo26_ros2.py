@@ -1,6 +1,8 @@
 import os
 import time
 
+from PIL.Image import Path
+from pathlib import Path
 import cv2
 import numpy as np
 import rclpy
@@ -37,8 +39,16 @@ class YoloDetectorNode(Node):
 
         self.bridge = CvBridge()
 
-        share = get_package_share_directory("yolo26_ros2")
-        model_path = os.path.join(share, "models", model_name)
+        self.declare_parameter("models_dir", "")
+        models_dir = self.get_parameter("models_dir").value
+        if not models_dir:
+            src = Path(__file__).resolve().parent / "models"
+            if src.is_dir():  # symlinl install
+                models_dir = str(src)
+            else:             
+                models_dir = os.path.join(get_package_share_directory("manta_bot"), "models")
+
+        model_path = os.path.join(models_dir, model_name)
         self.get_logger().info(f"Loading YOLO model from: {model_path}")
         self.model = YOLO(model_path, task="detect")
         self.exported = os.path.isdir(model_path)  # NCNN/ONNX: imgsz fixed at export
