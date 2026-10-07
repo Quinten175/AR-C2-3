@@ -3,7 +3,7 @@
 waypoint_orderer: subscribes to a list of coordinates, computes a visiting
 order (see tour_planner.py), publishes it, and sends it to Nav2.
 
-Input : geometry_msgs/PoseArray on 'waypoints_to_visit'
+Input : geometry_msgs/PoseArray on 'tsp/nodes'
 Output: nav_msgs/Path           on 'visit_order'  (for RViz / debugging)
         nav2_msgs/FollowWaypoints action 'follow_waypoints' (Nav2)
 
@@ -37,10 +37,12 @@ class WaypointOrderer(Node):
         self.sub = self.create_subscription(
             PoseArray, 'tsp/nodes', self.on_waypoints, 10)
         self.order_pub = self.create_publisher(Path, 'tsp/visit_order', 10)
-        self.nav_client = ActionClient(self, FollowWaypoints, 'tsp/follow_waypoints')
+        self.nav_client = ActionClient(self, FollowWaypoints, 'follow_waypoints')
 
         self._goal_handle = None
-        self.get_logger().info('waypoint_orderer ready, waiting on /waypoints_to_visit')
+        self._pending_poses = None
+        self._server_wait_timer = None
+        self.get_logger().info('waypoint_orderer ready, waiting on /tsp/nodes')
 
     # -- helpers -----------------------------------------------------------
     def robot_pose(self, stamp):
@@ -77,9 +79,10 @@ class WaypointOrderer(Node):
             return
 
         if msg.header.frame_id and msg.header.frame_id != self.global_frame:
-            self.get_logger().warn(
+            self.get_logger().error(
                 f'Waypoints are in "{msg.header.frame_id}" but this node assumes '
                 f'"{self.global_frame}". Transform them first or change the parameter.')
+            return
 
         stamp = self.get_clock().now().to_msg()
         start_pose = self.robot_pose(stamp)
@@ -106,14 +109,35 @@ class WaypointOrderer(Node):
         self.send_to_nav2(ordered)
 
     def send_to_nav2(self, poses):
+        if self._goal_handle is not None:
+            self._goal_handle.cancel_goal_async()
+            self._goal_handle = None
+
         if not self.nav_client.server_is_ready():
-            self.get_logger().error(
-                'follow_waypoints action server not available. Is Nav2 running?')
+            self._pending_poses = poses
+            if self._server_wait_timer is None:
+                self._server_wait_timer = self.create_timer(
+                    0.5,
+                    self._send_pending_goal_when_ready,
+                )
+            self.get_logger().warn(
+                'follow_waypoints action server is not ready; waiting to send '
+                'the TSP route')
             return
 
-        if self._goal_handle is not None:  # cancel the previous run
-            self._goal_handle.cancel_goal_async()
+        self._send_goal(poses)
 
+    def _send_pending_goal_when_ready(self):
+        if self._pending_poses is None or not self.nav_client.server_is_ready():
+            return
+
+        poses = self._pending_poses
+        self._pending_poses = None
+        self._server_wait_timer.cancel()
+        self._server_wait_timer = None
+        self._send_goal(poses)
+
+    def _send_goal(self, poses):
         goal = FollowWaypoints.Goal()
         goal.poses = poses
         future = self.nav_client.send_goal_async(goal, feedback_callback=self.on_feedback)

@@ -2,9 +2,14 @@ import os
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.actions import (
+    DeclareLaunchArgument,
+    IncludeLaunchDescription,
+    TimerAction,
+)
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
+from launch_ros.actions import Node
 
 
 def generate_launch_description():
@@ -15,7 +20,11 @@ def generate_launch_description():
 
     slam = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(manta_pkg_share, 'launch', 'slam.launch.py')
+            os.path.join(
+                manta_pkg_share,
+                'launch',
+                'slam.launch.py'
+            )
         ),
         launch_arguments={
             'publish_static_odom_tf': LaunchConfiguration(
@@ -39,6 +48,30 @@ def generate_launch_description():
         }.items()
     )
 
+    tsp = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                manta_pkg_share,
+                'launch',
+                'tsp.launch.py'
+            )
+        )
+    )
+
+    movement_handler = Node(
+        package='manta_bot',
+        executable='movement_handler',
+        name='movement_handler',
+        output='screen'
+    )
+
+    delayed_navigation = TimerAction(
+        period=10.0,
+        actions=[
+            navigation
+        ]
+    )
+
     return LaunchDescription([
         DeclareLaunchArgument(
             'publish_static_odom_tf',
@@ -46,5 +79,7 @@ def generate_launch_description():
             description='Set false if another node publishes odom to base_footprint TF'
         ),
         slam,
-        navigation
+        tsp,
+        movement_handler,
+        delayed_navigation
     ])
