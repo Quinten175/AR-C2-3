@@ -19,6 +19,10 @@
   <depend>robot_state_publisher</depend>
   <depend>robot_state_publisher_gui</depend>
 
+
+  <depend>cv_bridge</depend>
+  <depend>python3-ultralytics-pip</depend>
+  
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
   <test_depend>ament_pep257</test_depend>

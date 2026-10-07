@@ -27,7 +27,10 @@ def u_to_bearing(u):
 class Fusion(Node):
     def __init__(self):
         super().__init__('person_fusion')
-        det = Subscriber(self, Detection2DArray, '/detections')   # your topic
+
+        self.get_logger().info('Person fusion node is gestart!')
+
+        det = Subscriber(self, Detection2DArray, '/detections')
         scan = Subscriber(self, LaserScan, '/scan')
         self.sync = ApproximateTimeSynchronizer([det, scan], 10, 0.05)
         self.sync.registerCallback(self.cb)

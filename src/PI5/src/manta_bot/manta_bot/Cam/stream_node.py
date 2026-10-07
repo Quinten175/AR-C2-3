@@ -59,7 +59,7 @@ class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
 class StreamNode(Node):
     def __init__(self):
         super().__init__('mjpeg_stream')
-        self.declare_parameter('port', 9090)
+        self.declare_parameter('port', 9091)
         self.declare_parameter('topic', '/image_raw')
         self.declare_parameter('jpeg_quality', 80)
 
