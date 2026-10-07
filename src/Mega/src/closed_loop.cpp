@@ -4,9 +4,9 @@
 #include "motor_control.h"
 
 // tuned values
-static PID pid1(0.68, 8.2);
-static PID pid2(0.71, 7.5);
-pid1 = pid2;
+static PID pid2(0.68, 8.2);
+static PID pid1(0.71, 7.5);
+
 static float target1 = 0;
 static float target2 = 0;
 static float rpm1 = 0;
@@ -47,41 +47,43 @@ void closed_loop_update(float dt) {
     float t2 = target2;
     if (sync_motors) t2 = target1;
 
-    float out1 = 0;
-    float out2 = 0;
+    // both targets zero -> hard-stop BOTH wheels in the same cycle.
+    // coasting (PWM=0) lets each wheel spin down at its own rate,
+    // which is why one wheel used to stop later than the other.
+    if (target1 == 0 && t2 == 0 && !manual1 && !manual2) {
+        pid1.reset();
+        pid2.reset();
+        motor1_stop();
+        motor2_stop();
+    } else {
+        float out1 = 0;
+        float out2 = 0;
 
-    // motor 1: skip while an open-loop command (M1F/M1R) is driving it
-    if (!manual1) {
-        if (target1 != 0) {
-            out1 = pid1.update(fabs(target1), rpm1, dt);
-            out1 = constrain(out1, 0, 255);
-            if (out1 < PWM_FLOOR) out1 = PWM_FLOOR;
-            if (target1 < 0) out1 = -out1;
-        } else {
-            pid1.reset();
+        // motor 1: skip while an open-loop command (M1F/M1R) is driving it
+        if (!manual1) {
+            if (target1 != 0) {
+                out1 = pid1.update(fabs(target1), rpm1, dt);
+                out1 = constrain(out1, 0, 255);
+                if (out1 < PWM_FLOOR) out1 = PWM_FLOOR;
+                if (target1 < 0) out1 = -out1;
+            } else {
+                pid1.reset();
+            }
+            drive(1, out1);
         }
-        drive(1, out1);
-    }
 
-    // motor 2: skip while an open-loop command (M2F/M2R) is driving it
-    if (!manual2) {
-        if (t2 != 0) {
-            out2 = pid2.update(fabs(t2), rpm2, dt);
-            out2 = constrain(out2, 0, 255);
-            if (out2 < PWM_FLOOR) out2 = PWM_FLOOR;
-            if (t2 < 0) out2 = -out2;
-        } else {
-            pid2.reset();
+        // motor 2: skip while an open-loop command (M2F/M2R) is driving it
+        if (!manual2) {
+            if (t2 != 0) {
+                out2 = pid2.update(fabs(t2), rpm2, dt);
+                out2 = constrain(out2, 0, 255);
+                if (out2 < PWM_FLOOR) out2 = PWM_FLOOR;
+                if (t2 < 0) out2 = -out2;
+            } else {
+                pid2.reset();
+            }
+            drive(2, out2);
         }
-        drive(2, out2);
-    }
-
-    static unsigned long last_rpm_print = 0;
-    if (millis() - last_rpm_print >= 200) {
-        float r1, r2;
-        closed_loop_get_status(r1, r2);
-        Serial.println("RPM1: " + String(r1) + " RPM2: " + String(r2));
-        last_rpm_print = millis();
     }
 }
 
@@ -104,7 +106,10 @@ void closed_loop_stop() {
     target2 = 0;
     manual1 = false;   // take the motors back so they actually get stopped
     manual2 = false;
-    closed_loop_update(0.02);
+    pid1.reset();
+    pid2.reset();
+    motor1_stop();     // stop both in the same instant, no coasting
+    motor2_stop();
 }
 
 void closed_loop_get_status(float &out_rpm1, float &out_rpm2) {
