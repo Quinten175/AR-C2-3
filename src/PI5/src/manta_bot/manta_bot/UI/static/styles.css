@@ -30,11 +30,12 @@ body {
 
 .camera-feed {
     width: 100%;
-    height: 340px;
+    max-width: 640px;
+    margin: 0 auto;
+    aspect-ratio: 4 / 3; /* matches the camera's native 640x480 resolution */
     background: radial-gradient(circle at center, #292929 0%, #151515 60%, #101010 100%);
     border-radius: 0.5rem;
-    width: 640px;
-    height: 480px;
+    display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
@@ -44,7 +45,7 @@ body {
 .camera-feed img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain; /* scale to fit without cropping any part of the image */
     border-radius: 0.5rem;
 }
 
@@ -205,7 +206,7 @@ body {
 
 @media (max-width: 768px) {
     .camera-feed {
-        height: 220px;
+        max-width: 100%;
     }
 
     .drive-btn {
