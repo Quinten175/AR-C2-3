@@ -4,8 +4,12 @@ from glob import glob
  
 package_name = 'manta_bot'
 
+<<<<<<< HEAD
 ## Recursively collect files under src so nested folders (e.g. the ncnn model
 ## subdirectory) are installed too, otherwise they are not found after colcon build
+=======
+## with debugging claude said I should add this function to include the models in the package, otherwise they are not found when installed via colcon build
+>>>>>>> 6bde87c (imp)
 def package_files(dest, src):
     out = []
     for root, _, files in os.walk(src):
@@ -15,6 +19,7 @@ def package_files(dest, src):
             out.append((target, [os.path.join(root, f) for f in files]))
     return out
 
+<<<<<<< HEAD
 def generate_data_files():
     data_files = [
         ('share/ament_index/resource_index/packages', ['resource/' + package_name]),
@@ -31,6 +36,8 @@ def generate_data_files():
     # data_files += package_files(os.path.join('share', package_name, 'models'), 'manta_bot/Cam/models')
     return data_files
 
+=======
+>>>>>>> 6bde87c (imp)
 setup(
     name=package_name,
     version='0.0.0',
@@ -43,6 +50,14 @@ setup(
     },
     data_files=generate_data_files(),
 
+<<<<<<< HEAD
+=======
+        (os.path.join('share', package_name, 'launch'), glob('launch/*.py')),
+        (os.path.join('share', package_name, 'config'), glob('config/*.yaml')),
+
+    ] + package_files(os.path.join('share', package_name, 'models'), 'manta_bot/Cam/models'),
+
+>>>>>>> 6bde87c (imp)
     install_requires=['setuptools'],
     zip_safe=False,
     maintainer='quin',
@@ -64,6 +79,7 @@ setup(
             f'gamepad_controller = {package_name}.Movement.controller:main',
             f'UI_app = {package_name}.UI.UI_app:main',
 <<<<<<< HEAD
+<<<<<<< HEAD
             f'serial_debug = {package_name}.Movement.serial_debug:main',
             # f'person_fusion = {package_name}.translation.test_file:main',
             # f'fake_scan_c = {package_name}.translation.fakelidarnode_c:main',
@@ -74,6 +90,17 @@ setup(
             # f'stream_node = {package_name}.Cam.stream_node:main',
 =======
             f'person_fusion = {package_name}.translation.test_file:main'
+=======
+            f'person_fusion = {package_name}.translation.test_file:main',
+            
+            f'fake_scan_c = {package_name}.translation.fakelidarnode_c:main',
+            f'fake_scan = {package_name}.translation.fakelidarnode:main',
+            f'camera_publisher = {package_name}.Cam.camera_publisher:main',
+            f'yolo_detector = {package_name}.Cam.yolo26_ros2:main', 
+            f'stream = {package_name}.Cam.stream:main',
+            f'stream_node = {package_name}.Cam.stream_node:main',
+
+>>>>>>> 6bde87c (imp)
             
 >>>>>>> 7575e69 (fix)
 

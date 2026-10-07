@@ -16,11 +16,16 @@
   <depend>controller_manager</depend>
   <depend>diff_drive_controller</depend>
   <depend>ros2_control</depend>
+<<<<<<< HEAD
   <depend>robot_state_publisher</depend>
   <depend>robot_state_publisher_gui</depend>
   <depend>manta_bot_interfaces</depend>
 
 
+=======
+  <depend>robotassembly</depend>
+  <depend>rplidar_ros</depend>
+>>>>>>> 6bde87c (imp)
   <depend>cv_bridge</depend>
   <depend>python3-ultralytics-pip</depend>
   

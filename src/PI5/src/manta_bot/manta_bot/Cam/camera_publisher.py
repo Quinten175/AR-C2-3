@@ -73,7 +73,11 @@ def main(args=None):
         if camera_publisher is not None:
             camera_publisher.destroy_node()
 
+<<<<<<< HEAD
         if rclpy.ok():
             rclpy.shutdown()
+=======
+        rclpy.shutdown()
+>>>>>>> 6bde87c (imp)
 if __name__ == '__main__':
     main()

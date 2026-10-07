@@ -28,13 +28,19 @@ class Fusion(Node):
     def __init__(self):
         super().__init__('person_fusion')
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 6bde87c (imp)
 
         self.get_logger().info('Person fusion node is gestart!')
 
         det = Subscriber(self, Detection2DArray, '/detections')
+<<<<<<< HEAD
 =======
         det = Subscriber(self, Detection2DArray, '/detections')   # your topic
 >>>>>>> 7575e69 (fix)
+=======
+>>>>>>> 6bde87c (imp)
         scan = Subscriber(self, LaserScan, '/scan')
         self.sync = ApproximateTimeSynchronizer([det, scan], 10, 0.05)
         self.sync.registerCallback(self.cb)
