@@ -35,9 +35,9 @@ class WaypointOrderer(Node):
         self.tf_listener = TransformListener(self.tf_buffer, self)
 
         self.sub = self.create_subscription(
-            PoseArray, 'waypoints_to_visit', self.on_waypoints, 10)
-        self.order_pub = self.create_publisher(Path, 'visit_order', 10)
-        self.nav_client = ActionClient(self, FollowWaypoints, 'follow_waypoints')
+            PoseArray, 'tsp/nodes', self.on_waypoints, 10)
+        self.order_pub = self.create_publisher(Path, 'tsp/visit_order', 10)
+        self.nav_client = ActionClient(self, FollowWaypoints, 'tsp/follow_waypoints')
 
         self._goal_handle = None
         self.get_logger().info('waypoint_orderer ready, waiting on /waypoints_to_visit')

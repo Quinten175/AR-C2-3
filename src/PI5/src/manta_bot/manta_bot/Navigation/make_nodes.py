@@ -1,11 +1,11 @@
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import PointStamped
+from geometry_msgs.msg import Pose
+from geometry_msgs.msg import PoseArray
 from visualization_msgs.msg import Marker
 from visualization_msgs.msg import MarkerArray
 from std_srvs.srv import Trigger
-from manta_bot_interfaces.msg import Position, TspMarker, TspMarkers
-
 
 class MakeNodes(Node):
     def __init__(self):
@@ -14,7 +14,7 @@ class MakeNodes(Node):
         self.nodes = []
 
         self.nodes_publisher = self.create_publisher(
-            TspMarkers,
+            PoseArray,
             '/tsp/nodes',
             10
         )
@@ -31,7 +31,7 @@ class MakeNodes(Node):
             self.point_callback,
             10
         )
-        
+
         self.clear_service = self.create_service(
             Trigger,
             '/tsp/clear_nodes',
@@ -60,13 +60,21 @@ class MakeNodes(Node):
         )
 
     def publish_nodes(self):
-        message = TspMarkers()
+        message = PoseArray()
+        message.header.frame_id = 'map'
+        message.header.stamp = self.get_clock().now().to_msg()
 
         for node in self.nodes:
-            marker = TspMarker()
-            marker.position.x = node[0]
-            marker.position.y = node[1]
-            message.poses.append(marker)
+            pose = Pose()
+            pose.position.x = node[0]
+            pose.position.y = node[1]
+            pose.position.z = 0.0
+            pose.orientation.x = 0.0
+            pose.orientation.y = 0.0
+            pose.orientation.z = 0.0
+            pose.orientation.w = 1.0
+
+            message.poses.append(pose)
 
         self.nodes_publisher.publish(message)
 
@@ -147,8 +155,7 @@ def main(args=None):
         pass
 
     node.destroy_node()
-    rclpy.shutdown()
 
 
-if __name__ == '__main__':
-    main()
+    if __name__ == '**main**':
+        main()
