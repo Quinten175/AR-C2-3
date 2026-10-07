@@ -59,6 +59,7 @@ def launch_setup(context, *args, **kwargs):
         executable='static_transform_publisher',
         name='odom_to_base_footprint',
         output='screen',
+        condition=IfCondition(LaunchConfiguration('publish_static_odom_tf')),
         arguments=[
             '0',
             '0',

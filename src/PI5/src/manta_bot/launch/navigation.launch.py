@@ -58,13 +58,6 @@ def generate_launch_description():
         )
     )
 
-    movement_handler = Node(
-        package='manta_bot',
-        executable='movement_handler',
-        name='movement_handler',
-        output='screen'
-    )
-
     delayed_navigation = TimerAction(
         period=10.0,
         actions=[
@@ -75,11 +68,10 @@ def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument(
             'publish_static_odom_tf',
-            default_value='false',
+            default_value='true',
             description='Set false if another node publishes odom to base_footprint TF'
         ),
         slam,
         tsp,
-        movement_handler,
         delayed_navigation
     ])

@@ -291,8 +291,7 @@ docking_server:
     dock_backwards: false
     dock_prestaging_tolerance: 0.5
 
-    dock_plugins:
-      - "simple_charging_dock"
+    dock_plugins: ["simple_charging_dock"]
 
     simple_charging_dock:
       plugin: "opennav_docking::SimpleChargingDock"
