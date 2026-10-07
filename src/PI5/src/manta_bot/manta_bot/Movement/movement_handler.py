@@ -148,9 +148,13 @@ class MovementHandler(Node):
 def main(args=None):
     rclpy.init(args=args)
     movement_handler = MovementHandler()
-    rclpy.spin(movement_handler)
+    try:
+        rclpy.spin(movement_handler)
+    except KeyboardInterrupt:
+        pass
     movement_handler.destroy_node()
-    rclpy.shutdown()
+    if rclpy.ok():
+        rclpy.shutdown()
 
 
 if __name__ == '__main__':

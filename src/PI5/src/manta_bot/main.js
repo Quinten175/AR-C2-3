@@ -36,10 +36,34 @@ const run = (cmd) => {
 
 const shutdown = () => {
   children.forEach((c) => c.kill('SIGINT'));
-  setTimeout(() => process.exit(0), 1000);
+  children.forEach((c) => c.kill('SIGTERM'));
+  // ngrok ignores SIGINT sometimes; force-kill stragglers, then give the OS a moment
+  setTimeout(() => {
+    children.forEach((c) => c.kill('SIGKILL'));
+    process.exit(0);
+  }, 1000);
 };
 process.on('SIGINT', shutdown);
 process.on('SIGTERM', shutdown);
+
+// Kill any orphaned ngrok from a previous run, otherwise ngrok fails with
+// ERR_NGROK_334 ("endpoint is already online")
+const { execSync } = require('child_process');
+try {
+  const pids = execSync("pgrep -f 'ngrok http' || true").toString().trim();
+  if (pids) {
+    console.log(`Killing stale ngrok process(es): ${pids.split('\n').join(', ')}`);
+    execSync(`kill ${pids.split('\n').join(' ')} 2>/dev/null || true`);
+    // Wait until the tunnel is actually gone (endpoint release can take a moment)
+    for (let i = 0; i < 10; i++) {
+      const still = execSync("pgrep -f 'ngrok http' || true").toString().trim();
+      if (!still) break;
+      execSync('sleep 1');
+    }
+  }
+} catch (e) {
+  // pgrep/kill unavailable or nothing to kill — ignore
+}
 
 run('ros2 run manta_bot camera_publisher');
 

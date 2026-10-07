@@ -3,20 +3,9 @@ import os
 from glob import glob
  
 package_name = 'manta_bot'
-def generate_data_files():
-    data_files = [
-        ('share/ament_index/resource_index/packages', ['resource/' + package_name]),
-        ('share/' + package_name, ['package.xml']),
-        (os.path.join('share', package_name, 'launch'), glob('launch/*.launch.py')),
-        (os.path.join('share', package_name, 'config'), glob('config/*')),
-        (os.path.join('share', package_name, 'meshes'), glob('meshes/*')),
-        (os.path.join('share', package_name, 'urdf'), glob('urdf/*')),
-        (os.path.join('share', package_name, 'UI'),glob('manta_bot/UI/*.html')),
-        (os.path.join('share', package_name, 'UI', 'static'),glob('manta_bot/UI/static/*')),
-    ]
-    return data_files
 
-## with debugging claude said I should add this function to include the models in the package, otherwise they are not found when installed via colcon build
+## Recursively collect files under src so nested folders (e.g. the ncnn model
+## subdirectory) are installed too, otherwise they are not found after colcon build
 def package_files(dest, src):
     out = []
     for root, _, files in os.walk(src):
@@ -25,6 +14,21 @@ def package_files(dest, src):
             target = dest if rel == '.' else os.path.join(dest, rel)
             out.append((target, [os.path.join(root, f) for f in files]))
     return out
+
+def generate_data_files():
+    data_files = [
+        ('share/ament_index/resource_index/packages', ['resource/' + package_name]),
+        ('share/' + package_name, ['package.xml']),
+        (os.path.join('share', package_name, 'launch'), glob('launch/*.launch.py')),
+        (os.path.join('share', package_name, 'config'), glob('config/*')),
+        (os.path.join('share', package_name, 'meshes'), glob('meshes/*')),
+        (os.path.join('share', package_name, 'urdf'), glob('urdf/*')),
+        (os.path.join('share', package_name, 'UI'), glob('manta_bot/UI/*.html')),
+        (os.path.join('share', package_name, 'UI', 'static'), glob('manta_bot/UI/static/*')),
+    ]
+    # YOLO models (yolo26n.pt + yolo26n_ncnn_model/)
+    data_files += package_files(os.path.join('share', package_name, 'models'), 'manta_bot/Cam/models')
+    return data_files
 
 setup(
     name=package_name,
@@ -37,15 +41,6 @@ setup(
         ],
     },
     data_files=generate_data_files(),
-    data_files=[
-        ('share/ament_index/resource_index/packages',
-            ['resource/' + package_name]),
-        ('share/' + package_name, ['package.xml']),
-
-        (os.path.join('share', package_name, 'launch'), glob('launch/*.py')),
-        (os.path.join('share', package_name, 'config'), glob('config/*.yaml')),
-
-    ] + package_files(os.path.join('share', package_name, 'models'), 'manta_bot/Cam/models'),
 
     install_requires=['setuptools'],
     zip_safe=False,
@@ -68,9 +63,8 @@ setup(
             f'gamepad_controller = {package_name}.Movement.controller:main',
             f'UI_app = {package_name}.UI.UI_app:main',
             f'serial_debug = {package_name}.Movement.serial_debug:main',
-            f'person_fusion = {package_name}.translation.test_file:main'
             f'person_fusion = {package_name}.translation.test_file:main',
-            
+
             f'fake_scan_c = {package_name}.translation.fakelidarnode_c:main',
             f'fake_scan = {package_name}.translation.fakelidarnode:main',
             f'camera_publisher = {package_name}.Cam.camera_publisher:main',
