@@ -6,6 +6,7 @@ from launch.substitutions import LaunchConfiguration, Command
 from launch_ros.parameter_descriptions import ParameterValue
 from launch.actions import OpaqueFunction
 from ament_index_python.packages import get_package_share_directory
+from launch.actions import Shutdown
 
 def launch_setup(context, *args, **kwargs):
     # --- CONFIGS
@@ -47,13 +48,6 @@ def launch_setup(context, *args, **kwargs):
         parameters=[{'zeros': {}}]
     )
 
-    static_odom_node = Node(
-        package='manta_bot',
-        executable='static_odom_publisher',
-        name='static_odom_publisher',
-        output='screen'
-    )
-
     # --- SENSOR NODES
     rplidar_node = Node(
         package='rplidar_ros',
@@ -68,7 +62,8 @@ def launch_setup(context, *args, **kwargs):
             'angle_compensate': True,
             'scan_mode': 'Boost',
             'scan_frequency': 5.5
-        }]
+        }],
+        on_exit=Shutdown(reason='rplidar_node exited unexpectedly')
     )
 
     # --- MAPPING & SLAM NODES
@@ -80,48 +75,22 @@ def launch_setup(context, *args, **kwargs):
         parameters=[slam_config_path]
     )
 
-    static_odom_node = Node(
-        package='manta_bot',
-        executable='activate_mapping',
-        name='activate_mapping',
-        output='screen'
-    )
-
-    rplidar_node = Node(
-        package='rplidar_ros',
-        executable='rplidar_node',
-        name='rplidar_node',
-        output='screen',
-        parameters=[{
-            'serial_port': '/dev/ttyUSB0',
-            'serial_baudrate': 115200,
-            'frame_id': 'laser',
-            'inverted': False,
-            'angle_compensate': True,
-            'scan_mode': 'Standard'
-        }]
-    )
-
+    # Statische transformatie van je robot naar de lidar (Zorgt dat SLAM de Lidar snapt!)
     static_tf_node = Node(
         package='tf2_ros',
         executable='static_transform_publisher',
         name='base_to_laser_broadcaster',
-        arguments=['0.0', '0.0', '0.0', '0.0', '0.0', '0.0', 'base_footprint', 'laser'],
+        arguments=['0.0', '0.0', '0.0', '0.0', '0.0', '0.0', 'base_footprint', 'laser_frame'],
         output='screen'
     )
 
     return [
-        static_odom_node,
-        
-        # --- SENSOR NODES
+        # urdf_file_arg,
+        # robot_state_publisher_node,
+        # joint_state_publisher_gui_node,
         rplidar_node,
-        
-        # --- MAPPING & SLAM NODES
-        slam_node,
-        # activate_mapping_node,
-        
-        # --- VISUALIZATION NODES
-        # rviz_node
+        # slam_node,
+        static_tf_node
     ]
     
 def generate_launch_description():
