@@ -42,7 +42,6 @@ process.on('SIGINT', shutdown);
 process.on('SIGTERM', shutdown);
 
 run('ros2 run manta_bot camera_publisher');
-<<<<<<< HEAD
 setTimeout(() => run(
   'ros2 run manta_bot yolo_detector --ros-args -p model_name:=yolo26n_ncnn_model'
 ), 1000);
@@ -56,8 +55,6 @@ run(
   '-p video_device:=/dev/video0 -p pixel_format:=yuyv ' +
   '-p image_width:=640 -p image_height:=480 -p framerate:=30.0'
 );
-=======
->>>>>>> 6bde87c (imp)
 setTimeout(() => run(
   'ros2 run manta_bot yolo_detector --ros-args -p model_name:=yolo26n_ncnn_model'
 ), 1000);
