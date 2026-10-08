@@ -15,14 +15,15 @@ static bool sync_motors = false;   // diff drive needs independent wheels
 static bool manual1 = false;       // true while an open-loop command drives that motor
 static bool manual2 = false;
 
-// below ~80 PWM the motor stalls, so hold the duty up
+// below ~80 PWM the motors stall when starting from rest, so kick with that
+// duty until they spin. It must NOT be a permanent minimum: the low-friction
+// motor needs well under 80 PWM to hold 120 rpm, pinning it at 80 made that
+// wheel run ~10% faster than commanded.
 const uint8_t PWM_FLOOR = 80;
-
 static float ticks_to_rpm(long ticks, float dt) {
-    float revs = ticks / COUNTS_PER_REV;
-    return (revs / dt) * 60.0;
+    return ((float)ticks * 60.0f) /
+           ((float)COUNTS_PER_REV * dt);
 }
-
 static void drive(uint8_t motor, float pwm) {
     if (pwm > 0) {
         if (motor == 1) motor1_forward((uint8_t)pwm);
@@ -62,9 +63,18 @@ void closed_loop_update(float dt) {
         // motor 1: skip while an open-loop command (M1F/M1R) is driving it
         if (!manual1) {
             if (target1 != 0) {
-                out1 = pid1.update(fabs(target1), rpm1, dt);
-                out1 = constrain(out1, 0, 255);
-                if (out1 < PWM_FLOOR) out1 = PWM_FLOOR;
+                // compare magnitudes: measured rpm is signed but the target is not,
+                // so a wheel turning the "negative" way looked like a huge error
+                // and railed the PWM at 255 (runaway instead of convergence)
+                if (fabs(rpm1) < 1.0f) {
+                    // at rest: fixed kick to break stiction. The PI is frozen here
+                    // on purpose - integrating while the kick overrides the output
+                    // would wind it up and cause a big overshoot on every start.
+                    out1 = PWM_FLOOR;
+                } else {
+                    out1 = pid1.update(fabs(target1), fabs(rpm1), dt);
+                    out1 = constrain(out1, 0, 255);
+                }
                 if (target1 < 0) out1 = -out1;
             } else {
                 pid1.reset();
@@ -75,9 +85,14 @@ void closed_loop_update(float dt) {
         // motor 2: skip while an open-loop command (M2F/M2R) is driving it
         if (!manual2) {
             if (t2 != 0) {
-                out2 = pid2.update(fabs(t2), rpm2, dt);
-                out2 = constrain(out2, 0, 255);
-                if (out2 < PWM_FLOOR) out2 = PWM_FLOOR;
+                // magnitude comparison, same as motor 1 (see note above)
+                if (fabs(rpm2) < 1.0f) {
+                    // at rest: fixed kick to break stiction, PI frozen (see motor 1)
+                    out2 = PWM_FLOOR;
+                } else {
+                    out2 = pid2.update(fabs(t2), fabs(rpm2), dt);
+                    out2 = constrain(out2, 0, 255);
+                }
                 if (t2 < 0) out2 = -out2;
             } else {
                 pid2.reset();
