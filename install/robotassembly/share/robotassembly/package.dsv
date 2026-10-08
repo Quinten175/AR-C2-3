@@ -1,6 +1,0 @@
-source;share/robotassembly/hook/pythonpath.ps1
-source;share/robotassembly/hook/pythonpath.dsv
-source;share/robotassembly/hook/pythonpath.sh
-source;share/robotassembly/hook/ament_prefix_path.ps1
-source;share/robotassembly/hook/ament_prefix_path.dsv
-source;share/robotassembly/hook/ament_prefix_path.sh

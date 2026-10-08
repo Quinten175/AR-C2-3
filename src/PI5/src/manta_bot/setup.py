@@ -26,6 +26,14 @@ def generate_data_files():
         (os.path.join('share', package_name, 'UI'),glob('manta_bot/UI/*.html')),
         (os.path.join('share', package_name, 'UI', 'static'),glob('manta_bot/UI/static/*')),
     ]
+
+    for path in glob('manta_bot/Cam/**', recursive=True):
+        if os.path.isfile(path):
+            # Strip 'manta_bot/' prefix to find relative path structure (e.g. 'Cam/models')
+            rel_dir = os.path.relpath(os.path.dirname(path), 'manta_bot')
+            dest_dir = os.path.join('share', package_name, rel_dir)
+            data_files.append((dest_dir, [path]))
+
     return data_files
 
 setup(
@@ -52,10 +60,11 @@ setup(
             f'wheel_test = {package_name}.Sim.wheel_test:main',
             f'movement_handler = {package_name}.Movement.movement_handler:main',
             f'UI_app = {package_name}.UI.UI_app:main',
-            f'person_fusion = {package_name}.translation.test_file:main',
-            
-            f'fake_scan_c = {package_name}.translation.fakelidarnode_c:main',
+
+            f'person_fusion_t = {package_name}.translation.test_file_t:main',
             f'fake_scan = {package_name}.translation.fakelidarnode:main',
+            f'person_waypoint_node = {package_name}.translation.waypoint_of_person:main',
+
             f'camera_publisher = {package_name}.Cam.camera_publisher:main',
             f'yolo_detector = {package_name}.Cam.yolo26_ros2:main', 
             f'stream = {package_name}.Cam.stream:main',

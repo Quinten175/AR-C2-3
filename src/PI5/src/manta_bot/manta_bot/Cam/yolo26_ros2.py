@@ -46,7 +46,7 @@ class YoloDetectorNode(Node):
             if src.is_dir():  # symlinl install
                 models_dir = str(src)
             else:             
-                models_dir = os.path.join(get_package_share_directory("manta_bot"), "models")
+                models_dir = os.path.join(get_package_share_directory("manta_bot"), "Cam", "models")
 
         model_path = os.path.join(models_dir, model_name)
         self.get_logger().info(f"Loading YOLO model from: {model_path}")

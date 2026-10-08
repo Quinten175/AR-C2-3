@@ -2,7 +2,6 @@ import math
 import numpy as np
 import rclpy
 from rclpy.node import Node
-from message_filters import Subscriber, ApproximateTimeSynchronizer
 from sensor_msgs.msg import LaserScan
 from vision_msgs.msg import Detection2DArray
 from geometry_msgs.msg import PointStamped
@@ -12,7 +11,7 @@ IMG_W = 640
 HFOV = math.radians(49.6)
 FX = (IMG_W / 2) / math.tan(HFOV / 2)   # replace with calibrated value later
 CX = IMG_W / 2
-CAM_X, CAM_Y = 0.1225, 0.004             # camera position in LIDAR frame (adjust if lidar isn't at the centre)
+CAM_X, CAM_Y = 0.1225, 0.004             # camera position in LIDAR frame
 CAM_YAW = 0.0                            # camera yaw relative to lidar, rad
 
 
@@ -23,14 +22,23 @@ def u_to_bearing(u):
 
 class Fusion(Node):
     def __init__(self):
-        super().__init__('person_fusion')
-        det = Subscriber(self, Detection2DArray, '/detections')   # your topic
-        scan = Subscriber(self, LaserScan, '/scan')
-        self.sync = ApproximateTimeSynchronizer([det, scan], 10, 0.05)
-        self.sync.registerCallback(self.cb)
+        super().__init__('person_fusion_t')
+        self.last_scan = None
+        # Detections arrive with stamp 0, so message_filters can't pair them with
+        # the scan. Instead, keep the latest scan and fuse each detection with it.
+        self.create_subscription(LaserScan, '/scan', self.on_scan, 10)
+        self.create_subscription(Detection2DArray, '/detections', self.cb, 10)
         self.pub = self.create_publisher(PointStamped, '/person_point', 10)
 
-    def cb(self, dets, scan):
+
+    def on_scan(self, msg):
+        self.last_scan = msg
+
+    def cb(self, dets):
+        scan = self.last_scan
+        if scan is None:
+            return
+
         ranges = np.array(scan.ranges)
         angles = scan.angle_min + np.arange(len(ranges)) * scan.angle_increment
         valid = np.isfinite(ranges) & (ranges > scan.range_min) & (ranges < scan.range_max)
@@ -62,4 +70,16 @@ class Fusion(Node):
 
 def main():
     rclpy.init()
-    rclpy.spin(Fusion())
+    node = Fusion()
+    try:
+        rclpy.spin(node)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        node.destroy_node()
+        if rclpy.ok():
+            rclpy.shutdown()
+
+
+if __name__ == '__main__':
+    main()

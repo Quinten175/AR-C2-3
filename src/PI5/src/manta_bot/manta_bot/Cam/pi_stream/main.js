@@ -42,10 +42,18 @@ process.on('SIGINT', shutdown);
 process.on('SIGTERM', shutdown);
 
 run('ros2 run manta_bot camera_publisher');
+
 setTimeout(() => run(
   'ros2 run manta_bot yolo_detector --ros-args -p model_name:=yolo26n_ncnn_model'
 ), 1000);
-setTimeout(() => run('ros2 run pi_stream stream'), 2000); 
-// evt als nodig veranderen naar setTimeout(() => run('ros2 run manta_bot stream'), 2000);
 
-setTimeout(() => children.push(spawn('ngrok', ['http', '9090'], { stdio: 'inherit' })), 4000);
+setTimeout(() => run('ros2 run manta_bot stream'), 2000);
+
+// Start ngrok after the stream server has had time to start
+setTimeout(() => {
+  const ngrok = spawn('ngrok', ['http', '127.0.0.1:9091'], {
+    stdio: 'inherit',
+  });
+  children.push(ngrok);
+}, 4000);
+
