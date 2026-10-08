@@ -21,6 +21,7 @@ def generate_data_files():
         ('share/' + package_name, ['package.xml']),
         (os.path.join('share', package_name, 'launch'), glob('launch/*.launch.py')),
         (os.path.join('share', package_name, 'config'), glob('config/*')),
+        (os.path.join('share', package_name, 'map'), glob('map/*')),
         (os.path.join('share', package_name, 'meshes'), glob('meshes/*')),
         (os.path.join('share', package_name, 'urdf'), glob('urdf/*')),
         (os.path.join('share', package_name, 'UI'), glob('manta_bot/UI/*.html')),
@@ -64,7 +65,6 @@ setup(
             f'UI_app = {package_name}.UI.UI_app:main',
             f'serial_debug = {package_name}.Movement.serial_debug:main',
             f'person_fusion = {package_name}.translation.test_file:main',
-
             f'fake_scan_c = {package_name}.translation.fakelidarnode_c:main',
             f'fake_scan = {package_name}.translation.fakelidarnode:main',
             f'camera_publisher = {package_name}.Cam.camera_publisher:main',
@@ -72,8 +72,8 @@ setup(
             f'stream = {package_name}.Cam.stream:main',
             f'stream_node = {package_name}.Cam.stream_node:main',
 
-            
-
+            f'make_nodes = {package_name}.Navigation.make_nodes:main',
+            f'waypoint_orderer= {package_name}.Movement.waypoint_orderer:main',
         ],
         'ros2_control_systems': [
             f'manta_bot_hardware = {package_name}.Movement.movement_handler:MantaBotHardware',

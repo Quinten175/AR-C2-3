@@ -33,12 +33,6 @@ class ROSNode(Node):
     def __init__(self):
         super().__init__('UI_app')
         app.config['ros_node'] = self
-
-        self.mapping_pub = self.create_publisher(
-            Bool,
-            'activate_mapping',
-            10
-        )
         
         self.slam_save_client = self.create_client(
             SaveMap,
@@ -112,11 +106,6 @@ class ROSNode(Node):
 def index():
     return render_template('index.html')
 
-
-@app.route('/api/toggle', methods=['POST'])
-def toggle():
-    new_state = node.toggle_mapping_state()
-    return jsonify({'state': new_state})
 
 def slam_service_done(future, operation):
     try:
@@ -210,6 +199,7 @@ def reset():
     return jsonify({
         'success': True,
     })
+
 
 @app.route('/api/drive', methods=['POST'])
 def drive():

@@ -1,151 +1,159 @@
-<?xml version='1.0' encoding='utf-8'?>
-<robot name="robotassembly_1_back">
-    <link name="base_footprint" />
-    <link name="lidar_link">
-        <inertial>
-            <origin xyz="0.00015440202932244464 -0.0065620385299784935 -0.04185367413520978" rpy="0.0 -0.0 0.0" />
-            <mass value="1.2633173769153754" />
-            <inertia ixx="0.000908075615510668" iyy="0.0005749447965669693" izz="0.0010693282911537476" ixy="-2.1548862294420028e-06" iyz="0.00014759832310927304" ixz="1.7052572358954195e-06" />
-        </inertial>
-        <visual name="lidar_link_visual">
-            <origin xyz="-0.0005000000000000555 -0.025500000000000043 0.07049999999999998" rpy="-3.1415926535897927 -0.0 0.0" />
-            <geometry>
-                <mesh filename="package://manta_bot/meshes/lidar_link.stl" scale="0.001 0.001 0.001" />
-            </geometry>
-        </visual>
-        <collision name="lidar_link_collision">
-            <origin xyz="-0.0005000000000000555 -0.025500000000000043 0.07049999999999998" rpy="-3.1415926535897927 -0.0 0.0" />
-            <geometry>
-                <mesh filename="package://manta_bot/meshes/lidar_link.stl" scale="0.001 0.001 0.001" />
-            </geometry>
-        </collision>
-    </link>
-    <link name="base_link">
-        <inertial>
-            <origin xyz="-0.0005076972341926869 0.014314030630268343 0.011970132819396764" rpy="0.0 0.0 0.0" />
-            <mass value="1.7931358002694335" />
-            <inertia ixx="0.008196158089978147" iyy="0.0066773805248528904" izz="0.012459279844548692" ixy="2.0511076616401395e-06" iyz="0.0008834065234856804" ixz="1.9756875760289105e-05" />
-        </inertial>
-        <visual name="base_link_visual">
-            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
-            <geometry>
-                <mesh filename="package://manta_bot/meshes/base_link.stl" scale="0.001 0.001 0.001" />
-            </geometry>
-        </visual>
-        <collision name="base_link_collision">
-            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
-            <geometry>
-                <mesh filename="package://manta_bot/meshes/base_link.stl" scale="0.001 0.001 0.001" />
-            </geometry>
-        </collision>
-    </link>
-    <link name="motor_left_1">
-        <inertial>
-            <origin xyz="-0.0006362127421936681 5.489180224467205e-06 -0.023584074177749787" rpy="0.0 -0.0 0.0" />
-            <mass value="0.1340810398508418" />
-            <inertia ixx="6.162333327173163e-05" iyy="6.213756663175918e-05" izz="2.3227934704746775e-05" ixy="-3.1696205792720837e-09" iyz="2.851906472778489e-09" ixz="2.325552057778415e-06" />
-        </inertial>
-        <visual name="motor_left_1_visual">
-            <origin xyz="-0.0063733600000000085 -0.06750000000000007 -0.09599999999999995" rpy="-0.0 1.570796326794896 0" />
-            <geometry>
-                <mesh filename="package://manta_bot/meshes/motor_left_1.stl" scale="0.001 0.001 0.001" />
-            </geometry>
-        </visual>
-        <collision name="motor_left_1_collision">
-            <origin xyz="-0.0063733600000000085 -0.06750000000000007 -0.09599999999999995" rpy="-0.0 1.570796326794896 0" />
-            <geometry>
-                <mesh filename="package://manta_bot/meshes/motor_left_1.stl" scale="0.001 0.001 0.001" />
-            </geometry>
-        </collision>
-    </link>
-    <link name="motor_right_1">
-        <inertial>
-            <origin xyz="-0.0006362047414121897 5.485242672920165e-06 -0.023584073737024785" rpy="0.0 -0.0 0.0" />
-            <mass value="0.13408104001880694" />
-            <inertia ixx="6.162333309657768e-05" iyy="6.21375665391669e-05" izz="2.3227934719583547e-05" ixy="-3.171030048689435e-09" iyz="2.8343180009722656e-09" ixz="2.3255520760948766e-06" />
-        </inertial>
-        <visual name="motor_right_1_visual">
-            <origin xyz="-0.006396029999999886 0.06749805999999993 -0.09600000000000006" rpy="-3.141592653589793 -1.5707963267948952 0" />
-            <geometry>
-                <mesh filename="package://manta_bot/meshes/motor_right_1.stl" scale="0.001 0.001 0.001" />
-            </geometry>
-        </visual>
-        <collision name="motor_right_1_collision">
-            <origin xyz="-0.006396029999999886 0.06749805999999993 -0.09600000000000006" rpy="-3.141592653589793 -1.5707963267948952 0" />
-            <geometry>
-                <mesh filename="package://manta_bot/meshes/motor_right_1.stl" scale="0.001 0.001 0.001" />
-            </geometry>
-        </collision>
-    </link>
-    <link name="wheel_right_1">
-        <inertial>
-            <origin xyz="4.240722671494668e-09 -2.1337818800759577e-09 0.021417095115681004" rpy="0.0 -0.0 0.0" />
-            <mass value="0.690719357277638" />
-            <inertia ixx="0.0002111188473839752" iyy="0.0002111188473948155" izz="0.00030970906018714956" ixy="-5.082197683525809e-20" iyz="1.0069039990052151e-16" ixz="1.5739499283699238e-19" />
-        </inertial>
-        <visual name="wheel_right_1_visual">
-            <origin xyz="0.0006039700000001219 0.06749805999999993 -0.10200000000000005" rpy="-3.141592653589793 -1.5707963267948952 0" />
-            <geometry>
-                <mesh filename="package://manta_bot/meshes/wheel_right_1.stl" scale="0.001 0.001 0.001" />
-            </geometry>
-        </visual>
-        <collision name="wheel_right_1_collision">
-            <origin xyz="0.0006039700000001219 0.06749805999999993 -0.10200000000000005" rpy="-3.141592653589793 -1.5707963267948952 0" />
-            <geometry>
-                <mesh filename="package://manta_bot/meshes/wheel_right_1.stl" scale="0.001 0.001 0.001" />
-            </geometry>
-        </collision>
-    </link>
-    <link name="wheel_left_1">
-        <inertial>
-            <origin xyz="-3.6576842633861963e-09 -5.74296166178101e-14 0.021417095115681094" rpy="0.0 -0.0 0.0" />
-            <mass value="0.6907193572776398" />
-            <inertia ixx="0.00021111884744365317" iyy="0.00021111884737491302" izz="0.0003097090602269376" ixy="1.8024861117571504e-18" iyz="-1.2074453477412487e-17" ixz="-9.65521154413386e-19" />
-        </inertial>
-        <visual name="wheel_left_1_visual">
-            <origin xyz="0.0006266399999999918 -0.06750000000000007 -0.10199999999999994" rpy="-0.0 1.570796326794896 0" />
-            <geometry>
-                <mesh filename="package://manta_bot/meshes/wheel_left_1.stl" scale="0.001 0.001 0.001" />
-            </geometry>
-        </visual>
-        <collision name="wheel_left_1_collision">
-            <origin xyz="0.0006266399999999918 -0.06750000000000007 -0.10199999999999994" rpy="-0.0 1.570796326794896 0" />
-            <geometry>
-                <mesh filename="package://manta_bot/meshes/wheel_left_1.stl" scale="0.001 0.001 0.001" />
-            </geometry>
-        </collision>
-    </link>
-    <joint name="base_footprint_to_base_link" type="fixed">
-        <origin xyz="0 0 0" rpy="0 0 3.141592653589793" />
-        <parent link="base_footprint" />
-        <child link="base_link" />
-    </joint>
-    <joint name="base_link_motor_left_to_base_link" type="fixed">
-        <origin xyz="-0.096 0.0675 0.006373360000000001" rpy="6.959195283221548e-16 -1.5707963267948966 0" />
-        <parent link="base_link" />
-        <child link="motor_left_1" />
-    </joint>
-    <joint name="base_link_motor_right_to_base_link" type="fixed">
-        <origin xyz="0.096 0.06749806000000001 0.0063960300000000005" rpy="-3.1415926535897927 -1.5707963267948966 0" />
-        <parent link="base_link" />
-        <child link="motor_right_1" />
-    </joint>
-    <joint name="motor_right_1_wheel_right_to_motor_right" type="continuous">
-        <origin xyz="-0.007000000000000007 8.881784197001253e-18 0.005999999999999997" rpy="-1.9721522630525295e-31 -0.0 0.0" />
-        <parent link="motor_right_1" />
-        <child link="wheel_right_1" />
-        <axis xyz="0.0 7.753132050511999e-16 1.0" />
-    </joint>
-    <joint name="motor_left_1_wheel_left_to_motor_left" type="continuous">
-        <origin xyz="-0.006999999999999999 0.0 0.005999999999999997" rpy="0.0 -0.0 0.0" />
-        <parent link="motor_left_1" />
-        <child link="wheel_left_1" />
-        <axis xyz="-0.0 6.959195283221548e-16 1.0" />
-    </joint>
-    <joint name="base_link_lidar_link_to_base_link" type="fixed">
-        <!-- <origin xyz="0.0005 -0.0255 0.0705" rpy="3.1415926535897927 -0.0 0.0" /> -->
-        <origin xyz="0.0005 -0.0255 0.0705" rpy="3.1415926535897927 -0.0 1.5707963267948966" />
-        <parent link="base_link" />
-        <child link="lidar_link" />
-    </joint>
+<?xml version='1.0' encoding='utf-8'?> 
+<robot name="robotassembly_1_back"> 
+    <link name="base_footprint" /> 
+    <link name="lidar_link"> 
+        <inertial> 
+            <origin xyz="0.00015440202932244464 -0.0065620385299784935 -0.04185367413520978" rpy="0.0 -0.0 0.0" /> 
+            <mass value="1.2633173769153754" /> 
+            <inertia ixx="0.000908075615510668" iyy="0.0005749447965669693" izz="0.0010693282911537476" ixy="-2.1548862294420028e-06" iyz="0.00014759832310927304" ixz="1.7052572358954195e-06" /> 
+        </inertial> 
+        <visual name="lidar_link_visual"> 
+            <origin xyz="-0.0005000000000000555 -0.025500000000000043 0.07049999999999998" rpy="-3.1415926535897927 -0.0 0.0" /> 
+            <geometry> 
+                <mesh filename="package://manta_bot/meshes/lidar_link.stl" scale="0.001 0.001 0.001" /> 
+            </geometry> 
+        </visual> 
+        <collision name="lidar_link_collision"> 
+            <origin xyz="-0.0005000000000000555 -0.025500000000000043 0.07049999999999998" rpy="-3.1415926535897927 -0.0 0.0" /> 
+            <geometry> 
+                <mesh filename="package://manta_bot/meshes/lidar_link.stl" scale="0.001 0.001 0.001" /> 
+            </geometry> 
+        </collision> 
+    </link> 
+
+    <link name="laser_frame" />
+
+    <link name="base_link"> 
+        <inertial> 
+            <origin xyz="-0.0005076972341926869 0.014314030630268343 0.011970132819396764" rpy="0.0 0.0 0.0" /> 
+            <mass value="1.7931358002694335" /> 
+            <inertia ixx="0.008196158089978147" iyy="0.0066773805248528904" izz="0.012459279844548692" ixy="2.0511076616401395e-06" iyz="0.0008834065234856804" ixz="1.9756875760289105e-05" /> 
+        </inertial> 
+        <visual name="base_link_visual"> 
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" /> 
+            <geometry> 
+                <mesh filename="package://manta_bot/meshes/base_link.stl" scale="0.001 0.001 0.001" /> 
+            </geometry> 
+        </visual> 
+        <collision name="base_link_collision"> 
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" /> 
+            <geometry> 
+                <mesh filename="package://manta_bot/meshes/base_link.stl" scale="0.001 0.001 0.001" /> 
+            </geometry> 
+        </collision> 
+    </link> 
+    <link name="motor_left_1"> 
+        <inertial> 
+            <origin xyz="-0.0006362127421936681 5.489180224467205e-06 -0.023584074177749787" rpy="0.0 -0.0 0.0" /> 
+            <mass value="0.1340810398508418" /> 
+            <inertia ixx="6.162333327173163e-05" iyy="6.213756663175918e-05" izz="2.3227934704746775e-05" ixy="-3.1696205792720837e-09" iyz="2.851906472778489e-09" ixz="2.3255520570570575e-06" /> 
+        </inertial> 
+        <visual name="motor_left_1_visual"> 
+            <origin xyz="-0.0063733600000000085 -0.06750000000000007 -0.09599999999999995" rpy="-0.0 1.570796326794896 0" /> 
+            <geometry> 
+                <mesh filename="package://manta_bot/meshes/motor_left_1.stl" scale="0.001 0.001 0.001" /> 
+            </geometry> 
+        </visual> 
+        <collision name="motor_left_1_collision"> 
+            <origin xyz="-0.0063733600000000085 -0.06750000000000007 -0.09599999999999995" rpy="-0.0 1.570796326794896 0" /> 
+            <geometry> 
+                <mesh filename="package://manta_bot/meshes/motor_left_1.stl" scale="0.001 0.001 0.001" /> 
+            </geometry> 
+        </collision> 
+    </link> 
+    <link name="motor_right_1"> 
+        <inertial> 
+            <origin xyz="-0.0006362047414121897 5.485242672920165e-06 -0.023584073737024785" rpy="0.0 -0.0 0.0" /> 
+            <mass value="0.13408104001880694" /> 
+            <inertia ixx="6.162333309657768e-05" iyy="6.21375665391669e-05" izz="2.3227934719583547e-05" ixy="-3.1710300486894357e-09" iyz="2.8343180009722656e-09" ixz="2.3255520760948766e-06" /> 
+        </inertial> 
+        <visual name="motor_right_1_visual"> 
+            <origin xyz="-0.006396029999999886 0.06749805999999993 -0.09600000000000006" rpy="-3.141592653589793 -1.5707963267948952 0" /> 
+            <geometry> 
+                <mesh filename="package://manta_bot/meshes/motor_right_1.stl" scale="0.001 0.001 0.001" /> 
+            </geometry> 
+        </visual> 
+        <collision name="motor_right_1_collision"> 
+            <origin xyz="-0.006396029999999886 0.06749805999999993 -0.09600000000000006" rpy="-3.141592653589793 -1.5707963267948952 0" /> 
+            <geometry> 
+                <mesh filename="package://manta_bot/meshes/motor_right_1.stl" scale="0.001 0.001 0.001" /> 
+            </geometry> 
+        </collision> 
+    </link> 
+    <link name="wheel_right_1"> 
+        <inertial> 
+            <origin xyz="4.240722671494668e-09 -2.1337818800759577e-09 0.021417095115681004" rpy="0.0 -0.0 0.0" /> 
+            <mass value="0.690719357277638" /> 
+            <inertia ixx="0.0002111188473839752" iyy="0.0002111188473948155" izz="0.00030970906018714956" ixy="-5.082197683525809e-20" iyz="1.0069039990052151e-16" ixz="1.5739499283699238e-19" /> 
+        </inertial> 
+        <visual name="wheel_right_1_visual"> 
+            <origin xyz="0.0006039700000001219 0.06749805999999993 -0.10200000000000005" rpy="-3.141592653589793 -1.5707963267948952 0" /> 
+            <geometry> 
+                <mesh filename="package://manta_bot/meshes/wheel_right_1.stl" scale="0.001 0.001 0.001" /> 
+            </geometry> 
+        </visual> 
+        <collision name="wheel_right_1_collision"> 
+            <origin xyz="0.0006039700000001219 0.06749805999999993 -0.10200000000000005" rpy="-3.141592653589793 -1.5707963267948952 0" /> 
+            <geometry> 
+                <mesh filename="package://manta_bot/meshes/wheel_right_1.stl" scale="0.001 0.001 0.001" /> 
+            </geometry> 
+        </collision> 
+    </link> 
+    <link name="wheel_left_1"> 
+        <inertial> 
+            <origin xyz="-3.6576842633861963e-09 -5.74296166178101e-14 0.021417095115681094" rpy="0.0 -0.0 0.0" /> 
+            <mass value="0.6907193572776398" /> 
+            <inertia ixx="0.00021111884744365317" iyy="0.00021111884737491302" izz="0.0003097090602269376" ixy="1.8024861117571504e-18" iyz="-1.2074453477412487e-17" ixz="-9.65521154413386e-19" /> 
+        </inertial> 
+        <visual name="wheel_left_1_visual"> 
+            <origin xyz="0.0006266399999999918 -0.06750000000000007 -0.10199999999999994" rpy="-0.0 1.570796326794896 0" /> 
+            <geometry> 
+                <mesh filename="package://manta_bot/meshes/wheel_left_1.stl" scale="0.001 0.001 0.001" /> 
+            </geometry> 
+        </visual> 
+        <collision name="wheel_left_1_collision"> 
+            <origin xyz="0.0006266399999999918 -0.06750000000000007 -0.10199999999999994" rpy="-0.0 1.570796326794896 0" /> 
+            <geometry> 
+                <mesh filename="package://manta_bot/meshes/wheel_left_1.stl" scale="0.001 0.001 0.001" /> 
+            </geometry> 
+        </collision> 
+    </link> 
+    <joint name="base_footprint_to_base_link" type="fixed"> 
+        <origin xyz="0 0 0" rpy="0 0 3.141592653589793" /> 
+        <parent link="base_footprint" /> 
+        <child link="base_link" /> 
+    </joint> 
+    <joint name="base_link_motor_left_to_base_link" type="fixed"> 
+        <origin xyz="-0.096 0.0675 0.006373360000000001" rpy="6.959195283221548e-16 -1.5707963267948966 0" /> 
+        <parent link="base_link" /> 
+        <child link="motor_left_1" /> 
+    </joint> 
+    <joint name="base_link_motor_right_to_base_link" type="fixed"> 
+        <origin xyz="0.096 0.06749806000000001 0.0063960300000000005" rpy="-3.1415926535897927 -1.5707963267948966 0" /> 
+        <parent link="base_link" /> 
+        <child link="motor_right_1" /> 
+    </joint> 
+    <joint name="motor_right_1_wheel_right_to_motor_right" type="continuous"> 
+        <origin xyz="-0.007000000000000007 8.881784197001253e-18 0.005999999999999997" rpy="-1.9721522630525295e-31 -0.0 0.0" /> 
+        <parent link="motor_right_1" /> 
+        <child link="wheel_right_1" /> 
+        <axis xyz="0.0 7.753132050511999e-16 1.0" /> 
+    </joint> 
+    <joint name="motor_left_1_wheel_left_to_motor_left" type="continuous"> 
+        <origin xyz="-0.006999999999999999 0.0 0.005999999999999997" rpy="0.0 -0.0 0.0" /> 
+        <parent link="motor_left_1" /> 
+        <child link="wheel_left_1" /> 
+        <axis xyz="-0.0 6.959195283221548e-16 1.0" /> 
+    </joint> 
+    <joint name="base_link_lidar_link_to_base_link" type="fixed"> 
+        <origin xyz="0.0005 -0.0255 0.0705" rpy="3.1415926535897927 -0.0 0" /> 
+        <parent link="base_link" /> 
+        <child link="lidar_link" /> 
+    </joint> 
+
+    <joint name="laser_frame_joint" type="fixed"> 
+        <origin xyz="0 0 0" rpy="3.1415926535897927 0 -1.5707963267948966" /> 
+        <parent link="lidar_link" /> 
+        <child link="laser_frame" /> 
+    </joint> 
 </robot>
