@@ -20,57 +20,57 @@ def launch_setup(context, *args, **kwargs):
         'slam_config.yaml'
     )
 
-    urdf_file_arg = DeclareLaunchArgument(
-        'urdf_file',
-        default_value=os.path.join(
-            manta_pkg_share,
-            'urdf',
-            'robotassembly.urdf'
-        )
-    )
+    # urdf_file_arg = DeclareLaunchArgument(
+    #     'urdf_file',
+    #     default_value=os.path.join(
+    #         manta_pkg_share,
+    #         'urdf',
+    #         'robotassembly.urdf'
+    #     )
+    # )
 
-    robot_description_content = ParameterValue(
-        Command([
-            'cat ',
-            LaunchConfiguration('urdf_file')
-        ]),
-        value_type=str
-    )
+    # robot_description_content = ParameterValue(
+    #     Command([
+    #         'cat ',
+    #         LaunchConfiguration('urdf_file')
+    #     ]),
+    #     value_type=str
+    # )
 
-    robot_state_publisher_node = Node(
-        package='robot_state_publisher',
-        executable='robot_state_publisher',
-        name='robot_state_publisher',
-        output='screen',
-        parameters=[{
-            'robot_description': robot_description_content
-        }]
-    )
+    # robot_state_publisher_node = Node(
+    #     package='robot_state_publisher',
+    #     executable='robot_state_publisher',
+    #     name='robot_state_publisher',
+    #     output='screen',
+    #     parameters=[{
+    #         'robot_description': robot_description_content
+    #     }]
+    # )
 
-    joint_state_publisher_node = Node(
-        package='joint_state_publisher',
-        executable='joint_state_publisher',
-        name='joint_state_publisher',
-        output='screen'
-    )
+    # joint_state_publisher_node = Node(
+    #     package='joint_state_publisher',
+    #     executable='joint_state_publisher',
+    #     name='joint_state_publisher',
+    #     output='screen'
+    # )
 
-    odom_to_base_footprint_node = Node(
-        package='tf2_ros',
-        executable='static_transform_publisher',
-        name='odom_to_base_footprint',
-        output='screen',
-        condition=IfCondition(LaunchConfiguration('publish_static_odom_tf')),
-        arguments=[
-            '0',
-            '0',
-            '0',
-            '0',
-            '0',
-            '0',
-            'odom',
-            'base_footprint'
-        ],
-    )
+    # odom_to_base_footprint_node = Node(
+    #     package='tf2_ros',
+    #     executable='static_transform_publisher',
+    #     name='odom_to_base_footprint',
+    #     output='screen',
+    #     condition=IfCondition(LaunchConfiguration('publish_static_odom_tf')),
+    #     arguments=[
+    #         '0',
+    #         '0',
+    #         '0',
+    #         '0',
+    #         '0',
+    #         '0',
+    #         'odom',
+    #         'base_footprint'
+    #     ],
+    # )
 
     rplidar_node = Node(
         package='rplidar_ros',
@@ -120,10 +120,7 @@ def launch_setup(context, *args, **kwargs):
     )
 
     return [
-        urdf_file_arg,
-        robot_state_publisher_node,
-        joint_state_publisher_node,
-        odom_to_base_footprint_node,
+        # odom_to_base_footprint_node,
         rplidar_node,
         slam_node,
         start_activate_after_slam,

@@ -28,7 +28,7 @@ def generate_data_files():
         (os.path.join('share', package_name, 'UI', 'static'), glob('manta_bot/UI/static/*')),
     ]
     # YOLO models (yolo26n.pt + yolo26n_ncnn_model/)
-    data_files += package_files(os.path.join('share', package_name, 'models'), 'manta_bot/Cam/models')
+    # data_files += package_files(os.path.join('share', package_name, 'models'), 'manta_bot/Cam/models')
     return data_files
 
 setup(
@@ -64,13 +64,13 @@ setup(
             f'gamepad_controller = {package_name}.Movement.controller:main',
             f'UI_app = {package_name}.UI.UI_app:main',
             f'serial_debug = {package_name}.Movement.serial_debug:main',
-            f'person_fusion = {package_name}.translation.test_file:main',
-            f'fake_scan_c = {package_name}.translation.fakelidarnode_c:main',
-            f'fake_scan = {package_name}.translation.fakelidarnode:main',
-            f'camera_publisher = {package_name}.Cam.camera_publisher:main',
-            f'yolo_detector = {package_name}.Cam.yolo26_ros2:main', 
-            f'stream = {package_name}.Cam.stream:main',
-            f'stream_node = {package_name}.Cam.stream_node:main',
+            # f'person_fusion = {package_name}.translation.test_file:main',
+            # f'fake_scan_c = {package_name}.translation.fakelidarnode_c:main',
+            # f'fake_scan = {package_name}.translation.fakelidarnode:main',
+            # f'camera_publisher = {package_name}.Cam.camera_publisher:main',
+            # f'yolo_detector = {package_name}.Cam.yolo26_ros2:main', 
+            # f'stream = {package_name}.Cam.stream:main',
+            # f'stream_node = {package_name}.Cam.stream_node:main',
 
             f'make_nodes = {package_name}.Navigation.make_nodes:main',
             f'waypoint_orderer= {package_name}.Movement.waypoint_orderer:main',
