@@ -8,9 +8,9 @@ from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
     manta_pkg = get_package_share_directory('manta_bot')
-    robotassembly_pkg = get_package_share_directory('robotassembly')
+    # robotassembly_pkg = get_package_share_directory('robotassembly')
 
-    urdf_file = os.path.join(robotassembly_pkg, 'urdf', 'robotassembly.urdf')
+    urdf_file = os.path.join(manta_pkg, 'urdf', 'robotassembly.urdf')
     controllers_file = os.path.join(manta_pkg, 'config', 'diff_drive_controller.yaml')
 
     robot_description = ParameterValue(

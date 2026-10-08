@@ -11,6 +11,7 @@ from geometry_msgs.msg import TwistStamped
 from std_msgs.msg import Header
 
 from ament_index_python.packages import get_package_share_directory
+from std_msgs.msg import Empty
 
 from slam_toolbox.srv import SaveMap, DeserializePoseGraph, Reset, SerializePoseGraph
 
@@ -37,6 +38,12 @@ class ROSNode(Node):
         self.slam_save_client = self.create_client(
             SaveMap,
             '/slam_toolbox/save_map'
+        )
+        
+        self.tsp = self.create_publisher(
+            Empty,
+            'tsp/trigger',
+            10
         )
         
         self.slam_serialize_client = self.create_client(
@@ -71,6 +78,15 @@ class ROSNode(Node):
         self.mapping_pub.publish(msg)
         
         return self.active_mapping_state
+    
+    def toggle_waypoint(self):
+        self.active_mapping_state = not self.active_mapping_state
+
+        msg = Empty()
+
+        self.tsp.publish(msg)
+        
+        return self.tsp
     
     def save_map(self):
         pass
@@ -127,6 +143,12 @@ def slam_service_done(future, operation):
     except Exception as e:
         print(f'Failed to call {operation} service: {e}')
 
+
+@app.route('/api/togglewaypoint', methods=['POST'])
+def toggle_waypoint():
+    node = app.config['ros_node']
+    node.toggle_waypoint()
+    return jsonify({'success': True, 'active': "toggled"})
 
 @app.route('/api/save', methods=['POST'])
 def save():

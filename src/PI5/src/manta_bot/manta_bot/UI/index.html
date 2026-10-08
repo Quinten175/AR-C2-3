@@ -159,76 +159,76 @@
           </div>
         </div>
 
-        <div class="col-lg-4">
-          <div class="card card-custom mb-3">
-            <div class="card-header py-2 px-3">
-              <i class="bi bi-info-circle me-2"></i>Robot Status
-            </div>
-            <div class="card-body p-0">
-              <div class="stat-item px-3">
-                <div class="d-flex justify-content-between align-items-center">
-                  <span class="stat-label"
-                    ><i class="bi bi-wifi me-1"></i>Connection</span
-                  >
-                  <span
-                    id="connStatusText"
-                    style="
-                      color: var(--accent-green);
-                      font-weight: 600;
-                      font-size: 0.9rem;
-                    "
-                  >
-                    <i class="bi bi-check-circle-fill me-1"></i>Connected
-                  </span>
-                </div>
-              </div>
+<div class="col-lg-4">
+  <div class="card card-custom mb-3">
+    <div class="card-header py-2 px-3">
+      <i class="bi bi-info-circle me-2"></i>Robot Status
+    </div>
 
-              <div class="stat-item px-3">
-                <div
-                  class="d-flex justify-content-between align-items-center mb-1"
-                >
-                  <span class="stat-label"
-                    ><i class="bi bi-battery me-1"></i>Battery</span
-                  >
-                  <strong
-                    id="batteryPercent"
-                    style="color: var(--accent-green); font-size: 0.95rem"
-                    >87%</strong
-                  >
-                </div>
-                <div class="battery-bar-container">
-                  <div
-                    class="battery-bar-fill"
-                    id="batteryBar"
-                    style="width: 87%; background-color: var(--accent-green)"
-                  ></div>
-                </div>
-              </div>
+    <div class="card-body p-0">
+      <div class="stat-item px-3">
+        <div class="d-flex justify-content-between align-items-center">
+          <span class="stat-label">
+            <i class="bi bi-wifi me-1"></i>Connection
+          </span>
+          <span
+            id="connStatusText"
+            style="
+              color: var(--accent-green);
+              font-weight: 600;
+              font-size: 0.9rem;
+            "
+          >
+            <i class="bi bi-check-circle-fill me-1"></i>Connected
+          </span>
+        </div>
+      </div>
 
-              <div class="stat-item px-3">
-                <div class="d-flex justify-content-between align-items-center">
-                  <span class="stat-label"
-                    ><i class="bi bi-thermometer-half me-1"></i
-                    >Temperature</span
-                  >
-                  <strong id="tempValue" style="font-size: 0.95rem"
-                    >36°C</strong
-                  >
-                </div>
-              </div>
+      <div class="stat-item px-3">
+        <div class="d-flex justify-content-between align-items-center mb-1">
+          <span class="stat-label">
+            <i class="bi bi-battery me-1"></i>Battery
+          </span>
+          <strong
+            id="batteryPercent"
+            style="color: var(--accent-green); font-size: 0.95rem"
+          >
+            87%
+          </strong>
+        </div>
 
-              <div class="stat-item px-3">
-                <div class="d-flex justify-content-between align-items-center">
-                  <span class="stat-label"
-                    ><i class="bi bi-speedometer me-1"></i>Current Speed</span
-                  >
-                  <strong id="currentSpeed" style="font-size: 0.95rem"
-                    >0 m/s</strong
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
+        <div class="battery-bar-container">
+          <div
+            class="battery-bar-fill"
+            id="batteryBar"
+            style="width: 87%; background-color: var(--accent-green)"
+          ></div>
+        </div>
+      </div>
+
+      <div class="stat-item px-3">
+        <div class="d-flex justify-content-between align-items-center">
+          <span class="stat-label">
+            <i class="bi bi-thermometer-half me-1"></i>Temperature
+          </span>
+          <strong id="tempValue" style="font-size: 0.95rem">
+            36°C
+          </strong>
+        </div>
+      </div>
+
+      <div class="stat-item px-3">
+        <div class="d-flex justify-content-between align-items-center">
+          <span class="stat-label">
+            <i class="bi bi-speedometer me-1"></i>Current Speed
+          </span>
+          <strong id="currentSpeed" style="font-size: 0.95rem">
+            0 m/s
+          </strong>
+        </div>
+      </div>
+    </div>
+  </div>
 
           <!-- General actions -->
           <div class="card card-custom mb-3">
@@ -282,58 +282,72 @@
             </div>
           </div>
 
-          <!-- Mapping actions -->
-          <div class="card card-custom mb-3">
-            <div class="card-header py-2 px-3">
-              <i class="bi bi-map me-2"></i>Mapping
-            </div>
-            <div class="card-body p-3">
-              <div class="row g-2">
-                <div class="col-6">
-                  <button
-                    class="btn action-btn w-100"
-                    style="
-                      background-color: #4a3a1a;
-                      border: 1px solid #7b5f2a;
-                      color: #ffc266;
-                    "
-                    onclick="saveMap()"
-                  >
-                    <i class="bi bi-save"></i> Save Map
-                  </button>
-                </div>
+  <div class="card card-custom mb-3">
+    <div class="card-header py-2 px-3">
+      <i class="bi bi-map me-2"></i>Mapping
+    </div>
 
-                <div class="col-6">
-                  <button
-                    class="btn action-btn w-100"
-                    style="
-                      background-color: #1a3f3f;
-                      border: 1px solid #2f6b6b;
-                      color: #6fdfdf;
-                    "
-                    onclick="loadMap()"
-                  >
-                    <i class="bi bi-folder2-open"></i> Load Map
-                  </button>
-                </div>
-
-                <div class="col-6">
-                  <button
-                    class="btn action-btn w-100"
-                    style="
-                      background-color: #3a2a4a;
-                      border: 1px solid #5f3d7b;
-                      color: #b98cff;
-                    "
-                    onclick="resetMap()"
-                  >
-                    <i class="bi bi-trash"></i> Clear Map
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+    <div class="card-body p-3">
+      <div class="row g-2">
+        <div class="col-6">
+          <button
+            class="btn action-btn w-100"
+            style="
+              background-color: #4a3a1a;
+              border: 1px solid #7b5f2a;
+              color: #ffc266;
+            "
+            onclick="saveMap()"
+          >
+            <i class="bi bi-save"></i> Save Map
+          </button>
         </div>
+
+        <div class="col-6">
+          <button
+            class="btn action-btn w-100"
+            style="
+              background-color: #1a3f3f;
+              border: 1px solid #2f6b6b;
+              color: #6fdfdf;
+            "
+            onclick="loadMap()"
+          >
+            <i class="bi bi-folder2-open"></i> Load Map
+          </button>
+        </div>
+
+        <div class="col-6">
+          <button
+            class="btn action-btn w-100"
+            style="
+              background-color: #3a2a4a;
+              border: 1px solid #5f3d7b;
+              color: #b98cff;
+            "
+            onclick="resetMap()"
+          >
+            <i class="bi bi-trash"></i> Clear Map
+          </button>
+        </div>
+
+        <div class="col-6">
+          <button
+            class="btn action-btn w-100"
+            style="
+              background-color: #4a3a1a;
+              border: 1px solid #7b5f2a;
+              color: #ffc266;
+            "
+            onclick="toggleWaypoint()"
+          >
+            <i class="bi bi-arrow-right"></i> Trigger waypoint movement
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
       </div>
     </div>
 
@@ -461,6 +475,24 @@
             showToast("Failed to toggle mapping", "danger");
           });
       }
+
+      function toggleWaypoint() {
+        fetch("/api/togglewaypoint", { method: "POST" })
+          .then((response) => response.json())
+          .then((data) => {
+            mappingActive = data.state;
+            updateMappingUI();
+            showToast(
+              `Waypoint ${mappingActive ? "activated" : "deactivated"}`,
+              "info",
+            );
+          })
+          .catch((error) => {
+            console.error("Waypoint error:", error);
+            showToast("Failed to toggle waypoint", "danger");
+          });
+      }
+
 
       function saveMap() {
         fetch("/api/save", {
