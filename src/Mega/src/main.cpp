@@ -15,6 +15,10 @@ unsigned long last_cmd_ms = 0;
 bool timed_out = false;
 const unsigned long CMD_TIMEOUT_MS = 500;   // stop if the host goes silent
 
+// periodic print of the actual (measured) motor rpms
+unsigned long last_rpm_print = 0;
+const unsigned long RPM_PRINT_MS = 200;   // 5 Hz status output
+
 // non-blocking line assembly for the atomic V:<left>,<right> packet
 char line_buf[32];
 uint8_t line_len = 0;
@@ -27,7 +31,7 @@ void setup() {
   closed_loop_init();
 
   last_update = millis();
-  Serial.println("Ready");
+  //Serial.println("Ready");
 }
 
 
@@ -36,7 +40,7 @@ void handle_line(const char *raw) {
   String cmd(raw);
   cmd.trim();
   cmd.toUpperCase();
-  Serial.println("Received: " + cmd);
+  //Serial.println("Received: " + cmd);
   int colon = cmd.indexOf(':');
 
   // atomic packet: both wheel targets in one message -> both wheels update together
@@ -51,7 +55,7 @@ void handle_line(const char *raw) {
       float rpm1 = rpm1_str.toFloat();
       float rpm2 = rpm2_str.toFloat();
       
-      Serial.println("Parsed RPM1: " + String(rpm1) + ", RPM2: " + String(rpm2));
+      //Serial.println("Parsed RPM1: " + String(rpm1) + ", RPM2: " + String(rpm2));
       
       closed_loop_set_manual(1, false);
       closed_loop_set_manual(2, false);
@@ -59,7 +63,7 @@ void handle_line(const char *raw) {
       last_cmd_ms = millis();
       timed_out = false;
     } else {
-      Serial.println("Failed to find comma in V command");
+      //Serial.println("Failed to find comma in V command");
     }
     return;
   }
@@ -84,7 +88,7 @@ void handle_line(const char *raw) {
   }
 
   if (cmd.startsWith("M1F")) {
-    Serial.println("M1F " + String(speed));
+    //Serial.println("M1F " + String(speed));
     motor1_forward((uint8_t)speed);
     closed_loop_set_target1(0);
     closed_loop_set_manual(1, true);
@@ -92,7 +96,7 @@ void handle_line(const char *raw) {
     timed_out = false;
   } 
   else if (cmd.startsWith("M1R")) {
-    Serial.println("M1R " + String(speed));
+    //Serial.println("M1R " + String(speed));
     motor1_reverse((uint8_t)speed);
     closed_loop_set_target1(0);
     closed_loop_set_manual(1, true);
@@ -100,26 +104,26 @@ void handle_line(const char *raw) {
     timed_out = false;
   }  
   if (cmd.startsWith("M2F")) {
-    Serial.println("M2F " + String(speed));
+    //Serial.println("M2F " + String(speed));
     motor2_forward((uint8_t)speed);
     closed_loop_set_target2(0);
     closed_loop_set_manual(2, true);
     last_cmd_ms = millis();
     timed_out = false;
   } else if (cmd.startsWith("M2R")) {
-    Serial.println("M2R " + String(speed));
+    //Serial.println("M2R " + String(speed));
     motor2_reverse((uint8_t)speed);
     closed_loop_set_target2(0);
     closed_loop_set_manual(2, true);
     last_cmd_ms = millis();
     timed_out = false;
   }  if (cmd.startsWith("M1S")) {
-    Serial.println("M1S");
+    //Serial.println("M1S");
     motor1_stop();
     closed_loop_set_target1(0);
     closed_loop_set_manual(1, false);
   }  if (cmd.startsWith("M2S")) {
-    Serial.println("M2S");
+    //Serial.println("M2S");
     motor2_stop();
     closed_loop_set_target2(0);
     closed_loop_set_manual(2, false);
@@ -149,6 +153,14 @@ void loop() {
     float dt = (now - last_update) / 1000.0;
     last_update = now;
     closed_loop_update(dt);
+  }
+
+  // periodically print the actual (measured) rpm of both motors
+  if (now - last_rpm_print >= RPM_PRINT_MS) {
+    last_rpm_print = now;
+    float r1, r2;
+    closed_loop_get_status(r1, r2);
+    Serial.println("RPM1: " + String(r1) + " RPM2: " + String(r2));
   }
 
   // host went silent: stop once
