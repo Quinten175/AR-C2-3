@@ -1,3 +1,10 @@
+"""
+code from Mike Likes Robots
+https://github.com/mikelikesrobots/yolo26_ros2/
+https://www.youtube.com/watch?v=jZtmxtWO3Dk
+"""
+
+
 import os
 import time
 
