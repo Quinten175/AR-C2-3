@@ -1,88 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" font-family="'Segoe UI', Arial, sans-serif">
-
-  <!-- Background -->
-  <rect width="760" height="420" fill="#f8f9fa"/>
-
-  <!-- Title -->
-  <text x="380" y="32" text-anchor="middle" font-size="18" font-weight="bold" fill="#2c3e50">Responsibility Division — Raspberry Pi vs Arduino Mega</text>
-
-  <!-- ==================== RASPBERRY PI COLUMN ==================== -->
-  <rect x="40" y="60" width="330" height="310" rx="8" fill="#d6eaf8" stroke="#2980b9" stroke-width="2"/>
-
-  <!-- Pi header -->
-  <rect x="40" y="60" width="330" height="50" rx="8" fill="#2980b9"/>
-  <text x="205" y="92" text-anchor="middle" font-size="16" font-weight="bold" fill="#ffffff">Raspberry Pi</text>
-
-  <!-- Pi items -->
-  <g font-size="13" fill="#2c3e50">
-    <circle cx="70" cy="140" r="5" fill="#2980b9"/>
-    <text x="85" y="145">ROS2 middleware (DDS topic bus)</text>
-
-    <circle cx="70" cy="180" r="5" fill="#2980b9"/>
-    <text x="85" y="185">SLAM / mapping (GMapping, Cartographer)</text>
-
-    <circle cx="70" cy="220" r="5" fill="#2980b9"/>
-    <text x="85" y="225">YOLO object detection</text>
-
-    <circle cx="70" cy="260" r="5" fill="#2980b9"/>
-    <text x="85" y="265">Camera streaming (usb_cam)</text>
-
-    <circle cx="70" cy="300" r="5" fill="#2980b9"/>
-    <text x="85" y="305">Web UI dashboard (Flask)</text>
-
-    <circle cx="70" cy="340" r="5" fill="#2980b9"/>
-    <text x="85" y="345">Odometry publishing (/odom, /tf)</text>
-  </g>
-
-  <!-- ==================== ARDUINO MEGA COLUMN ==================== -->
-  <rect x="390" y="60" width="330" height="310" rx="8" fill="#fdedec" stroke="#e74c3c" stroke-width="2"/>
-
-  <!-- Mega header -->
-  <rect x="390" y="60" width="330" height="50" rx="8" fill="#e74c3c"/>
-  <text x="555" y="92" text-anchor="middle" font-size="16" font-weight="bold" fill="#ffffff">Arduino Mega (ATmega2560)</text>
-
-  <!-- Mega items -->
-  <g font-size="13" fill="#2c3e50">
-    <circle cx="420" cy="140" r="5" fill="#e74c3c"/>
-    <text x="435" y="145">Real-time PID loops (50 Hz)</text>
-
-    <circle cx="420" cy="180" r="5" fill="#e74c3c"/>
-    <text x="435" y="185">Encoder reading (hardware interrupts)</text>
-
-    <circle cx="420" cy="220" r="5" fill="#e74c3c"/>
-    <text x="435" y="225">Motor PWM + direction output</text>
-
-    <circle cx="420" cy="260" r="5" fill="#e74c3c"/>
-    <text x="435" y="265">Serial protocol parsing (ASCII)</text>
-
-    <circle cx="420" cy="300" r="5" fill="#e74c3c"/>
-    <text x="435" y="305">Safety timeout enforcement</text>
-
-    <circle cx="420" cy="340" r="5" fill="#e74c3c"/>
-    <text x="435" y="345">Emergency stop handling</text>
-  </g>
-
-  <!-- ==================== ARROW BETWEEN COLUMNS ==================== -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2040 1360" font-family="Arial, sans-serif" font-size="16" fill="#18324b" role="img" aria-labelledby="title desc">
+  <title id="title">Manta Bot responsibility division: Raspberry Pi and Arduino Mega</title>
+  <desc id="desc">Pi owns stamped ROS commands, differential-drive kinematics, C++ serial translation, assumed wheel states, direct LiDAR SLAM and Flask on port 5000. Camera source-only scripts are disabled. Mega owns command parsing, the nonlatched watchdog and ESTOP, nominal 50 Hz local PI regulation, encoders and PWM outputs. Wheel RPM commands cross to Mega over UART; signed telemetry at 5 Hz returns but is unused by the plugin. ROS odometry is command-derived. Neither separate drive nor SLAM launch is complete.</desc>
   <defs>
-    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#2c3e50"/>
-    </marker>
-    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#2c3e50"/>
-    </marker>
+    <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#315977"/></marker>
+    <marker id="unused-arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#a04c16"/></marker>
+    <style>.card{fill:#fff;stroke:#8298ab;stroke-width:2}.edge{fill:none;stroke:#315977;stroke-width:2.5;marker-end:url(#arrow)}.disabled{stroke:#7356a0;stroke-dasharray:9 6}.unused{fill:none;stroke:#a04c16;stroke-width:2.5;stroke-dasharray:3 6;marker-end:url(#unused-arrow)}.heading{font-size:21px;font-weight:bold}.warning{fill:#934413}</style>
   </defs>
+  <rect width="2040" height="1360" fill="#f5f8fb"/>
+  <text x="50" y="52" font-size="30" font-weight="bold">Manta Bot | Responsibility division</text>
+  <text x="50" y="85">Pi owns high-level ROS and direct sensors. Mega closes the local wheel-speed loop and drives motor outputs.</text>
+  <rect x="40" y="115" width="680" height="905" rx="16" fill="#eaf2f9" stroke="#bbcbd9"/>
+  <rect x="1320" y="115" width="680" height="905" rx="16" fill="#fff1e8" stroke="#bbcbd9"/>
+  <text x="65" y="157" font-size="25" font-weight="bold">Raspberry Pi</text>
+  <text x="1345" y="157" font-size="25" font-weight="bold">Arduino Mega</text>
 
-  <!-- Pi → Mega (commands) -->
-  <line x1="370" y1="140" x2="390" y2="140" stroke="#2980b9" stroke-width="2.5" marker-end="url(#arrow-blue)"/>
-  <text x="380" y="133" text-anchor="middle" font-size="9" fill="#2980b9">V:rpm</text>
+  <rect x="65" y="185" width="630" height="175" rx="10" class="card"/>
+  <text x="85" y="216" class="heading">Commands and differential-drive kinematics</text>
+  <text x="85" y="246">GamepadCmdVel: Movement/controller.py; manual start</text>
+  <text x="85" y="275">Flask UI_app.py: HTTP 5000 to TwistStamped /cmd_vel</text>
+  <text x="85" y="304">diff_drive_controller in ros2_control; manager configured at 50 Hz</text>
+  <text x="85" y="333">Wheel velocity targets in rad/s; stamped-command timeout 0.5 s</text>
+  <rect x="65" y="395" width="630" height="175" rx="10" class="card"/>
+  <text x="85" y="426" class="heading">C++ manta_hardware/MantaHardware</text>
+  <text x="85" y="456">write(): rad/s to RPM and serial wheel command packet</text>
+  <text x="85" y="485">read(): mirrors commands into velocities and integrates positions</text>
+  <text x="85" y="514">/diff_drive_controller/odom and wheel TF are command-derived</text>
+  <text x="85" y="543" class="warning" font-weight="bold">NOT measured feedback; read_status() is unused.</text>
+  <rect x="65" y="605" width="630" height="175" rx="10" class="card"/>
+  <text x="85" y="636" class="heading">Direct LiDAR, mapping and web UI</text>
+  <text x="85" y="666">rplidar_ros/rplidar_composition on /dev/ttyUSB0</text>
+  <text x="85" y="695">/scan to async SLAM Toolbox; outputs /map and map to odom</text>
+  <text x="85" y="724">robot_state_publisher: URDF and command-derived /joint_states</text>
+  <text x="85" y="753">Flask has no sensor subscriptions; dashboard placeholders</text>
+  <rect x="65" y="815" width="630" height="175" rx="10" class="card disabled"/>
+  <text x="85" y="846" class="heading">Camera source only | setup.py entries commented out</text>
+  <text x="85" y="876">camera_publisher.py: OpenCV capture to /image_raw</text>
+  <text x="85" y="905">yolo26_ros2.py: /detections + /image_annotated/compressed</text>
+  <text x="85" y="934">stream.py: compressed images to browser over HTTP 9091</text>
+  <text x="85" y="963">Separate stream server; camera bypasses Mega</text>
 
-  <!-- Mega → Pi (data) -->
-  <line x1="370" y1="340" x2="390" y2="340" stroke="#e74c3c" stroke-width="2.5" marker-end="url(#arrow-red)"/>
-  <text x="380" y="333" text-anchor="middle" font-size="9" fill="#e74c3c">ticks/RPM</text>
+  <rect x="1345" y="185" width="630" height="175" rx="10" class="card"/>
+  <text x="1365" y="216" class="heading">main.cpp | command parser and software stops</text>
+  <text x="1365" y="246">V:leftRPM,rightRPM sets both local wheel targets</text>
+  <text x="1365" y="275">Command silence &gt;500 ms: closed_loop_stop()</text>
+  <text x="1365" y="304">VS and ESTOP stop outputs; ESTOP is not latched</text>
+  <text x="1365" y="333">A later valid drive command can resume motion</text>
+  <rect x="1345" y="395" width="630" height="175" rx="10" class="card"/>
+  <text x="1365" y="426" class="heading">closed_loop.cpp + pid.cpp | local PI regulation</text>
+  <text x="1365" y="456">Nominal 50 Hz; 20 ms threshold and actual elapsed dt</text>
+  <text x="1365" y="485">Proportional + integral only; encoder deltas to signed RPM</text>
+  <text x="1365" y="514">Measured speed magnitudes compared to target magnitudes</text>
+  <text x="1365" y="543" class="warning">Cooperative loop, not hard real-time or a braking guarantee</text>
+  <rect x="1345" y="605" width="630" height="175" rx="10" class="card"/>
+  <text x="1365" y="636" class="heading">encoder.cpp | local quadrature feedback</text>
+  <text x="1365" y="666">Motor 1 A/B: D18/D19; motor 2 A/B: D20/D21</text>
+  <text x="1365" y="695">CHANGE interrupts on channel A pins D18 and D20</text>
+  <text x="1365" y="724">748 counts per wheel revolution = 11 × 2 × 34</text>
+  <text x="1365" y="753">Measurements close the Mega loop, not a ROS encoder topic</text>
+  <rect x="1345" y="815" width="630" height="175" rx="10" class="card"/>
+  <text x="1365" y="846" class="heading">motor_control.cpp | physical outputs and telemetry</text>
+  <text x="1365" y="876">PWM D2/D7; direction D3-D6</text>
+  <text x="1365" y="905">Two H-bridge channels to two motors; board count unspecified</text>
+  <text x="1365" y="934">Signed RPM1/RPM2 telemetry emitted at 5 Hz</text>
+  <text x="1365" y="963">SS direct Serial.println is commented out</text>
 
-  <!-- ==================== BOTTOM NOTE ==================== -->
-  <rect x="120" y="385" width="520" height="26" rx="6" fill="#ffffff" stroke="#bdc3c7" stroke-width="1"/>
-  <text x="380" y="402" text-anchor="middle" font-size="11" fill="#2c3e50">Communication: UART serial at 115200 baud · Pi = master, Mega = slave</text>
+  <text x="1020" y="216" text-anchor="middle" class="heading">Pi to Mega | configured commands</text>
+  <text x="1020" y="251" text-anchor="middle">/dev/ttyAMA0 at 115200 baud</text>
+  <text x="1020" y="283" text-anchor="middle">V:leftRPM,rightRPM + newline</text>
+  <path d="M720 315 H1320" class="edge"/>
+  <text x="1020" y="355" text-anchor="middle">VS on plugin activation / deactivation</text>
+  <text x="1020" y="587" text-anchor="middle" class="heading warning">Mega to Pi | unused telemetry</text>
+  <text x="1020" y="621" text-anchor="middle">Signed RPM1/RPM2, emitted at 5 Hz</text>
+  <text x="1020" y="654" text-anchor="middle">Plugin read() does not consume it</text>
+  <path d="M1320 690 H720" class="unused"/>
+  <text x="1020" y="732" text-anchor="middle" class="warning" font-weight="bold">Missing measured feedback path</text>
+  <text x="1020" y="765" text-anchor="middle" class="warning">ROS odometry assumes commanded wheel motion</text>
+  <text x="1020" y="883" text-anchor="middle">Sensors connect directly to Pi.</text>
+  <text x="1020" y="916" text-anchor="middle">No LiDAR or camera data through Mega.</text>
 
+  <rect x="40" y="1055" width="1960" height="135" rx="12" fill="#fff" stroke="#bbcbd9"/>
+  <text x="65" y="1089" class="heading">System integration and safety boundary</text>
+  <text x="65" y="1119">Compose diff_drive.launch.py and slam.launch.py separately; neither is a complete robot launch. Gamepad is installed but not automatically launched.</text>
+  <text x="65" y="1148">Camera console scripts are disabled. Configured flow does not assert runtime availability or measured physical motion.</text>
+  <text x="65" y="1177">Watchdog / ESTOP set PWM = 0 and direction pins LOW; software stops are nonlatched and do not establish hard real-time behavior or guaranteed braking.</text>
+  <rect x="40" y="1220" width="1960" height="100" rx="12" fill="#fff" stroke="#bbcbd9"/>
+  <text x="65" y="1252" font-weight="bold">Legend | distinct configured, disabled and unused states</text>
+  <path d="M65 1288 H140" class="edge"/><text x="160" y="1294">Solid blue: configured commands / data</text>
+  <path d="M710 1288 H785" class="edge disabled"/><text x="805" y="1294">Long dashed purple: disabled camera</text>
+  <path d="M1390 1288 H1465" class="unused"/><text x="1485" y="1294">Short dashed amber: unused telemetry</text>
 </svg>

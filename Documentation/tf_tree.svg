@@ -1,121 +1,93 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="660" viewBox="0 0 900 660" font-family="Helvetica, Arial, sans-serif">
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2040 1560" font-family="Arial, sans-serif" font-size="16" fill="#18324b" role="img" aria-labelledby="title desc">
+  <title id="title">Manta Bot complete configured TF tree with URDF joint origins</title>
+  <desc id="desc">SLAM publishes map to odom. diff_drive_controller publishes odom to base_footprint from assumed command-derived wheel states. The fixed base_footprint to base_link joint has yaw minus pi over two, not 180 degrees. base_link has fixed motor_left_1, motor_right_1 and lidar_link children. Motors have continuous wheel children; lidar_link has a fixed laser_frame child. All eight URDF links are shown with actual joint origins and rotations rounded for readability. robot_state_publisher owns URDF transforms; wheel states are not measured feedback. No camera frame exists in the URDF and no publication rates are assumed.</desc>
   <defs>
-    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="#555555"/>
-    </marker>
-    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000000" flood-opacity="0.25"/>
-    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#315977"/></marker>
+    <style>.edge{fill:none;stroke:#315977;stroke-width:2.5;marker-end:url(#arrow)}.node{fill:#fff;stroke:#8298ab;stroke-width:2}.frame{font-size:21px;font-weight:bold;font-family:monospace}.heading{font-size:21px;font-weight:bold}.warning{fill:#934413}.joint{font-size:15px;font-family:monospace}</style>
   </defs>
+  <rect width="2040" height="1560" fill="#f5f8fb"/>
+  <text x="50" y="52" font-size="30" font-weight="bold">Manta Bot | Full TF tree and joint origins</text>
+  <text x="50" y="85">Source: urdf/robotassembly.urdf, diff_drive_controller.yaml and separate drive / SLAM launches.</text>
+  <text x="50" y="114">Arrows point parent to child. xyz is in metres; rpy is in radians. Tiny floating-point residuals are rounded to zero.</text>
 
-  <!-- Background -->
-  <rect width="900" height="660" fill="#fafafa"/>
+  <rect x="840" y="150" width="360" height="60" rx="10" fill="#eaf2f9" stroke="#8298ab" stroke-width="2"/>
+  <text x="1020" y="188" text-anchor="middle" class="frame">map</text>
+  <path d="M1020 210 V295" class="edge"/>
+  <text x="1050" y="242">Dynamic | async SLAM Toolbox</text>
+  <text x="1050" y="272">Alignment from /scan and the robot TF chain</text>
+  <rect x="840" y="295" width="360" height="60" rx="10" fill="#eaf2f9" stroke="#8298ab" stroke-width="2"/>
+  <text x="1020" y="333" text-anchor="middle" class="frame">odom</text>
+  <path d="M1020 355 V440" class="edge"/>
+  <text x="1050" y="387">Dynamic | diff_drive_controller; enable_odom_tf: true</text>
+  <text x="1050" y="417" class="warning" font-weight="bold">Assumed wheel states, NOT measured encoder feedback</text>
+  <rect x="840" y="440" width="360" height="60" rx="10" fill="#fff4d9" stroke="#8298ab" stroke-width="2"/>
+  <text x="1020" y="478" text-anchor="middle" class="frame">base_footprint</text>
+  <path d="M1020 500 V605" class="edge"/>
+  <text x="1050" y="532" class="joint">Fixed: base_footprint_to_base_link</text>
+  <text x="1050" y="562">xyz = (0, 0, 0); rpy = (0, 0, -pi/2)</text>
+  <text x="1050" y="592" font-weight="bold">Yaw -90 degrees, not 180 degrees</text>
+  <rect x="840" y="605" width="360" height="60" rx="10" fill="#edf6f1" stroke="#8298ab" stroke-width="2"/>
+  <text x="1020" y="643" text-anchor="middle" class="frame">base_link</text>
 
-  <!-- Title -->
-  <text x="450" y="34" text-anchor="middle" font-size="22" font-weight="bold" fill="#2c3e50">TF Tree — Manta Bot</text>
-  <text x="450" y="54" text-anchor="middle" font-size="12" fill="#7f8c8d">URDF: robotassembly.urdf · odometry: static_odom_publisher.py</text>
+  <path d="M930 665 V700 H360 V895" class="edge"/>
+  <path d="M1020 665 V895" class="edge"/>
+  <path d="M1110 665 V700 H1680 V895" class="edge"/>
+  <rect x="70" y="735" width="580" height="135" rx="10" fill="#f5f8fb"/>
+  <text x="90" y="765" class="joint">Fixed: base_link_motor_left_to_base_link</text>
+  <text x="90" y="795">xyz = (-0.096, 0.0675, 0.00637336)</text>
+  <text x="90" y="825">rpy ≈ (0, -pi/2, 0)</text>
+  <text x="90" y="855">URDF motor mount, robot_state_publisher</text>
+  <rect x="730" y="735" width="580" height="135" rx="10" fill="#f5f8fb"/>
+  <text x="750" y="765" class="joint">Fixed: base_link_motor_right_to_base_link</text>
+  <text x="750" y="795">xyz = (0.096, 0.06749806, 0.00639603)</text>
+  <text x="750" y="825">rpy ≈ (-pi, -pi/2, 0)</text>
+  <text x="750" y="855">URDF motor mount, robot_state_publisher</text>
+  <rect x="1390" y="735" width="580" height="135" rx="10" fill="#f5f8fb"/>
+  <text x="1410" y="765" class="joint">Fixed: base_link_lidar_link_to_base_link</text>
+  <text x="1410" y="795">xyz = (0.0005, -0.0255, 0.0705)</text>
+  <text x="1410" y="825">rpy ≈ (pi, 0, 0)</text>
+  <text x="1410" y="855">URDF LiDAR mount, robot_state_publisher</text>
+  <rect x="180" y="895" width="360" height="60" rx="10" class="node"/>
+  <text x="360" y="933" text-anchor="middle" class="frame">motor_left_1</text>
+  <rect x="840" y="895" width="360" height="60" rx="10" class="node"/>
+  <text x="1020" y="933" text-anchor="middle" class="frame">motor_right_1</text>
+  <rect x="1500" y="895" width="360" height="60" rx="10" class="node"/>
+  <text x="1680" y="933" text-anchor="middle" class="frame">lidar_link</text>
+  <path d="M360 955 V1175" class="edge"/>
+  <path d="M1020 955 V1175" class="edge"/>
+  <path d="M1680 955 V1175" class="edge"/>
+  <rect x="70" y="985" width="580" height="165" rx="10" fill="#f5f8fb"/>
+  <text x="90" y="1015" class="joint">Continuous: motor_left_1_wheel_left_to_motor_left</text>
+  <text x="90" y="1045">xyz ≈ (-0.007, 0, 0.006); origin rpy ≈ (0, 0, 0)</text>
+  <text x="90" y="1075">Axis ≈ (0, 0, 1); rotation varies with joint position</text>
+  <text x="90" y="1105">robot_state_publisher via /joint_states</text>
+  <text x="90" y="1135" class="warning">Command-integrated position, not measured feedback</text>
+  <rect x="730" y="985" width="580" height="165" rx="10" fill="#f5f8fb"/>
+  <text x="750" y="1015" class="joint">Continuous: motor_right_1_wheel_right_to_motor_right</text>
+  <text x="750" y="1045">xyz ≈ (-0.007, 0, 0.006); origin rpy ≈ (0, 0, 0)</text>
+  <text x="750" y="1075">Axis ≈ (0, 0, 1); rotation varies with joint position</text>
+  <text x="750" y="1105">robot_state_publisher via /joint_states</text>
+  <text x="750" y="1135" class="warning">Command-integrated position, not measured feedback</text>
+  <rect x="1390" y="985" width="580" height="165" rx="10" fill="#f5f8fb"/>
+  <text x="1410" y="1015" class="joint">Fixed: laser_frame_joint</text>
+  <text x="1410" y="1045">xyz = (0, 0, 0); rpy ≈ (pi, 0, -pi/2)</text>
+  <text x="1410" y="1075">robot_state_publisher</text>
+  <text x="1410" y="1105">Real RPLiDAR /scan header frame_id: laser_frame</text>
+  <text x="1410" y="1135">Direct Pi sensor, no Mega hop</text>
+  <rect x="180" y="1175" width="360" height="60" rx="10" fill="#f3eff8" stroke="#8298ab" stroke-width="2"/>
+  <text x="360" y="1213" text-anchor="middle" class="frame">wheel_left_1</text>
+  <rect x="840" y="1175" width="360" height="60" rx="10" fill="#f3eff8" stroke="#8298ab" stroke-width="2"/>
+  <text x="1020" y="1213" text-anchor="middle" class="frame">wheel_right_1</text>
+  <rect x="1500" y="1175" width="360" height="60" rx="10" fill="#edf6f1" stroke="#8298ab" stroke-width="2"/>
+  <text x="1680" y="1213" text-anchor="middle" class="frame">laser_frame</text>
 
-  <!-- ================= Edges ================= -->
-  <g stroke="#555555" stroke-width="2" fill="none">
-    <!-- odom -> base_footprint -->
-    <line x1="450" y1="103" x2="450" y2="146" marker-end="url(#arrow)"/>
-    <!-- base_footprint -> base_link -->
-    <line x1="450" y1="196" x2="450" y2="239" marker-end="url(#arrow)"/>
-    <!-- base_link -> motor_left_1 -->
-    <path d="M 450 289 L 450 312 L 170 312 L 170 332" marker-end="url(#arrow)"/>
-    <!-- base_link -> motor_right_1 -->
-    <line x1="450" y1="289" x2="450" y2="332" marker-end="url(#arrow)"/>
-    <!-- base_link -> lidar_link -->
-    <path d="M 450 289 L 450 312 L 730 312 L 730 332" marker-end="url(#arrow)"/>
-    <!-- motor_left_1 -> wheel_left_1 -->
-    <line x1="170" y1="379" x2="170" y2="422" marker-end="url(#arrow)"/>
-    <!-- motor_right_1 -> wheel_right_1 -->
-    <line x1="450" y1="379" x2="450" y2="422" marker-end="url(#arrow)"/>
-  </g>
-
-  <!-- Edge labels -->
-  <g font-size="11" fill="#7f8c8d">
-    <text x="458" y="130">odometry (dynamic)</text>
-    <text x="458" y="223">fixed · yaw 180°</text>
-    <text x="300" y="306" text-anchor="middle">fixed (URDF)</text>
-    <text x="458" y="330">fixed (URDF)</text>
-    <text x="600" y="306" text-anchor="middle">fixed (URDF)</text>
-    <text x="178" y="405">~10.2 Hz</text>
-    <text x="458" y="405">~10.2 Hz</text>
-  </g>
-
-  <!-- ================= Nodes ================= -->
-  <!-- odom -->
-  <g filter="url(#shadow)">
-    <rect x="365" y="57" width="170" height="46" rx="10" fill="#d6eaf8" stroke="#1f77b4" stroke-width="2"/>
-  </g>
-  <text x="450" y="86" text-anchor="middle" font-family="monospace" font-size="16" font-weight="bold" fill="#1f77b4">odom</text>
-
-  <!-- base_footprint -->
-  <g filter="url(#shadow)">
-    <rect x="365" y="150" width="170" height="46" rx="10" fill="#fcf3cf" stroke="#b7950b" stroke-width="2"/>
-  </g>
-  <text x="450" y="179" text-anchor="middle" font-family="monospace" font-size="15" font-weight="bold" fill="#7d6608">base_footprint</text>
-
-  <!-- base_link -->
-  <g filter="url(#shadow)">
-    <rect x="365" y="243" width="170" height="46" rx="10" fill="#d5f5e3" stroke="#27ae60" stroke-width="2"/>
-  </g>
-  <text x="450" y="272" text-anchor="middle" font-family="monospace" font-size="16" font-weight="bold" fill="#27ae60">base_link</text>
-
-  <!-- motor_left_1 -->
-  <g filter="url(#shadow)">
-    <rect x="85" y="336" width="170" height="43" rx="10" fill="#fdebd0" stroke="#e67e22" stroke-width="2"/>
-  </g>
-  <text x="170" y="363" text-anchor="middle" font-family="monospace" font-size="15" font-weight="bold" fill="#b9770e">motor_left_1</text>
-
-  <!-- motor_right_1 -->
-  <g filter="url(#shadow)">
-    <rect x="365" y="336" width="170" height="43" rx="10" fill="#fdebd0" stroke="#e67e22" stroke-width="2"/>
-  </g>
-  <text x="450" y="363" text-anchor="middle" font-family="monospace" font-size="15" font-weight="bold" fill="#b9770e">motor_right_1</text>
-
-  <!-- lidar_link -->
-  <g filter="url(#shadow)">
-    <rect x="645" y="336" width="170" height="43" rx="10" fill="#fadbd8" stroke="#c0392b" stroke-width="2"/>
-  </g>
-  <text x="730" y="363" text-anchor="middle" font-family="monospace" font-size="15" font-weight="bold" fill="#c0392b">lidar_link</text>
-
-  <!-- wheel_left_1 -->
-  <g filter="url(#shadow)">
-    <rect x="85" y="426" width="170" height="43" rx="10" fill="#e8daef" stroke="#8e44ad" stroke-width="2"/>
-  </g>
-  <text x="170" y="453" text-anchor="middle" font-family="monospace" font-size="15" font-weight="bold" fill="#6c3483">wheel_left_1</text>
-
-  <!-- wheel_right_1 -->
-  <g filter="url(#shadow)">
-    <rect x="365" y="426" width="170" height="43" rx="10" fill="#e8daef" stroke="#8e44ad" stroke-width="2"/>
-  </g>
-  <text x="450" y="453" text-anchor="middle" font-family="monospace" font-size="15" font-weight="bold" fill="#6c3483">wheel_right_1</text>
-
-  <!-- ================= Notes ================= -->
-  <g font-size="12" fill="#2c3e50">
-    <rect x="60" y="496" width="780" height="66" rx="8" fill="#ffffff" stroke="#d5d8dc"/>
-    <text x="80" y="518" font-weight="bold">Notes:</text>
-    <text x="80" y="536">• <tspan font-family="monospace">odom → base_footprint</tspan> is published by the diff drive controller (<tspan font-family="monospace">base_frame_id: base_footprint</tspan>, <tspan font-family="monospace">enable_odom_tf: true</tspan>)</text>
-    <text x="80" y="554">• <tspan font-family="monospace">base_footprint → base_link</tspan> is a fixed URDF joint with rpy = (0, 0, π) — do <tspan font-weight="bold">not</tspan> run <tspan font-family="monospace">static_odom_publisher</tspan> at the same time (duplicate TF broadcaster)</text>
-  </g>
-
-  <!-- ================= Legend ================= -->
-  <g font-size="12" fill="#2c3e50">
-    <rect x="60" y="580" width="780" height="56" rx="8" fill="#ffffff" stroke="#d5d8dc"/>
-    <text x="80" y="603" font-weight="bold">Legend:</text>
-    <rect x="140" y="591" width="14" height="14" fill="#d6eaf8" stroke="#1f77b4"/>
-    <text x="160" y="603">odometry frame</text>
-    <rect x="280" y="591" width="14" height="14" fill="#fcf3cf" stroke="#b7950b"/>
-    <text x="300" y="603">base footprint</text>
-    <rect x="410" y="591" width="14" height="14" fill="#d5f5e3" stroke="#27ae60"/>
-    <text x="430" y="603">robot base</text>
-    <rect x="525" y="591" width="14" height="14" fill="#fdebd0" stroke="#e67e22"/>
-    <text x="545" y="603">motor</text>
-    <rect x="610" y="591" width="14" height="14" fill="#e8daef" stroke="#8e44ad"/>
-    <text x="630" y="603">wheel</text>
-    <rect x="685" y="591" width="14" height="14" fill="#fadbd8" stroke="#c0392b"/>
-    <text x="705" y="603">lidar</text>
-  </g>
+  <rect x="40" y="1280" width="1960" height="240" rx="12" fill="#fff" stroke="#bbcbd9"/>
+  <text x="65" y="1314" class="heading">Transform ownership and interpretation</text>
+  <text x="65" y="1345">All 8 URDF links are shown, plus map and odom. Joint labels use joint origins, not mesh visual or inertial origins.</text>
+  <text x="65" y="1375">robot_state_publisher owns fixed and continuous URDF edges; joint_state_broadcaster provides /joint_states from the C++ hardware plugin.</text>
+  <text x="65" y="1405" class="warning">Plugin read() mirrors commands and integrates position. Mega RPM telemetry is unused; controller odometry and wheel transforms are command-derived.</text>
+  <text x="65" y="1435">Compose diff_drive.launch.py (controllers and robot_state_publisher) with slam.launch.py (LiDAR and SLAM). Neither is a complete robot launch.</text>
+  <text x="65" y="1465">No camera frame is defined in this URDF. No sensor, joint-state or TF publication frequency is assumed.</text>
+  <path d="M65 1495 H140" class="edge"/><text x="160" y="1501">Legend: solid parent-to-child edges show configured TF relationships; labels distinguish fixed and dynamic ownership.</text>
 </svg>
