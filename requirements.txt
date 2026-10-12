@@ -1,0 +1,6 @@
+numpy
+flask
+pyserial
+opencv-python
+pillow
+ultralytics
