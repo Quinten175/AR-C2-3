@@ -86,6 +86,18 @@ ok()   { printf '%b\n' "${C_GREEN}[  OK  ]${C_RESET} $*"; }
 warn() { printf '%b\n' "${C_YELLOW}[ WARN ]${C_RESET} $*"; }
 die()  { printf '%b\n' "${C_RED}[ FAIL ]${C_RESET} $*" >&2; exit 1; }
 
+# ROS 2 setup scripts reference intentionally-unset vars (e.g.
+# AMENT_TRACE_SETUP_FILES), which aborts under `set -u`. Temporarily relax
+# nounset while sourcing them, then restore it. errexit/pipefail stay on —
+# they don't conflict with the ROS setup scripts.
+safe_source() {
+  local __file="$1"
+  set +u
+  # shellcheck disable=SC1090
+  source "$__file"
+  set -u
+}
+
 SKIP_ROS=false
 SKIP_VENV=false
 SKIP_BUILD=false
@@ -207,7 +219,7 @@ install_venv() {
   fi
 
   # shellcheck disable=SC1091
-  source "$VENV_DIR/bin/activate"
+  safe_source "$VENV_DIR/bin/activate"
   pip install --upgrade pip setuptools wheel
 
   log "Installing Python dependencies into venv"
@@ -228,8 +240,7 @@ install_venv() {
 }
 
 build_workspace() {
-  # shellcheck disable=SC1091
-  source "/opt/ros/$ROS_DISTRO/setup.bash"
+  safe_source "/opt/ros/$ROS_DISTRO/setup.bash"
 
   local build_dir="$WORKSPACE_ROOT/build"
   local install_dir="$WORKSPACE_ROOT/install"
@@ -243,8 +254,7 @@ build_workspace() {
   colcon build --symlink-install \
     --base-paths "$SRC_DIR" \
     --cmake-args -DCMAKE_BUILD_TYPE=Release
-  # shellcheck disable=SC1091
-  source "$install_dir/setup.bash"
+  safe_source "$install_dir/setup.bash"
   ok "Workspace built and sourced"
 }
 

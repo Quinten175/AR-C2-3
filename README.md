@@ -1,5 +1,14 @@
 # AR-C2-3
 
+## Prerequisites
+
+- **Ubuntu 24.04 (Noble)** — the installer targets this release
+- **curl** — to download the installer
+- **git** — to clone the repository (installed automatically by the one-liner if missing)
+- **sudo** — the installer uses `sudo` for apt packages; do not run as root
+
+Everything else (ROS 2 Jazzy, Python venv, colcon, build tools) is installed by the script.
+
 ## Installation
 
 One-liner (Ubuntu 24.04, ROS 2 Jazzy):
