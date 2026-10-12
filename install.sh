@@ -61,6 +61,15 @@ VENV_DIR="$WORKSPACE_ROOT/.venv"
 ROS_DISTRO="${ROS_DISTRO:-humble}"
 ROS2_APT_SOURCE="http://packages.ros.org/ros2/ubuntu"
 ROS2_KEYRING="/usr/share/keyrings/ros-archive-keyring.gpg"
+# Open Robotics ROS signing key fingerprint — the downloaded key is verified
+# against this before it is trusted for apt.
+ROS2_KEY_FINGERPRINT="C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654"
+# Primary: GitHub-hosted ros.key (already binary keyring format; this is the
+# source the official ROS install docs use). Fallback: packages.ros.org
+# (ASCII-armored) — its TLS cert has been seen to mismatch while the host is
+# served from the ftp.osuosl.org mirror.
+ROS2_KEY_URL_PRIMARY="https://raw.githubusercontent.com/ros/rosdistro/master/ros.key"
+ROS2_KEY_URL_FALLBACK="https://packages.ros.org/ros2.gpg"
 
 if [[ -t 1 ]]; then
   C_GREEN='\033[0;32m'; C_YELLOW='\033[1;33m'; C_RED='\033[0;31m'; C_BLUE='\033[1;34m'; C_RESET='\033[0m'
@@ -130,13 +139,41 @@ check_prereqs() {
   ok "Base tools present"
 }
 
+verify_ros_keyring() {
+  local keyring="$1" fpr
+  fpr="$(gpg --show-keys --with-colons "$keyring" 2>/dev/null | awk -F: '/^fpr:/ {print $10; exit}')"
+  [[ "$fpr" == "$ROS2_KEY_FINGERPRINT" ]]
+}
+
+fetch_ros_keyring() {
+  local tmp
+  tmp="$(mktemp)"
+
+  log "Fetching ROS 2 apt signing key"
+  if curl -fsSL "$ROS2_KEY_URL_PRIMARY" -o "$tmp"; then
+    # GitHub ros.key is already in binary keyring format.
+    sudo install -m 0644 "$tmp" "$ROS2_KEYRING"
+  elif curl -fsSL "$ROS2_KEY_URL_FALLBACK" -o "$tmp"; then
+    # packages.ros.org serves an ASCII-armored key.
+    sudo gpg --batch --yes --dearmor -o "$ROS2_KEYRING" "$tmp"
+  else
+    rm -f "$tmp"
+    die "Could not download the ROS 2 signing key from github.com/ros/rosdistro or packages.ros.org"
+  fi
+  rm -f "$tmp"
+
+  if ! verify_ros_keyring "$ROS2_KEYRING"; then
+    die "ROS 2 signing key fingerprint mismatch — aborting"
+  fi
+  ok "ROS 2 signing key installed (fingerprint verified)"
+}
+
 install_ros2() {
   if [[ -f "/opt/ros/$ROS_DISTRO/setup.bash" ]]; then
     ok "ROS 2 $ROS_DISTRO already installed, skipping apt install"
   else
     log "Installing ROS 2 $ROS_DISTRO (this can take a while)"
-    sudo install -d -m 0755 /etc/apt/keyrings
-    curl -fsSL https://packages.ros.org/ros2.gpg | sudo gpg --dearmor -o "$ROS2_KEYRING"
+    fetch_ros_keyring
     echo "deb [arch=$(dpkg --print-architecture) signed-by=$ROS2_KEYRING] $ROS2_APT_SOURCE $(. /etc/os-release && echo "$UBUNTU_CODENAME") main" \
       | sudo tee /etc/apt/sources.list.d/ros2.list >/dev/null
     sudo apt-get update -qq
