@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# AR-C2-3 installer — ROS 2 Humble on Ubuntu 22.04 (Jammy).
+# AR-C2-3 installer — ROS 2 Jazzy on Ubuntu 24.04 (Noble).
 #
 # Usage:
 #   curl -fsSL https://raw.githubusercontent.com/Quinten175/AR-C2-3/main/install.sh | bash
@@ -58,7 +58,10 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORKSPACE_ROOT="$SCRIPT_DIR"
 SRC_DIR="$WORKSPACE_ROOT/src/PI5/src"
 VENV_DIR="$WORKSPACE_ROOT/.venv"
-ROS_DISTRO="${ROS_DISTRO:-humble}"
+# Target: Ubuntu 24.04 (noble) with ROS 2 Jazzy.
+# Override the distro with ROS_DISTRO=<distro> if you know what you are doing.
+UBUNTU_CODENAME="$(. /etc/os-release && echo "${UBUNTU_CODENAME:-unknown}")"
+ROS_DISTRO="${ROS_DISTRO:-jazzy}"
 ROS2_APT_SOURCE="http://packages.ros.org/ros2/ubuntu"
 ROS2_KEYRING="/usr/share/keyrings/ros-archive-keyring.gpg"
 # Open Robotics ROS signing key fingerprint — the downloaded key is verified
@@ -89,7 +92,7 @@ SKIP_BUILD=false
 
 usage() {
   cat <<'EOF'
-AR-C2-3 installer (ROS 2 Humble, Ubuntu 22.04)
+AR-C2-3 installer (Ubuntu 24.04, ROS 2 Jazzy)
 
 Usage:
   ./install.sh [options]
@@ -102,7 +105,7 @@ Options:
   -h, --help    Show this help
 
 Environment:
-  ROS_DISTRO    ROS 2 distro to install (default: humble)
+  ROS_DISTRO    ROS 2 distro to install (default: jazzy)
   AR_C2_3_DIR   Clone target when run via curl | bash (default: $PWD/AR-C2-3)
 EOF
   exit 0
@@ -125,12 +128,12 @@ check_prereqs() {
     die "Do not run as root; the script uses sudo where needed."
   fi
   command -v sudo >/dev/null 2>&1 || die "sudo is required"
-  command -v apt-get >/dev/null 2>&1 || die "apt-get not found — this script targets Ubuntu 22.04 (ROS 2 Humble)"
+  command -v apt-get >/dev/null 2>&1 || die "apt-get not found — this script targets Ubuntu 24.04 (ROS 2 Jazzy)"
 
-  local codename
-  codename="$(. /etc/os-release && echo "${UBUNTU_CODENAME:-unknown}")"
-  if [[ "$codename" != "jammy" ]]; then
-    warn "This script targets Ubuntu 22.04 (jammy); detected: $codename"
+  if [[ "$UBUNTU_CODENAME" != "noble" ]]; then
+    warn "This script targets Ubuntu 24.04 (noble); detected: $UBUNTU_CODENAME — continuing with ROS 2 $ROS_DISTRO"
+  else
+    ok "Ubuntu 24.04 (noble) detected — using ROS 2 $ROS_DISTRO"
   fi
 
   log "Updating apt package lists"
@@ -174,7 +177,7 @@ install_ros2() {
   else
     log "Installing ROS 2 $ROS_DISTRO (this can take a while)"
     fetch_ros_keyring
-    echo "deb [arch=$(dpkg --print-architecture) signed-by=$ROS2_KEYRING] $ROS2_APT_SOURCE $(. /etc/os-release && echo "$UBUNTU_CODENAME") main" \
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=$ROS2_KEYRING] $ROS2_APT_SOURCE $UBUNTU_CODENAME main" \
       | sudo tee /etc/apt/sources.list.d/ros2.list >/dev/null
     sudo apt-get update -qq
     sudo apt-get install -y -qq "ros-$ROS_DISTRO-ros-base" "ros-$ROS_DISTRO-slam-toolbox" "ros-$ROS_DISTRO-nav2-bringup"

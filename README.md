@@ -2,13 +2,13 @@
 
 ## Installation
 
-One-liner (Ubuntu 22.04, ROS 2 Humble):
+One-liner (Ubuntu 24.04, ROS 2 Jazzy):
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Quinten175/AR-C2-3/main/install.sh | bash
 ```
 
-The script clones this repository into `./AR-C2-3`, installs ROS 2 Humble and its dependencies, creates a Python venv (`.venv`), and builds the workspace with `colcon`.
+The script clones this repository into `./AR-C2-3`, installs ROS 2 Jazzy and its dependencies, creates a Python venv (`.venv`), and builds the workspace with `colcon`.
 
 Pass options through the pipe with `bash -s --`:
 
@@ -33,7 +33,7 @@ cd AR-C2-3
 After installing, source the environment in every new shell:
 
 ```bash
-source /opt/ros/humble/setup.bash
+source /opt/ros/jazzy/setup.bash
 source .venv/bin/activate
 source install/setup.bash
 ```
