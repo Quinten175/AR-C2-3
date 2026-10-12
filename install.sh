@@ -6,6 +6,9 @@
 #   ./install.sh --skip-venv 
 #   ./install.sh --skip-build 
 #   ./install.sh --help
+
+git clone https://github.com/Quinten175/AR-C2-3.git
+cd AR-C2-3
 set -euo pipefail
 
 
