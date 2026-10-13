@@ -56,7 +56,7 @@ fi
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORKSPACE_ROOT="$SCRIPT_DIR"
-SRC_DIR="$WORKSPACE_ROOT/src/PI5/src"
+SRC_DIR="$WORKSPACE_ROOT/PI5/src"
 VENV_DIR="$WORKSPACE_ROOT/.venv"
 # Target: Ubuntu 24.04 (noble) with ROS 2 Jazzy.
 # Override the distro with ROS_DISTRO=<distro> if you know what you are doing.
